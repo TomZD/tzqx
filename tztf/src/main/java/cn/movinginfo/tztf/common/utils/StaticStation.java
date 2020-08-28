@@ -14,7 +14,7 @@ public class StaticStation {
 	
 	// MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
 //    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-//    static final String DB_URL = "jdbc:mysql://localhost:3306/hytf?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull";
+//    static final String DB_URL = "jdbc:mysql://localhost:3306/tztf?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull";
     
     static final String JDBC_DRIVER = ConfigHelper.getProperty("JDBC_DRIVER");  
     static final String DB_URL = ConfigHelper.getProperty("DB_URL");

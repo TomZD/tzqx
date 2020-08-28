@@ -144,7 +144,7 @@ public class TVChannel implements Channel {
 				rls.add(FileGernerator.getReplaceData("签发人",alarm.getIssuer()));
 				if(alarm.getType().equals("alarm")){
 					fileNamePath= "预警对外模板.doc";
-					image="D:\\hytfsource\\images\\warning_icon\\"+alarm.getAlarmTypeName()+".jpg";
+					image="D:\\tztfsource\\images\\warning_icon\\"+alarm.getAlarmTypeName()+".jpg";
 					String defense =alarmTypeService.get(Long.valueOf(alarmTypeId)).getDefence();
 					rls.add(FileGernerator.getReplaceData("防御指南",defense));
 				}else{

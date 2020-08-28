@@ -76,9 +76,9 @@ public class FileGernerator {
 			    	for(ReleaseChannel r:allReleaseChannel){
 
 				    	if(r.getValid()==1){
-				    		builder.insertImage("D:\\hytfsource\\word\\true.png");
+				    		builder.insertImage("D:\\tztfsource\\word\\true.png");
 				    	}else{
-				    		builder.insertImage("D:\\hytfsource\\word\\false.png");
+				    		builder.insertImage("D:\\tztfsource\\word\\false.png");
 				    	}
 				    	builder.write(r.getName());
 						
@@ -89,9 +89,9 @@ public class FileGernerator {
 			if(allReleaseChannel!=null){
 		    	for(Decision d:decisions){
 			    	if(d.getValid()==1){
-			    		builder.insertImage("D:\\hytfsource\\word\\true.png");
+			    		builder.insertImage("D:\\tztfsource\\word\\true.png");
 			    	}else{
-			    		builder.insertImage("D:\\hytfsource\\word\\false.png");
+			    		builder.insertImage("D:\\tztfsource\\word\\false.png");
 			    	}
 			    	builder.write(d.getName());	
 					

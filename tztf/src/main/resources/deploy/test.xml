@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <portable-config>
     <config-file path="WEB-INF/classes/spring/application.properties">
-        <replace key="jdbc.url"><![CDATA[jdbc:mysql://192.168.1.95:3306/hytf?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull]]></replace>
+        <replace key="jdbc.url"><![CDATA[jdbc:mysql://192.168.1.95:3306/tztf?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull]]></replace>
         <replace key="jdbc.username">root</replace>
         <replace key="jdbc.password">xC123456</replace>
     </config-file>

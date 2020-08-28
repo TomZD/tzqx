@@ -22,7 +22,7 @@ public interface StinfMapper extends Mapper<Stinf> {
 			String stnm);
 
 	//查询所有站点站号
-	@Select("SELECT stcd as stcd,stcd as name,latitude as lat,longitude as lon FROM hytf.sen_t_stinf")
+	@Select("SELECT stcd as stcd,stcd as name,latitude as lat,longitude as lon FROM tztf.sen_t_stinf")
 	public List<Stinf> selectList();
 
 	//根据站号查询站点信息
