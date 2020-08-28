@@ -1,8 +1,0 @@
-    .chart{border-top: 1px solid #ccc;}
-    .m-table{margin: 10px 0;}
-    .m-tablecon{width: 100%;border: 1px solid #fff;font-size: 12px;border-collapse: collapse;}
-    .m-tablecon td{white-space: nowrap;line-height:0.5em;border: 1px solid #fff;padding: 8px;width: 12.5%;}
-    .m-tablecon thead{background: #88b4e8;line-height: 28px;color: #fff;}
-    .m-tablecon thead th{font-size:16px;border: 1px solid #fff;}
-    .m-tablecon tbody td{background: #e9edf5;}
-    

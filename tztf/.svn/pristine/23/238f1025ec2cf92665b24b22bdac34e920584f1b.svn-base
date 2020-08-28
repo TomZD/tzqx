@@ -1,9 +1,0 @@
-/**
- * 行内块化元素
- */
-/**
- * 三角形
- * @param  {string} @size      大小，默认4px
- * @param  {string} @color     颜色，默认#333 
- * @param  {string} @direction 方向，默认top
- */
