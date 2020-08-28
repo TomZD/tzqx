@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>突发反馈管理</title>
+    <!-- <meta charset="UTF-8"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="movinginfo"/>
+    #parse("commons/commonJs.vm")
+    #parse("commons/commonCss.vm")
+    #parse("commons/commonRes.vm")
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/global.css">
+    <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css">
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css">
+    <!-- 引用滚动条插件 -->
+    <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+    <style>
+        body {
+            background: none;
+        }
+
+        .m-table {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .m-popup {
+            min-height: 235px;
+        }
+
+        .m-popup .popup_bd {
+            overflow: auto;
+        }
+
+        .m-table table tr td {
+            padding: 10px 0;
+        }
+    </style>
+    <script type="text/javascript">
+
+        //删除
+        function del(id) {
+            $(".m-poplayer").fadeIn(200);
+            /*添加popup内容*/
+            var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+            /*弹窗位置*/
+
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            var map = {};
+            var informations = '';
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height", "25px").css("text-align", "center").css("width", "476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top", "30px").css("width", "66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left", "45%");
+            $(".m-poplayer").find(".popup_bottom").css("bottom", "10px");
+
+            /*点击确定*/
+            $(".m-btn.m-confirm").on("click", function () {
+                parent.deleteSensitive(id);
+
+            });
+            /*点击取消*/
+            $(".m-btn.m-home-cancel").on("click", function () {
+                $(".m-poplayer").fadeOut(200);
+            });
+        }
+
+        //修改保存
+        function isUpdate() {
+            var isOK = true;
+
+            var place = document.getElementById('place3').value;
+            if (place == "") {
+                isOK = false;
+                layer.msg("请输入地点！");
+                return false;
+            }
+
+            var something = document.getElementById('something3').value;
+            if (something == "") {
+                isOK = false;
+                layer.msg("请输入事件！");
+                return false;
+            }
+
+            var img = $("#upload_img3 img").attr("data-original");
+            if (img == "") {
+                isOK = false;
+                layer.msg("请上传图片！");
+                return false;
+            }
+
+            if (isOK == true) {
+
+                document.getElementById('placeTemp').value = document.getElementById('place3').value;
+                document.getElementById('somethingTemp').value = document.getElementById('something3').value;
+                document.getElementById('imageTemp').value = $("#upload_img3 img").attr("data-original");
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "${base}/sev/tfback/saveOrUpdate",
+                    data: $('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function (request) {
+                        alert("Connection error");
+                    },
+                    success: function (data) {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+
+
+        //修改
+        function look(id) {
+            $.ajax({
+                type: "POST",
+                url: '${base}/sev/tfback/editTffk',
+                data: "id=" + id,
+                dataType: "JSON",
+                success: function (data) {
+                    document.getElementById('place2').value = data.place;
+                    document.getElementById('something2').value = data.something;
+                    var img = '<img src="' + data.imagePath + '" style="width=200px;height:120px;">';
+                    $("#upload_img2").html(img);
+
+                },
+                error: function (data) {
+                    alert("错误！");
+                }
+            });
+            $("#updateDiv").show();
+            $("#newDiv").hide();
+            $("#updateDiv2").hide();
+        }
+
+        function edit2(id) {
+            document.getElementById('idTemp').value = id;
+            $.ajax({
+                type: "POST",
+                url: '${base}/sev/tfback/editTffk',
+                data: "id=" + id,
+                dataType: "JSON",
+                success: function (data) {
+                    document.getElementById('place3').value = data.place;
+                    document.getElementById('something3').value = data.something;
+                    var img = '<img data-original=' + data.imagePath + ' src="' + data.imagePath + '" style="width=200px;height:150px;">';
+                    $("#upload_img3").html(img);
+
+                },
+                error: function (data) {
+                    alert("错误！");
+                }
+            });
+            $("#updateDiv").hide();
+            $("#newDiv").hide();
+            $("#updateDiv2").show();
+        }
+
+        //新增
+        function addNew() {
+            document.getElementById('place').value = '';
+            document.getElementById('something').value = '';
+            $("#newDiv").show();
+            $("#updateDiv").hide();
+            $("#updateDiv2").hide();
+        }
+
+
+        function alertBox(value) {
+            $(".m-poplayer").fadeIn(200);
+            _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>" + value + "</span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height", "25px").css("text-align", "center").css("width", "476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top", "30px").css("width", "66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left", "45%");
+            setTimeout(function () {
+                $(".m-poplayer").fadeOut(200);
+            }, 2000);
+        }
+
+        //新增保存
+        function isAdd() {
+            var isOK = true;
+
+            var place = document.getElementById('place').value;
+            if (place == "") {
+                isOK = false;
+                layer.msg("请输入地点！");
+                return false;
+            }
+
+            var something = document.getElementById('something').value;
+            if (something == "") {
+                isOK = false;
+                layer.msg("请输入事件！");
+                return false;
+            }
+
+            var img = $("#upload_img img").attr("data-original");
+            if (img == "") {
+                isOK = false;
+                layer.msg("请上传图片！");
+                return false;
+            }
+
+            if (isOK == true) {
+                document.getElementById('idTemp').value = '';
+                document.getElementById('placeTemp').value = '';
+                document.getElementById('somethingTemp').value = '';
+                document.getElementById('imageTemp').value = '';
+
+                document.getElementById('placeTemp').value = document.getElementById('place').value;
+                document.getElementById('somethingTemp').value = document.getElementById('something').value;
+                document.getElementById('imageTemp').value = $("#upload_img img").attr("data-original");
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "${base}/sev/tfback/saveOrUpdate",
+                    data: $('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function (request) {
+                        alert("Connection error");
+                    },
+                    success: function (data) {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+
+        function FileUpload() {
+            var filepath = $("#file").val();
+            var extStart = filepath.lastIndexOf(".");
+            var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+            if (ext != ".BMP" && ext != ".PNG" && ext != ".GIF" && ext != ".JPG" && ext != ".JPEG") {
+                layer.msg("图片限于bmp,png,gif,jpeg,jpg格式");
+                return false;
+
+            } else {
+                $.ajaxFileUpload({
+                    url: '${base}/sev/alarm/uploadPageLocal',// 用于文件上传的服务器端请求地址
+                    dataType: "json",
+                    secureuri: false,// 一般设置为false
+                    fileElementId: 'file',// 文件上传空间的id属性
+                    error: function (data) {
+                        alert("请选择文件上传");
+                    },
+                    success: function (data) {
+                        $("#imagePath").val(data.data);
+                        $(".m-text-textarea.dpi").empty();
+                        var ddiv = "<img data-original='/hydata/Tffk/" + data.data + "' src='/hydata/Tffk/" + data.data + "' style ='height:99px;cursor:pointer;)'/>";
+                        $(".m-text-textarea.dpi").append(ddiv);
+                        var viewer = new Viewer(document.getElementById('upload_img'), {
+                            url: 'data-original',
+                            show: function () {
+                                viewer.update();
+                            }
+                        });
+                        ach();
+                    }
+                });
+            }
+
+        }
+
+        function ach() {
+            $("#imgClick").click(function () {
+                var imagePathT = $(this).attr("src");
+                window.open(imagePathT);
+            });
+            /*限制字数*/
+            $("#limitWord").keyup(function () {
+                var test = $("#limitWord").val();
+                $('textArea.channelContentSel').each(function () {
+                    if ($(this).attr('name') == "channel_subway" || $(this).attr('name') == "channel_traffic") {
+
+                    } else {
+                        $(this).val(test);
+                    }
+
+
+                });
+                var curLength = $("#limitWord").val().length;
+                if (curLength >= 600) {
+                    var num = $("#limitWord").val().substr(0, 600);
+                    $("#limitWord").val(num);
+                    $("#textCount").text(0);
+                    //$(".channelContentSel").val(num);
+                } else {
+                    $("#textCount").text(600 - $("#limitWord").val().length);
+                    var num = $("#limitWord").val();
+                    //$(".channelContentSel").val(num);
+                }
+                $('textArea.channelContentSel').trigger("keyup");
+            });
+        }
+
+
+    </script>
+
+</head>
+<body>
+<!--弹窗开始-->
+<div class="m-poplayer">
+    <div class="popup_con"></div>
+</div>
+<!--弹窗结束-->
+<form id="f">
+    <input id="idTemp" name="id" type="hidden"/>
+    <input id="placeTemp" name="place" type="hidden"/>
+    <input id="somethingTemp" name="something" type="hidden"/>
+    <input id="imageTemp" name="imagePath" type="hidden"/>
+</form>
+
+<!--新增弹窗 -->
+<div id="newDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>突发反馈添加</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">地点</td>
+                <td><input type="text" id="place" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">事件</td>
+                <td><input type="text" id="something" value=""></td>
+            </tr>
+        </table>
+        <div class="m-button">
+            <a href="javascript:;" class="file" style="top:13px;">上传图片
+                <input type="file" name="file" id="file" onChange="FileUpload()">
+            </a>
+        </div>
+        <div class="m-text-textarea dpi" id="upload_img" style="width:100%;height: 150px;"><h3>未上传</h3></div>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isAdd()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!--修改弹窗 -->
+
+<div id="updateDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>突发反馈查看</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">地点</td>
+                <td><input type="text" id="place2" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">事件</td>
+                <td><input type="text" id="something2" value=""></td>
+            </tr>
+        </table>
+    ##        <div class="m-button">
+    ##            <a href="javascript:;" class="file" style="top:13px;">上传图片
+    ##                <input type="file" name="file" id="file" onChange="FileUpload()">
+    ##            </a>
+    ##        </div>
+        <div class="m-text-textarea dpi" id="upload_img2" style="width:100%;height: 150px;"></div>
+        <div>
+            <ul>
+                <li>
+                    <button class="abandon">关闭</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div id="updateDiv2" class="m-popup">
+    <div class="popup_hd">
+        <span>突发反馈修改</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">地点</td>
+                <td><input type="text" id="place3" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">事件</td>
+                <td><input type="text" id="something3" value=""></td>
+            </tr>
+        </table>
+        <div class="m-button">
+            <a href="javascript:;" class="file" style="top:13px;">上传图片
+                <input type="file" name="file" id="file" onChange="FileUpload()">
+            </a>
+        </div>
+        <div class="m-text-textarea dpi" id="upload_img3" style="width:100%;height: 150px;"><h3>未上传</h3></div>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isUpdate()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+<div class="m-table">
+    <table>
+        <thead>
+        <td>反馈者</td>
+        <td>地点</td>
+        <td>事件</td>
+        ##        <td>图片</td>
+        <td>反馈时间</td>
+        <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+
+            #set($list = $!{page.get("list")})##
+            #foreach($Tffk in $list)##
+            <tr value='$!{Tffk.get("id")}'>
+                <td>$!{Tffk.get("userName")}</td>
+                <td>$!{Tffk.get("place")}</td>
+                <td>$!{Tffk.get("something")}</td>
+            ##                <td><img src="$!{Tffk.get("imagePath")}" style="height: 30px;width: 30px;"></td>
+                <td>$!{Tffk.get("createDate")}</td>
+                <td>
+                    <button onclick="look($!{Tffk.get("id")})">查看</button>
+                    #if($!{power} != 2)
+                        <button onclick="edit2($!{Tffk.get("id")})">修改</button>
+                        <button class="details btn-delete" onclick="del($!{Tffk.get("id")})">删除</button>
+                    #end
+                </td>
+            </tr>
+            #end##
+        </tbody>
+    </table>
+    #parse("commons/pagerTemplate.vm")
+
+
+</div>
+<!--js开始-->
+
+##<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/static2/js/lib/openLayers.js"></script>
+##<!-- 引用滚动条插件 -->
+##<script type="text/javascript" src="/static/js/lib/jquery-niceScroll.js"></script>
+##<script type="text/javascript" src="/static/js/public.js"></script>
+##<script type="text/javascript" src="/static/js/publishApplication.js"></script>
+##<script type="text/javascript" src="/static/js/application.js"></script>
+<script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+
+<script type="text/javascript" src="/static/js/lib/viewer/viewer.min.js"></script>
+##
+##<!--js结束-->
+##
+##<script type="text/javascript" src="${base}/static/libs/sea.js"></script>
+##
+##<script type="text/javascript" src="${base}/static/js/js/lib/template.js"></script>
+##<script type="text/javascript" src="${base}/static/js/fillInTheApplication.js"></script>
+##<script type="text/javascript" src="${base}/static/components/head/head.js"></script>
+##<script type="text/javascript" src="${base}/static/components/tabs/tabs.js"></script>
+##<script type="text/javascript" src="${base}/static/components/map/tools.js"></script>
+##<script type="text/javascript" src="${base}/static/libs/gigis.js"></script>
+<script type="text/javascript" src="${base}/static/js/layer/layer.js"></script>
+##<script type="text/javascript" src="${base}/static/libs/gigis/gi-gis.js"></script>
+
+</body>
+</html>

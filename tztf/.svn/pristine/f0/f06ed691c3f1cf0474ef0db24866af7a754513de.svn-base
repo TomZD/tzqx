@@ -1,0 +1,182 @@
+span.lon-lat,input.lon-lat {
+    font-size: 12px;
+    text-align: left;
+    margin-left: 10px;
+}
+
+span.lon-lat{
+    width:auto;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 0px;
+    margin-top: 15px;
+    background: #e0e0e0;
+    padding: 0px 5px;
+}
+
+.blue-btn {
+    background: #4285f4;
+    border: 0px;
+    border-radius: 3px;
+    padding: 6px;
+    cursor: pointer;
+    color: #FFF;
+    height:30px;
+    font-size:13px;
+    font-family:"SimSun","serif";
+    margin-top:10px;
+    margin-right:30px;
+}
+.blue-btn:hover{
+    filter:alpha(opacity=70); /*IE婊ら暅锛岄�忔槑搴�50%*/
+-moz-opacity:0.7; /*Firefox绉佹湁锛岄�忔槑搴�50%*/
+ -khtml-opacity:0.7;/* 鑰佺増Safari */
+opacity:0.7;/*鍏朵粬锛岄�忔槑搴�50%*/
+
+}
+.map-wrapper {
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display:none;
+    top:-20px;
+    left:0;
+    z-index:999;
+}
+.m-map{
+    width:96%;
+    height:90%;
+    margin:3% auto;
+}
+#map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border:2px solid #3f99c1;
+}
+.gemoDiv{
+    position:absolute;
+    z-index:999;
+    width:100%;
+}
+.mapclosebtn{
+    float:right;
+    width:36px;
+    height:36px;
+    border-left:2px solid #3f99c1;
+    border-bottom:2px solid #3f99c1;
+    border-top:0px;
+    border-right:0px;
+    background:url(../image/closebtn.png) no-repeat center rgba(255,255,255,0.8);
+    cursor:pointer;
+}
+.mapclosebtn:hover{
+    filter:alpha(opacity=70); /*IE婊ら暅锛岄�忔槑搴�50%*/
+    -moz-opacity:0.7; /*Firefox绉佹湁锛岄�忔槑搴�50%*/
+     -khtml-opacity:0.7;/* 鑰佺増Safari */
+    opacity:0.7;/*鍏朵粬锛岄�忔槑搴�50%*/
+}
+.areamaptool{
+    margin: 10px;
+    border: 1px solid #cbcbc8;
+    background: rgba(255,255,255,0.9);
+    border-radius: 3px;
+    padding: 5px;
+    display: inline-block; 
+}
+.fbcontent{
+    height:120px;
+}
+
+.fbContent-selected{
+    color: #fff;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#6297b4), to(#6297b4)) !important;
+ }
+ .checkbox-wrapper-selector{
+ width:90%
+ }
+.no-wrap{
+    width: 10%;
+    float: left;
+}
+
+.no-wrap2{
+    min-width:115px;
+    width:10%;
+    float:left;
+}
+
+.channelContentSel{
+    height:110px;
+}
+
+.channelContentSel-selected{
+    color: #fff;
+    background-color:rgb(33, 100, 232) !important
+ }
+ 
+ .left-header{
+    width:80px;
+    height:40px;
+    float:left;
+ }
+ 
+ textarea{
+    padding:0px;
+ }
+ 
+.head{
+    width:80px;
+    vertical-align: top;
+    color:#315a7b;
+    text-align:right;
+    padding-top: 15px;
+}
+
+span.icon-remove-sign{
+    cursor:pointer;
+    margin-left: 5px;
+}
+
+#event_type{
+    max-width: 191px;
+}
+.btngetarea,#btnPolygen{
+    background:#465a75;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: "SimSun","serif";
+    cursor:pointer;
+}
+/*
+#btnPolygen{
+    padding: 2px;
+    height: 20px;
+    float:left;
+    margin-right:10px;
+}
+*/
+.btngetarea{
+    padding: 2px 10px;
+    color: #fff;
+    height:24px;
+    border:0px;
+}
+.btngetarea:hover,#btnPolygen:hover{
+    filter:alpha(opacity=70); /*IE婊ら暅锛岄�忔槑搴�50%*/
+    -moz-opacity:0.7; /*Firefox绉佹湁锛岄�忔槑搴�50%*/
+     -khtml-opacity:0.7;/* 鑰佺増Safari */
+    opacity:0.7;/*鍏朵粬锛岄�忔槑搴�50%*/
+}
+
+.mapwidth2{
+    width:86%;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    top:20px;
+    left:2%;
+}
+
+.input-hide{
+    display: none !important;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>杭州市突发事件预警渠道状态监控</title>
+	<link rel="stylesheet" href="./static2/css/basic.css">
+	<link rel="stylesheet" href="./static2/css/global.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/gi-gis.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/publish_status.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/channel_media.css">
+	<link rel="stylesheet" type="text/css" href="static2/js/lib/swiper/swiper.min.css">
+	<style>
+		.table_tb td{
+			white-space: nowrap;
+		}
+		.warn_content div.m-content{
+			padding:0;
+			    text-align: center;
+		}
+	</style>
+</head>
+<body>
+<input type = "hidden" id="dxMonth" name = "" value="$!dxMonth">
+<input type = "hidden" id="dxYear" name = "" value="$!dxYear">
+	<!--head开始-->
+	<div class="g-hd">
+		<ul class="m-hd">
+			<li class="m-notes">杭州市本年共计发布<span>${alarmYear}</span>条预警信息</li>
+			<li>
+				<i></i>
+				<h2>杭州市突发事件预警渠道状态监控</h2>
+			</li>
+			<li class="m-notes hd_time"></li>
+		</ul>
+		<div class="hd_sh"></div>
+	</div>
+	<!--head结束-->
+	<!--内容开始-->
+	<div class="g-bd">
+		<div class="page_left">
+			<div class="m-title">
+				<span>正在发布</span>
+				<div>$!{alarm.pubNo}$!{alarm.alarmTypeName}预警</div>
+			</div>
+			<div  class="warn_content">
+				<table>
+					<tr>
+						<td class="m-warning">
+							<img src="$!{image}" alt="">
+							<span>$!{alarm.title}</span>
+						</td>
+						<td rowspan="3" class="map_box">
+							<div class="m-map" id="map"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>发布时间</span>
+							<div class="m-content">$!date.format('yyyy/MM/dd  ',$!{alarm.pubDate})</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>发布时效</span>
+							<div class="m-content">$!{alarm.duration}小时</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<span>发布内容</span>
+							<div class="m-content last">$!{alarm.content}</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="warn_list">
+				<table class="th">
+					<colgroup>
+						<col span="4" style="width:25%">
+					</colgroup>
+					<tr>
+						<td>渠道</td>
+						<td>时间</td>
+						<td>状态</td>
+						<td>进度</td>
+					</tr>
+				</table>
+				<div class="table_tb">
+					<table class="tb">
+						<colgroup>
+							<col span="4" style="width:25%">
+						</colgroup>
+						
+						#foreach($!apiParam in $!data)
+						<tr>
+							<td>$!apiParam.channel</td>
+							<td>$!apiParam.update</td>
+							
+							#if($!apiParam.releaseState =="0" )
+							<td>未递交</td>
+							<td class="m-schedule">
+								<span>0%</span>
+								<div>
+									<i></i>
+								</div>
+							</td>
+                         
+                        #elseif($!apiParam.releaseState =="1")
+                        <td>递交中</td>
+							<td class="m-schedule">
+								<span>0%</span>
+								<div>
+									<i></i>
+								</div>
+							</td>
+                        
+                        #elseif($!apiParam.releaseState =="2")
+                        <td>递交完成</td>
+							<td class="m-schedule">
+								<span>80%</span>
+								<div>
+									<i></i>
+								</div>
+							</td>
+                          
+                        #elseif($!apiParam.releaseState =="3")
+                        <td>递交失败</td>
+							<td class="m-schedule">
+								<span>0%</span>
+								<div>
+									<i></i>
+								</div>
+							</td>
+                          
+                        #elseif($!apiParam.releaseState =="4")
+                        <td>反馈完成</td>
+							<td class="m-schedule">
+								<span>100%</span>
+								<div>
+									<i></i>
+								</div>
+							</td>
+        		        	
+        			       
+        		        #end
+							
+						</tr>
+						
+						#end
+						
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="page_right">
+			<!-- 访问量开始 -->
+			<div class="m-volume">
+				<div class="m-title">
+					<span>公众预警发布渠道访问量</span>
+					<div>
+						当前总计访问量
+						<div class="m-num">$!countAll</div>
+					</div>
+				</div>
+				<div class="m-volume-chart">
+					<div class="m-chart-left">
+						<ul>
+							<li>人次</li>
+							<li class="right">当前共计<div>$!countAllWeb</div>人次</li>
+						</ul>
+						<div class="m-chart" id="live_chart"></div>
+					</div>
+					<div class="m-chart-right">
+						<span>历史总计</span>
+						<ul>
+						#foreach($!dxAll in $!dxAll)
+						<li>$dxAll</li>
+						#end
+							
+						</ul>
+						<div class="m-chart" id="peace_chart"></div>
+					</div>
+				</div>
+				<div class="m-volume-details">
+					<table>
+					#foreach($!count in $!count)
+					<tr>
+							<td><span>$!count.name</span></td>
+							<td><span>当前：$!count.now</span></td>
+							<td><span>当月：$!count.month</span></td>
+							<td><span>当年：$!count.year</span></td>
+						</tr>
+						#end
+					
+						#*<tr>
+							<td><span>led大屏</span></td>
+							<td><span>当前：2万</span></td>
+							<td><span>当月：2万</span></td>
+							<td><span>当年：2万</span></td>
+						</tr>
+						<tr>
+							<td><span>led大屏</span></td>
+							<td><span>当前：2万</span></td>
+							<td><span>当月：2万</span></td>
+							<td><span>当年：2万</span></td>
+						</tr>*#
+					</table>
+				</div>
+			</div>
+			<!-- 访问量结束 -->
+			<div class="m-feedback">
+				<div class="m-title">
+					<span>预警反馈信息</span>
+				</div>
+				<div class="swiper-container feedback-img">
+					<ul class="swiper-wrapper">
+					#foreach($!dis in $!allDisaster)
+						<li class="swiper-slide">
+							<div class="m-img-notes">
+								$!dis.address
+								<span>$!dis.time</span>
+							</div>
+							<img src="/disaUpload/$!dis.imagePath">
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--内容结束-->
+	<!--js开始-->
+	<script type="text/javascript" src="./static2/js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/echarts.min.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/echarts-tooltip-carousel.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/scroll.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/d3.min.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/swiper/swiper.min.js"></script>
+	<script type="text/javascript" src="./static2/js/public.js"></script>
+	<script type="text/javascript" src="./static2/js/publish_status.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/layer/layer.js"></script>
+</body>
+</html>

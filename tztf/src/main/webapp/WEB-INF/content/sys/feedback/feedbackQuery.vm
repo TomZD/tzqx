@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>信息反馈查询</title>
+    <meta charset="UTF-8">
+    #parse("commons/commonJs.vm")
+    #parse("commons/commonCss.vm")
+    #parse("commons/commonRes.vm")
+
+    <!-- START 历史预警资源 -->
+    <!-- 样式 -->
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/historyQuery.css">
+    <!-- JS -->
+    <script type="text/javascript" src="${base}/static/js/historyQuery.js"></script>
+    <script type="text/javascript" src="${base}/static/js/public.js"></script>
+    <script type="text/javascript" src="${base}/static/js/layer/layer.js"></script>
+    <script type="text/javascript" src="${base}/static/js/lib/My97DatePicker/WdatePicker.js"></script>
+    <!-- END 历史预警资源 -->
+    <script type="text/javascript">
+
+        /*
+        // 加载历史预警数据
+        $(function () {
+            $('#dg').datagrid({
+                url: '../alarm/queryPaged',
+                columns: [[
+                    {field: 'id', checkbox: true}
+                    , {field: 'pubNo', title: '编号', width: 50}
+                    , {field: 'typeStr', title: '类型', width: 30}
+                    , {field: 'levelStr', title: '等级', width: 30}
+                    , {field: 'deptId', title: '上报部门', width: 30}
+                    //, {field: 'title', title: '预警标题', width: 150}
+                    , {field: 'content', title: '发布内容', width: 150}
+                    , {field: 'durationStr', title: '发布时效', width: 30}
+                    , {field: 'pubRangeName', title: '发布范围', width: 70}
+                    , {field: 'pubDate', title: '发布时间', width: 50}
+                    , {field: 'pubStateStr', title: '发布状态', width: 50}
+                    , {field: 'areaId', title: '区域选择', width: 50}
+                ]],
+                pagination: true,
+                singleSelect: false,
+                fitColumns: true,
+                fit: true,
+                toolbar: '#toolbar',
+                onDblClickRow: function (rowid, rowdata) {
+                    editForm();
+                }
+            });
+        });
+
+        function optionFun(value, row, index) {
+            return "";
+        }
+
+        // 新增
+        function newForm() {
+            Magic.openWin('新增预警', 'alarm/add', 600, 400);
+        }
+
+        // 编辑
+        function editForm() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                Magic.openWin('编辑预警', 'alarm/edit/' + row.id, 600, 400);
+            }
+        }
+
+        // 删除
+        function destroyForm() {
+            var rows = $('#dg').datagrid('getSelections');
+            if (rows.length > 0) {
+                $.messager.confirm('确认删除', '确定删除该记录?', function (r) {
+                    if (r) {
+                        var ids = [];
+                        $.each(rows, function (index, row) {
+                            ids.push(row.id);
+                        });
+                        $.post('alarm/delete', {'ids': ids.toString()}, function (result) {
+                            if (result.success) {
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.show({    // show error message
+                                    title: '错误',
+                                    msg: result.message
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        */
+        $(function () {
+            getdateTime();
+        })
+
+        // 搜索
+        function contentSearch() {
+        #*
+        var type = $('#filter_type').val();
+        $('#dg').datagrid('load', {
+            'type': type
+        });
+        *#
+            var form = document.getElementById('search_form');
+
+            var time1 = $('#startDate').val();
+            var time2 = $('#endDate').val();
+
+            var t1 = new Date(time1);
+            var t2 = new Date(time2);
+            var type = $('#select-state option:selected').val();
+            console.log(type);
+            if (time1 && time2 && t2 < t1) {// 结束时间小于开始时间
+                $.showWarning("开始时间不能大于结束时间");
+            } else {
+                localStorage.setItem("t1", time1);
+                localStorage.setItem("t2", time2);
+                localStorage.setItem("type", type);
+                form.action = "../feedback/feedbackData";
+                form.target = "dataFrame";
+                form.submit();
+            }
+
+            $('#startDate').val(time1);
+            $('#endDate').val(time2);
+        }
+
+        // 页面跳转
+        function paginate(currentPage, pageSize) {
+            $('#currentPage').val(currentPage);
+            $('#pageSize').val(pageSize);
+            contentSearch();
+        }
+
+        function getdateTime() {
+            var time1s = localStorage.getItem("t1");
+            var time2s = localStorage.getItem("t2");
+            var type = localStorage.getItem("type", type);
+            $('#startDate').val(time1s);
+            $('#endDate').val(time2s);
+            $('#select-state').val(type);
+            localStorage.clear();
+        }
+
+    </script>
+    <style>
+        #frameData {
+            width: 100%;
+            height: calc(100% - 65px);
+        }
+
+        body {
+            min-height: 600px;
+            padding: 0;
+            box-sizing: inherit;
+        }
+    </style>
+</head>
+<body>
+<!--弹窗开始-->
+<div class="m-popup">
+    <div class="popup_hd">
+        <span>发布进度详情</span>
+    </div>
+    <div class="popup_bd">
+        <div class="checkbox_bd">
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="需要发送">
+                <i class="checkbox on_check"></i>
+                <span>需要发送</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="已递交">
+                <i class="checkbox"></i>
+                <span>已递交</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="已发出">
+                <i class="checkbox"></i>
+                <span>已发出</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="已确认">
+                <i class="checkbox"></i>
+                <span>已确认</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="已完成">
+                <i class="checkbox"></i>
+                <span>已完成</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="出错">
+                <i class="checkbox"></i>
+                <span>出错</span>
+            </div>
+            <div class="m-checkbox">
+                <input name="range" type="checkbox" class="radioclass" value="完成">
+                <i class="checkbox"></i>
+                <span>完成</span>
+            </div>
+        </div>
+        <!--标题-->
+        <h3>突发事件信息表</h3>
+
+        <!--highchart表-->
+        <div id="information"></div>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--弹窗结束-->
+
+<div class="g-bd-cont">
+    <!-- 查询条件栏开始 -->
+    <div class="m-tool">
+        <form action="../feedback/feedbackQuery" method="post" id="search_form" name="search_form">
+            <input type="hidden" id="currentPage" name="page" value="$!{currentPage}"/>
+            <input type="hidden" id="pageSize" name="rows" value="$!{pageSize}"/>
+            <ul>
+                <li>单位：</li>
+                <li>
+                #*<select name="searchCondition['deptId']">*#
+                    <select name="deptId">
+                        #if($!depart.deptType == "2"||$!depart.deptType == "4")
+                            <option value="">不限制</option>
+                            #foreach($dept in $depts)
+                                <option value="$!{dept.id}">$!{dept.name}</option>
+                            #end
+                        #else
+                            <option value="$!depart.id">$!depart.name</option>
+                        #end
+                    </select>
+                </li>
+            ##						<li>事件状态</li>
+            ##						<li>
+            ##							#*<select name="searchCondition['pubState']">*#
+            ##							<select name="pubState" id="select-state">
+            ##								<option value="">不限制</option>
+            ##								#foreach($pubState in $pubStates)
+            ##									<option value="$!{pubState.value}">$!{pubState.content}</option>
+            ##								#end
+            ##							</select>
+            ##						</li>
+                <li>类型级别</li>
+                <li>
+                #*<select name="searchCondition['areaId']">*#
+                    <select name="alarmTypeName">
+##                        <option value="">不限制</option>
+                        #foreach($type in $types)
+                            <option value="$!{type}">$!{type}</option>
+                        #end
+                    </select>
+                </li>
+            #*<li>开始时间</li>*#
+                <li>发布时间</li>
+                <li>
+                    <input class="inputTimepick m-text-input Wdate" type="text" id="startDate" name="startDate"
+                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})">
+                </li>
+                <li>至</li>
+                <li>
+                    <input class="inputTimepick m-text-input Wdate" type="text" id="endDate" name="endDate"
+                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})">
+                </li>
+
+                <li>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true"
+                       onclick="contentSearch()">搜索</a>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <!-- 查询条件栏结束 -->
+
+    <!-- START 数据列表 -->
+    <iframe id="frameData" name="dataFrame" src="../feedback/feedbackData" scrolling="no" border="0" frameborder="no"
+            allowTransparency="true"></iframe>
+    <!-- END 数据列表 -->
+</div>
+</body>
+</html>

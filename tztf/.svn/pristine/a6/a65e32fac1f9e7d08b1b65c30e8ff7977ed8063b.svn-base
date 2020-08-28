@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>修改密码</title>
+#parse("commons/commonJs.vm")
+#parse("commons/commonCss.vm")
+<script type="text/javascript">
+	function save(){            
+		jQuery('#fm').form('submit',{                
+			url: '${base}/sys/user/savePwd',
+			onSubmit: function(){
+				return jQuery(this).form('validate');
+			},
+			success: function(result){
+				result = jQuery.parseJSON(result);
+				if(!result.success){
+                    $('#error-div').html(result.message);
+					$('#error-div').show();
+				} else {
+                    Magic.closeWin();
+                    window.parent.jQuery.messager.show({title: '成功', msg: '密码修改成功!' });
+                }
+			}         
+		});     
+	}
+	$(function() {
+        $.extend($.fn.validatebox.defaults.rules, {
+            equals: {
+                validator: function(value,param){
+                    return value == $(param[0]).val();
+                },
+                message: '与新输入的密码不一致!'
+            }
+        });
+	});
+</script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center',border:false" style="padding: 10px 60px 20px 60px;background:#fff;border:1px solid #ccc;">
+      <div id="error-div" style="height: 20px;background-color: #ffa8a8;display: none;padding: 4px"></div>
+		 <form id="fm" method="post">
+			<input type="hidden" name="userId" value="$!{model.userId}">
+			<table width="100%" cellpadding="5">
+    			<tr>
+					<td align="left">
+    			 		原始密码
+    			 	</td>
+    			 	<td>
+						<input id="oldPwd" name="oldPwd" type="password" class="easyui-textbox" data-options="required:true">
+    			 	</td>
+    			 </tr>
+    			<tr>
+					<td align="left">
+    			 		新密码
+    			 	</td>
+    			 	<td>
+						<input id="pwd" name="pwd" type="password" class="easyui-textbox" value="$!{model.name}" data-options="required:true">
+    			 	</td>
+    			 </tr>
+                <tr>
+                    <td align="left">
+                        重新输入新密码
+                    </td>
+                    <td>
+                        <input id="rePwd" name="rePwd" type="password" class="easyui-textbox" value="$!{model.name}" required="required" validType="equals['#pwd']">
+                    </td>
+                </tr>
+         	</table>
+	</form>
+	</div>
+        <div region="south" border="false" style="text-align: right; height: 30px;padding-top:3px;padding-right:10px">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="Magic.closeWin()">取消</a>
+        </div>
+</body>
+</html>

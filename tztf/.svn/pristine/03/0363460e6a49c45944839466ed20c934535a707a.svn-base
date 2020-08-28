@@ -1,0 +1,33 @@
+html,body{
+	width:100%;
+	height:100%;
+	background:#f5f4f9;
+}
+.g-page{
+	width: 100%;
+	height: 100%;	
+}
+.m-title{
+	position:relative;
+}
+.m-title>img{
+	width:100%;
+	height:100%;
+}
+.forecast-title{
+	width: 100%;
+	height:0.5333rem;
+	line-height:0.5333rem;
+	background:rgba(0,0,0,0.5);
+	position: absolute;
+	bottom:6px;
+	color:#fff;
+	box-sizing: border-box;
+	padding-left:0.2667rem;
+}
+.m-detail{
+	background:#fff;
+	padding:0.2667rem;
+	padding-top: 0.1333rem;
+	box-sizing: border-box;
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>短信组人员管理</title>
+<meta charset="UTF-8">
+#parse("commons/commonJs.vm") #parse("commons/commonCss.vm")
+#parse("commons/commonRes.vm")
+<link rel="stylesheet" href="${base}/static/css/basic.css">
+<link rel="stylesheet" href="${base}/static/css/global.css">
+<link rel="stylesheet" href="${base}/static/css/companyManagement.css">
+<link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css">
+<script type="text/javascript" src="${base}/static/js/ajaxfileupload.js"></script>
+
+<script type="text/javascript">
+		
+		     /*导入数据*/
+		function importPeople(){
+			var FormDatas=new FormData($("#form-article-add")[0]);
+			var fileName=$("#file").val();
+			if(fileName == '') {
+		          layer.msg('请选择文件！'); 
+		          return false;
+		      }
+			//验证文件格式
+		       var fileType = (fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length)).toLowerCase();
+			if (fileType != 'xls') {
+				    layer.msg('文件格式不正确！');
+				return false;
+			} 
+			$.ajax({
+				type:"post",
+				url:"${base}/sys/people/importPeople?descId="+"$!{descId}",
+				async : false,
+				cache : false,
+				contentType : false,
+				processData : false,
+				data:FormDatas,
+				success: function(data){
+					if(data == ""){
+						window.location.reload();
+					}else{
+				        alert(data);
+						window.location.reload();
+					}
+				},
+				error : function(data){
+					alert("文件内容格式错误！");
+				}
+			});
+		}
+		
+		 function FileUpload() {
+        var filepath = $("#file").val();
+        var extStart=filepath.lastIndexOf(".");
+        var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+        if(ext!=".XLS"){
+            $(".m-poplayer").fadeIn(200);
+            _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    //              + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>格式不正确</span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+            setTimeout(function () {
+                $(".m-poplayer").fadeOut(200);
+            }, 1000);
+            return false;
+        }else{
+            $.ajaxFileUpload({
+                url : "${base}/sys/people/importPeople?descId="+"$!{descId}",// 用于文件上传的服务器端请求地址
+                dataType : "json",
+                secureuri : false,// 一般设置为false
+                fileElementId : 'file',// 文件上传空间的id属性
+                error : function(data) {
+                    alert("文件格式不正确");
+                },
+                success : function(data) {
+                    if(data == ""){
+						window.location.reload();
+					}else{
+				        alert(data);
+						window.location.reload();
+					}
+                }
+            });
+        }
+    }
+		
+		
+			
+			// 搜索
+			function contentSearch() {
+				
+				var form = document.getElementById('search_form');
+				var user_name = $('#user_name').val();
+				form.action = "${base}/sys/people/peopleData?id=$!{descId}";
+			    form.target = "dataFrame";
+			    form.submit();
+			}
+			
+			//重置
+			function clearSerch(){
+				$('#user_name').val('');
+				contentSearch();
+			}
+			
+			// 页面跳转
+			function paginate(currentPage, pageSize){
+                $('#currentPage').val(currentPage);
+                $('#pageSize').val(pageSize);
+                contentSearch();
+            }
+            
+            //新增
+		  	function newForm(){
+		  		 dataFrame.window.addNew();
+			}
+			
+			
+			//删除
+		  	function deleteMenu(id){
+		  		 document.getElementById("id").value = id;
+		  		 var form = document.getElementById("f");
+		  		 form.action = "${base}/sys/people/deletePeople"
+		  		 form.method = "post";
+		  		 form.submit();
+			}
+			
+			function importData() {
+			    $("#dataDiv").show();
+			}
+			function exportData() {
+            	window.location.href="${base}/sys/people/exportPeople?descId="+"$!{descId}";
+        	}
+		$(function(){
+			$("iframe").height($(".g-bd-cont").height() - $(".m-tool").height() - $(".m-table ul").height());
+		});	
+		</script>
+<style>
+#frameData {
+	width: 100%;
+	height: 100%;
+}
+
+#name, #menuType {
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	<div id="dataDiv" class="m-popup">
+	<div class="popup_hd">
+			<span>数据导入</span>
+		</div>
+		<div>
+		        <tr>
+					<td align="left">
+    			 		数据上传
+    			 	</td>
+    			 	<td>
+                        <input type="file" name="file" id="file">
+                        <div class="m-text-textarea dpi" style="width:92%"></div>
+                    </td>
+    			 </tr>
+         </div>
+         <div >
+					<button onClick="FileUpload();" class="m-event-button"
+						type="button">导入数据</button>
+					<button class="abandon">取消</button>
+				</div>
+	</div>
+
+	<div class="g-bd-cont">
+		<!-- 查询条件栏开始 -->
+		<div class="m-tool">
+			<form action="../alarm/historyQuery" method="post" id="search_form"
+				name="search_form">
+				<input type="hidden" id="currentPage" name="page"
+					value="$!{currentPage}" /> <input type="hidden" id="pageSize"
+					name="rows" value="$!{pageSize}" />
+				<ul>
+					<li>姓名：</li>
+					<li><input type="text" class="btn btn-link m-text-input"
+						style="position: relative; top: 12px;" name="user_name" id="user_name"
+						autocomplete="off" value=""></li>
+
+
+					<li><a href="javascript:void(0)" class="easyui-linkbutton"
+						iconCls="icon-search" plain="true" onclick="contentSearch()">搜索</a>
+					</li>
+					<li><a href="javascript:void(0)" class="easyui-linkbutton"
+						iconCls="icon-reload" plain="true" onclick="clearSerch()">重置</a></li>
+
+
+					<li><a href="javascript:void(0)" class="easyui-linkbutton"
+						iconCls="icon-add" plain="true" id="newForm" onclick="newForm()">添加</a>
+					</li> 
+					<li><a href="javascript:void(0)" class="easyui-linkbutton"
+						iconCls="icon-add" plain="true" id="importPeople"
+						onclick="importData()">导入</a></li>
+					<li><a href="javascript:void(0)" class="easyui-linkbutton"
+						iconCls="icon-redo" plain="true" id="importPeople"
+						onclick="exportData()">导出</a></li>  
+
+				</ul>
+			</form>
+		</div>
+		<!-- 查询条件栏结束 -->
+		<form id="f">
+			<input id="id" name="id" type="hidden" />
+		</form>
+
+		<!-- START 数据列表 -->
+		<iframe id="frameData" name="dataFrame"
+			src="${base}/sys/people/peopleData?id=$!{descId}" scrolling="no" border="0"
+			frameborder="no" allowTransparency="true"></iframe>
+		<!-- END 数据列表 -->
+	</div>
+</body>
+<script type="text/javascript">
+
+		$(".abandon").click(function() {
+			$("#dataDiv").hide();
+		})
+</script>	
+</html>

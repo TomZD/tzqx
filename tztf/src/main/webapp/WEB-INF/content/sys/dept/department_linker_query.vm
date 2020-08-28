@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>责任单位联系人</title>
+		<meta charset="UTF-8">
+		#parse("commons/commonJs.vm")
+		#parse("commons/commonCss.vm")
+		#parse("commons/commonRes.vm")
+		
+		<script type="text/javascript">
+			$(function(){
+				$("iframe").height($(".g-bd-cont").height() - $(".m-tool").height() - $(".m-table ul").height());
+			});
+			
+			// 搜索
+			function contentSearch() {
+				var form = document.getElementById('search_form');
+				form.action = "${base}/sys/dept/departmentLinkerData";
+			    form.target = "dataFrame";
+			    form.submit();
+			}
+			//重置
+            function clearSerch(){
+                $('#name').val('');
+                $('#linker').val('') ;
+                contentSearch();
+            }
+			// 页面跳转
+			function paginate(currentPage, pageSize){
+                $('#currentPage').val(currentPage);
+                $('#pageSize').val(pageSize);
+                contentSearch();
+            }
+			 //新增
+            function newForm(){
+                 dataFrame.window.addNew();
+            }
+            
+            //删除
+            function deleteDepartment(id){
+                 document.getElementById("id").value = id;
+                 var form = document.getElementById("f");
+                 form.action = "${base}/sys/dept/deleteDepartment"
+                 form.method = "post";
+                 form.submit();
+            }
+		</script>
+		
+		<style>
+			#frameData{
+				width:100%;
+				height:100%;
+			}
+        </style>
+	</head>
+	<body>
+		<div class="g-bd-cont">
+			<!-- 查询条件栏开始 -->
+			<div class="m-tool">
+				<form action="../alarm/historyQuery" method="post" id="search_form" name="search_form">
+					<input type="hidden" id="currentPage" name="page" value="$!{currentPage}"/>
+                    <input type="hidden" id="pageSize" name="rows" value="$!{pageSize}"/>
+				 	<ul>
+						<li>单位名称：</li>
+						<li>
+							<input type="text" class="btn btn-link m-text-input" style="position: relative;top: 12px;"  name="name" id="name" autocomplete="off" value="">
+						</li>
+						<li>联系人</li>
+						<li>
+							<input type="text" class="btn btn-link m-text-input" style="position: relative;top: 12px;"  name="linker" id="linker" autocomplete="off" value="">
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="contentSearch()">搜索</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="clearSerch()">重置</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">添加</a>
+						</li>
+					</ul> 
+				</form>
+			</div>
+			<!-- 查询条件栏结束 -->
+			<form id="f">
+				<input id="id" name="id" type="hidden"/>
+			</form>
+			
+			<!-- START 数据列表 -->
+			<iframe id="frameData" name="dataFrame" scrolling="no" border="0" frameborder="no" src="${base}/sys/dept/departmentLinkerData"  allowTransparency="true" ></iframe>
+			<!-- END 数据列表 -->
+		</div>
+	</body>
+</html>

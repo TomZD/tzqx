@@ -1,0 +1,62 @@
+@media screen and (max-width: 1400px){
+	.m-nav>ul>li{
+		padding: 6px 0;
+	}
+    .m-nav>ul>li span{
+        display: block;
+        font-size: 12px;
+        width: 24px;
+        margin: 0 auto;
+    }
+    .g-hd h2{
+    	font-size: 16px;
+
+    }
+    .m-nav>ul>li i{
+        height: 30px;
+        width: 30px;
+    }
+    .g-nav a em{
+    	width: 15px;
+    	height: 15px;
+    	top: 3px;
+    }
+    .m-live span{
+    	font-size: 12px;
+    }
+    .g-nav a{
+    	width: 110px;
+    }
+    .g-nav{
+    	width: 30%;
+    }
+    .g-hd .m-hd{
+    	padding:0 4%;
+    }
+    .olControlZoom{
+    	top: 125px!important;
+    	right: 50px!important;
+    }
+    .GiBaseLayerSwitcher{
+    	width: 70px !important;
+    	height: 70px !important;
+    }
+    .GiBaseLayerSwitcher .olButton{
+    	line-height: 70px!important;
+    	font-size: 18px;
+    }
+    .m-time-axis{
+    	width: calc(100% - 550px);
+    }
+    .m-legend{
+    	width: 250px;
+    }
+    .g-hd .m-hd i{
+    	height: 25px;
+    	width: 25px;
+    	top: 23px;
+    }
+    .popup_hd_bk{
+    	line-height: 35px;
+    }
+}

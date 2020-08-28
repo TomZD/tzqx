@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>单位管理</title>
+        <!-- <meta charset="UTF-8"> -->
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="author" content="grassinfo"/>
+        #parse("commons/commonJs.vm")
+        #parse("commons/commonCss.vm")
+        #parse("commons/commonRes.vm")
+        <link rel="stylesheet" href="${base}/static/css/basic.css">
+    	<link rel="stylesheet" href="${base}/static/css/global.css">
+    	
+    	<script type="text/javascript">
+    	    
+    	    //新增保存
+            function isAdd(){
+                var isOK = true;
+                //编号部分
+                var theCode = document.getElementById('ncode').value;
+                if(theCode == ""){
+                    isOK = false;
+                    alertBox("请输入编号！");
+                    return false;
+                }else if(theCode.length>20){
+                    isOK = false;
+                    alertBox("编号小于20字");
+                    return false;
+                }
+                //单位名称部分
+                var theName = document.getElementById('nname').value;
+                if(theName == ""){
+                    isOK = false;
+                    alertBox("请输入部门名称！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }else if(theName.length>20){
+                    isOK = false;
+                    alertBox("部门名称小于20字");
+                   // alert("部门名称小于20字");
+                    return false;
+                }
+                //单位地址部分
+                var theAddress = document.getElementById('naddress').value;
+                if(theAddress == ""){
+                    isOK = false;
+                    alertBox("请输入单位地址！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }else if(theAddress.length>40){
+                    isOK = false;
+                    alertBox("部门地址小于40字");
+                    //alert("部门地址小于40字");
+                    return false;
+                }
+                //联系人部分
+                var theLinker = document.getElementById('nlinker').value;
+                if(theLinker == ""){
+                    isOK = false;
+                    alertBox("请输入联系人！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }else if(theLinker.length>10){
+                    isOK = false;
+                    alertBox("联系人名字小于10字");
+                   // alert("联系人名字小于10字");
+                    return false;
+                }
+                
+              //电话部分
+                var thePhone = document.getElementById('nphone').value;
+                if(thePhone == ""){
+                    isOK = false;
+                    alertBox("请输入电话！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }
+                //else if(thePhone.length!=11){
+                   // isOK = false;
+                   // alertBox("电话应为11位");
+                  //  alert("电话应为11位");
+                  //  return false;
+                //}else if(isNaN(thePhone)){
+                  //   alertBox("电话不是纯数字");
+                 //   alert("电话不是纯数字");
+                //    return false;
+              //  }
+              //经度
+              var theLon = document.getElementById('nlon').value;
+                if(theLon == ""){
+                    isOK = false;
+                    alertBox("请输入经度！");
+                    return false;
+                }else if(theLon.length>180){
+                    isOK = false;
+                    alertBox("经度小于180字");
+                    return false;
+                }
+                //纬度
+               var theLat = document.getElementById('nlat').value;
+                if(theLat == ""){
+                    isOK = false;
+                    alertBox("请输入纬度！");
+                    return false;
+                }else if(theLat.length>90){
+                    isOK = false;
+                    alertBox("纬度小于90字");
+                    return false;
+                }
+                
+                if(isOK == true){
+                    document.getElementById('code').value = document.getElementById('ncode').value;
+                    document.getElementById('name').value = document.getElementById('nname').value;
+                    document.getElementById('address').value = document.getElementById('naddress').value;
+                    document.getElementById('linker').value = document.getElementById('nlinker').value;
+                    document.getElementById('phone').value = document.getElementById('nphone').value;
+                    document.getElementById('lon').value = document.getElementById('nlon').value;
+                    document.getElementById('lat').value = document.getElementById('nlat').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sev/led/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            alert("Connection error");
+                        },
+                        success: function(data) {
+                            parent.location.reload();
+                        }
+                    });
+                }
+            }
+			
+         
+        </script>
+      </head>  
+      <body>
+      
+      <!--修改弹窗 -->
+        <div id="newDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>单位管理添加</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">编号</td>
+                            <td><input type="text" id="ncode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位名称</td>
+                            <td><input type="text" id="nname" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位地址</td>
+                            <td><input type="text" id="naddress" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系人</td>
+                            <td><input type="text" id="nlinker" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系方式</td>
+                            <td><input type="text" id="nphone" value="" placeholder="如有多个手机号请用顿号(、)分开"></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">经度</td>
+                            <td><input type="text" id="nlon" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">纬度</td>
+                            <td><input type="text" id="nlat" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isAdd()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!--修改弹窗 -->
+        
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>单位管理修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">编号</td>
+                            <td><input type="text" id="ucode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位名称</td>
+                            <td><input type="text" id="uname" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位地址</td>
+                            <td><input type="text" id="uaddress" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系人</td>
+                            <td><input type="text" id="ulinker" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系方式</td>
+                            <td><input type="text" id="uphone" value="" placeholder="如有多个手机号请用顿号(、)分开"></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">经度</td>
+                            <td><input type="text" id="ulon" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">纬度</td>
+                            <td><input type="text" id="ulat" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+       </body> 

@@ -1,0 +1,205 @@
+﻿@charset "utf-8";
+/*左边样式*/
+.m-hm-left{
+	position: absolute;
+	left: 12px;
+	width: 250px;
+	background: none;
+	overflow: auto;
+	padding: 8px 10px 8px 8px;
+	top: 20px;
+}
+.m-hm-cont{
+	position: relative;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.12);
+}
+.m-hm-tit{
+	background: rgba(68,99,186,0.68);
+    line-height: 20px;
+    color: #fff;
+}
+.m-hm-list{
+	position: relative;
+	overflow: hidden;
+	border-bottom: 1px solid rgba(190, 190, 216, 0.2);
+}
+.tit_vertical{
+	position: absolute;
+	left: 0;
+	top: 0;
+	text-align: center;
+	height: 100%;
+	width: 25px;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 15px 0;
+}
+.tit_vertical span{
+	position: absolute;
+    top: 50%;
+    left: 0;
+    transform:translateY(-50%);
+	-ms-transform:translateY(-50%); 	/* IE 9 */
+	-moz-transform:translateY(-50%); 	/* Firefox */
+	-webkit-transform:translateY(-50%); /* Safari 和 Chrome */
+	-o-transform:translateY(-50%);
+}
+.m-hm-listbox{
+	padding: 5px 20px 5px 20px;
+}
+.m-hm-listbox ul li {
+	position: relative;
+    line-height: 40px;
+}
+.listbox_overflow{
+	height: 171px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.list-detail ul li{
+	line-height: 50px;
+}
+.listbox_right{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+table.m-table{
+	width: 100%;
+	border-collapse: collapse;
+}
+table.m-table td{
+	position: relative;
+	height:28px;
+	border:1px solid rgba(190, 190, 216, 0.2);
+	text-align: center;
+}
+table.m-table td.m-bias{
+	width: 58px;
+	height: 32px;
+}
+table.m-table td.m-bias:before{
+	content: "";
+	position: absolute;
+	width: 1px;
+	height:65px;
+	top:0;
+	left:0;
+	background-color: rgba(190, 190, 216, 0.2);
+	display: block;
+	transform: rotate(-64deg);
+	-webkit-transform: rotate(-64deg);
+	-o-transform: rotate(-64deg);
+	transform-origin: top;
+	-webkit-transform-origin: top;
+	-o-transform-origin: top;
+}
+/*右边样式*/
+.m-hm-right{
+	float: none;
+    margin-left: 242px;
+    width: auto;
+    padding: 10px;
+}
+.m-tool ul li{
+	margin: 0 15px 0 20px;
+}
+.m-btn{
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 3px;
+	margin-bottom: 5px;
+}
+.btn-detail{
+	background: #8095d0;
+}
+.btn-rt{
+	position: absolute;
+	right: 0;
+	top: -2px;
+}
+.tit_vertical+.m-hm-listbox{
+	margin-left: 25px;
+}
+.m-cont-lt{
+	float: left;
+	width: 49.5%;
+	    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.m-cont-rt{
+	float: right;
+	width: 49.5%;
+	    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.m-cont-box{
+	background: none;
+}
+/*日历警报*/
+.m-warningBtn{
+	position: absolute;
+	padding: 3px 0;
+    top: 70%;
+    left: 50%;
+    width: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 9999px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+}
+.calendar-month td span{
+	display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    line-height: 18px;
+}
+.warning-btn1{
+	background: #f81254;
+}
+.warning-btn2{
+	background: #ed6b26;
+}
+.warning-btn3{
+	background: #2f72f5;
+}
+.warning-btn4{
+	background: #2f72f5;
+}
+
+/*日历样式*/
+.calendar-month{
+   height: 433px;
+}
+.list-detail li span{
+	display: block;
+    max-width: calc(100% - 62px);
+    line-height: 24px;
+}
+.list-detail li{
+	    margin: 12px 0 12px 0;
+}
+.listbox_overflow ul li{
+	line-height: 32px;
+}
+.calendar-month .m-table {
+    margin: 30px auto 0;
+    width: 478px;
+}
+.m-calendar .m-table tbody td{
+	position: relative;
+	padding: 10px 0;
+	width: 14%;
+	cursor: pointer;
+	height: 40px;
+	vertical-align: top;
+	box-sizing: content-box;
+}
+.clearfix{
+	box-shadow: none;
+}
+.m-hm-cont:last-child{
+	margin-bottom: 0;
+}

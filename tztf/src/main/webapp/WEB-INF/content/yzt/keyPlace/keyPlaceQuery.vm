@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>重点场所管理</title>
+		<meta charset="UTF-8">
+		#parse("commons/commonJs.vm")
+		#parse("commons/commonCss.vm")
+		#parse("commons/commonRes.vm")
+		<link rel="stylesheet" href="${base}/static/css/basic.css">
+	    <link rel="stylesheet" href="${base}/static/css/global.css">
+	    <link rel="stylesheet" href="${base}/static/css/companyManagement.css">
+		<link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+		<script type="text/javascript" src="${base}/static/js/ajaxfileupload.js"></script>
+		<style type="text/css">
+			.m-event-button{
+				margin: 0 auto;
+				margin-left: 10px;
+
+			}
+			#box{
+				width: 50%;
+				height: 50%;
+				margin-left: 70px;
+				margin-top: 30px;
+			}
+		</style>
+		<script type="text/javascript">
+			
+			// 搜索
+			function contentSearch() {
+				var form = document.getElementById('search_form');
+				var name = $('#name').val();
+				form.action = "${base}/yzt/keyPlace/keyPlaceData?typeId="+$!{typeId};
+			    form.target = "dataFrame";
+			    form.submit();
+			}
+
+			//回车搜索
+			function keyLogin(){
+				if (event.keyCode==13)  //回车键的键值为13
+					document.getElementById("Searchcontent").click(); //调用登录按钮的登录事件
+			}
+			
+			//重置
+			function clearSerch(){
+				$('#name').val('');
+				contentSearch();
+			}
+			
+			// 页面跳转
+			function paginate(currentPage, pageSize){
+                $('#currentPage').val(currentPage);
+                $('#pageSize').val(pageSize);
+                contentSearch();
+            }
+            
+            //新增
+		  	function newForm(){
+		  		 dataFrame.window.addNew();
+			}
+			
+			//删除
+		  	function deleteKeyPlace(id){
+		  		 document.getElementById("id").value = id;
+		  		 var form = document.getElementById("f");
+		  		 form.action = "${base}/yzt/keyPlace/deleteKeyPlace"
+		  		 form.method = "post";
+		  		 form.submit();
+			}
+			
+			function FileUpload() {
+	        var filepath = $("#file").val();
+	        var extStart=filepath.lastIndexOf(".");
+	        var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+	        if(ext ==".XLS" || ext == ".XLSX"){
+	            $.ajaxFileUpload({
+	                url : "${base}/yzt/keyPlace/import?typeId="+$!{typeId},// 用于文件上传的服务器端请求地址
+	                dataType : "json",
+	                secureuri : false,// 一般设置为false
+	                fileElementId : 'file',// 文件上传空间的id属性
+	                error : function(data) {
+	                    alert("文件格式不正确");
+	                },
+	                success : function(data) {
+	                if(data == '导入成功！') {
+	                window.location.reload();
+	                layer.msg(data);
+	                }
+					    
+	                }
+	            });
+	        }else{
+	           layer.msg("文件格式不正确！");
+	            return false; 
+	        }
+        }
+
+			//取消
+			function cancle() {
+				$("#dataDiv").hide();
+
+			}
+			
+			function newData() {
+			    $("#dataDiv").show();
+			}
+			
+			function exportData() {
+			  window.location.href="http://"+window.location.host+"/yzt/keyPlace/exportData?typeId="+$!{typeId};
+			}
+			
+			function exportTemplet() {
+			 window.location.href="http://"+window.location.host+"/yzt/keyPlace/exportTemplet?typeId="+$!{typeId};
+			}
+			
+		$(function(){
+			$("iframe").height($(".g-bd-cont").height() - $(".m-tool").height() - $(".m-table ul").height());
+		});	
+		</script>
+		<style>
+			#frameData{
+				width:100%;
+				height:100%;
+			}
+			#name,#menuType{
+				width:100%;
+			}
+        </style>
+	</head>
+	<body  onkeydown="keyLogin();">
+			<div id="dataDiv" class="m-popup">
+			<div class="popup_hd">
+					<span>数据导入</span>
+				</div>
+				<div>
+				        <tr>
+							<td align="left">
+		    			 		数据上传
+		    			 	</td>
+		    			 	<td>
+		                        <input type="file" name="file" id="file">
+		                        <div class="m-text-textarea dpi" style="width:92%"></div>
+		                    </td>
+		    			 </tr>
+		         </div>
+		         <div id ="box">
+							<button onClick="FileUpload();"  class="m-event-button"
+								type="button">导入数据</button>
+							<button class="m-event-button" onclick="cancle()">取消</button>
+						</div>
+			</div>
+		<div class="g-bd-cont">
+			<!-- 查询条件栏开始 -->
+			<div class="m-tool" >
+				<form  method="post" id="search_form" name="search_form">
+					<input type="hidden" id="currentPage" name="page" value="$!{currentPage}"/>
+                    <input type="hidden" id="pageSize" name="rows" value="$!{pageSize}"/>
+					<ul>
+						<li>名称：</li>
+						<li>
+							<input type="text" class="btn btn-link m-text-input" style="position: relative;top: 12px; " name="name" id="name" autocomplete="off" value="">
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="Searchcontent" onclick="contentSearch()">搜索</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="clearSerch()">重置</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newForm()">添加</a>
+						</li>
+						<li><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true"  onclick="newData()">导入数据</a></li> 
+						<li><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" plain="true"  onclick="exportData()">导出数据</a></li> 
+						<li><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-print" plain="true"  onclick="exportTemplet()">导出模板</a></li> 
+						
+						
+					</ul>
+				</form>
+			</div>
+			<!-- 查询条件栏结束 -->
+			<form id="f">
+				<input id="id" name="id" type="hidden"/>
+			</form>
+			
+			<!-- START 数据列表 -->
+			<iframe id="frameData" name="dataFrame" src="${base}/yzt/keyPlace/keyPlaceData?typeId=$!{typeId}" scrolling="no" border="0" frameborder="no"  allowTransparency="true" ></iframe>
+			<!-- END 数据列表 -->
+		</div>
+	</body>
+</html>

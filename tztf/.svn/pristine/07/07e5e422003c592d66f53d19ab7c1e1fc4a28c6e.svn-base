@@ -1,0 +1,75 @@
+html.gi-mask-on,
+body.gi-mask-on {
+  overflow: hidden;
+  _height: 100%;
+  /* for ie 6*/
+}
+/* 蒙层 */
+.gi-mask-box {
+  display: none;
+  /* body或html有定位属性，且设置了min-width,蒙层的宽度依然是可是窗口宽度，若是absolute值就会被影响 */
+  position: fixed;
+  _position: absolute;
+  /* for ie 6*/
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  overflow: auto;
+  background: url(/static/components/gi-mask/images/black_50.png);
+}
+/* 布局表格 */
+.gi-mask-table {
+  width: 100%;
+  height: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+}
+.gi-mask-td {
+  text-align: center;
+  height: 100%;
+  *height: auto;
+  /* for ie 6 7 默认撑满高度，设置100%后有1px溢出bug*/
+}
+/* 内容容器 */
+.gi-mask-content {
+  text-align: left;
+  overflow: auto;
+  position: relative;
+  z-index: 1;
+}
+/* loading */
+.gi-mask-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url(/static/images/loading.gif) center center no-repeat;
+}
+/* 关闭按钮 */
+.gi-mask-close {
+  width: 56px;
+  height: 56px;
+  position: fixed;
+  _position: absolute;
+  right: 14px;
+  top: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+.gi-mask-close i {
+  background: url(/static/images/btn_close_layer.png) 0 0 no-repeat;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -18px 0 0 -18px;
+}
+.gi-mask-close:hover i {
+  background-position: 0 -50px;
+}

@@ -1,0 +1,354 @@
+.olMap {
+  z-index: 0;
+  cursor: default;
+}
+.olMapViewport {
+  text-align: left;
+  -ms-touch-action: none;
+  z-index: 0;
+}
+.olLayerDiv {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+}
+.olAlphaImg {
+  vertical-align: top;
+}
+/* æŽ§åˆ¶å™¨ */
+.olControlNoSelect {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+}
+.olImageLoadError {
+  background-color: pink;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+/**
+ * Cursor styles
+ */
+.olCursorWait {
+  cursor: wait;
+}
+.olDragDown {
+  cursor: move;
+}
+.olDrawBox {
+  cursor: crosshair;
+}
+.olControlDragFeatureOver {
+  cursor: move;
+}
+.olControlDragFeatureActive.olControlDragFeatureOver.olDragDown {
+  cursor: -moz-grabbing;
+}
+/**
+ * Animations
+ */
+.olLayerGrid .olTileImage {
+  -webkit-transition: opacity 0.2s linear;
+  -moz-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+}
+/* Turn on GPU support where available */
+.olTileImage {
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  -ms-perspective: 1000;
+  perspective: 1000;
+}
+/* when replacing tiles, do not show tile and backbuffer at the same time */
+.olTileReplacing {
+  display: none;
+}
+/* override any max-width image settings (e.g. bootstrap.css) */
+img.olTileImage {
+  max-width: none;
+}
+/* ç¼©æ”¾ */
+.olControlZoom {
+  background: white;
+  *border: 1px solid #666;
+  border: 1px solid #666\9\0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  top: 130px;
+  border-radius: 0;
+  padding: 5px 0;
+}
+.olControlZoom a {
+  display: block;
+  float: left;
+  border-radius: 0;
+  color: #888;
+  font-size: 20px;
+  line-height: 16px;
+  height: 18px;
+  width: 25px;
+  overflow: hidden;
+  font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+}
+.olControlZoom a:hover {
+  color: #000;
+}
+.olControlZoomIn {
+  border-radius: 4px 4px 0 0;
+}
+.olControlZoomOut {
+  border-radius: 0 0 4px 4px;
+  border-left: 1px solid #eee;
+}
+/* å›¾ä¾‹ */
+.olLegend {
+  background: white;
+  border: 1px solid #666\9\0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 5px;
+}
+.olLegend-title {
+  position: relative;
+  padding-left: 5px;
+  padding-right: 20px;
+  line-height: 24px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.olLegend-button {
+  position: absolute;
+  top: 9px;
+  right: 5px;
+  font: 0/0 arial;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #666;
+}
+.olLegend-content {
+  margin: 0;
+  padding: 5px;
+}
+.olLegend-content li {
+  list-style: none;
+  height: 16px;
+  line-height: 16px;
+}
+.olLegend-content i {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 3px;
+  width: 20px;
+  height: 16px;
+}
+.olLegend-unselect {
+  color: #ccc;
+}
+.olLegend-unselect i {
+  background: none!important;
+}
+.olLegend-min {
+  min-width: 50px;
+  text-align: center;
+}
+.olLegend-min .olLegend-title {
+  padding-right: 5px;
+}
+.olLegend-min .olLegend-button,
+.olLegend-min .olLegend-content {
+  display: none;
+}
+/* å°é£Žç­‰çº§å›¾ä¾‹ */
+.olLegend-typhoonLevel .olLegend-content li {
+  line-height: 22px;
+  height: 22px;
+}
+.olLegend-typhoonLevel .olLegend-content i {
+  border-radius: 12px;
+  border: 1px solid #34556f;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+}
+/* å°é£Žå‘å¸ƒè€…å›¾ä¾‹ */
+.olLegend-typhoonPublisher .olLegend-content li {
+  line-height: 22px;
+  height: 22px;
+}
+.olLegend-typhoonPublisher .olLegend-content i {
+  border-radius: 12px;
+  width: 10px;
+  height: 2px;
+  margin-top: 9px;
+}
+/* å°é£Žä¿¡æ¯æç¤ºæ¡† */
+.typopup {
+  padding-bottom: 10px;
+}
+.typopup span {
+  display: block;
+  padding: 3px;
+  text-align: center;
+  background: #6699CC;
+  color: #fff;
+  font-size: 14px;
+}
+.typopup ul {
+  margin: 5px 10px 0;
+  padding: 0;
+  list-style: none;
+  color: #666;
+}
+.typopup li {
+  margin-bottom: 2px;
+}
+/* åå­— */
+.tptxt {
+  text-align: center;
+  border: 1px solid #ccc;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.8);
+}
+/* é£Žåœˆ */
+.wind-ring {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  background: url(../images/gigis/windring.png) no-repeat;
+  background-size: 100% 100%;
+}
+.animation {
+  animation: myfirst 2s infinite linear;
+  -ms-animation: myfirst 2s infinite linear;
+  -webkit-animation: myfirst 2s infinite linear;
+  /* Safari and Chrome */
+  -moz-animation: myfirst 2s infinite linear;
+  /* Firefox */
+  -o-animation: myfirst 2s infinite linear;
+  /* Opera */
+}
+@keyframes myfirst {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    width: 48px;
+    height: 45px;
+  }
+  100% {
+    transform: rotate(360deg);
+    width: 50px;
+    height: 50px;
+  }
+}
+@-ms-keyframes myfirst {
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+  50% {
+    width: 48px;
+    height: 45px;
+  }
+  100% {
+    -ms-transform: rotate(360deg);
+    width: 50px;
+    height: 50px;
+  }
+}
+@-webkit-keyframes myfirst {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    width: 48px;
+    height: 45px;
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    width: 50px;
+    height: 50px;
+  }
+}
+@-moz-keyframes myfirst {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  50% {
+    width: 48px;
+    height: 45px;
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    width: 50px;
+    height: 50px;
+  }
+}
+@-o-keyframes myfirst {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  50% {
+    width: 48px;
+    height: 45px;
+  }
+  100% {
+    -o-transform: rotate(360deg);
+    width: 50px;
+    height: 50px;
+  }
+}
+.olLabel {
+  z-index: 300 !important;
+}
+/* å¼¹å±‚ */
+.olPopup {
+  overflow: visible!important;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  border: none !important;
+  border-radius: 5px;
+  border: 1px solid #666!important;
+}
+/*.olPopupContent{
+    background:white;
+    min-width:50px;
+    min-height: 30px;
+}*/
+.olPopupCloseBox {
+  background: url(../images/gigis/close.png);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  top: 3px !important;
+}
+.olPopup .popup_tri {
+  height: 10px;
+  width: 20px;
+  margin-left: 50%;
+}
+.olPopup .popup_tri_a,
+.olPopup .popup_tri_b {
+  font: 0/0 arial;
+  width: 0px;
+  height: 0px;
+  border: 10px dashed transparent;
+  margin-left: -10px;
+  border-bottom: 0;
+  border-top-style: solid;
+  display: block;
+}
+.olPopup .popup_tri_a {
+  border-top-color: #666;
+  margin-bottom: -12px;
+}
+.olPopup .popup_tri_b {
+  border-top-color: white;
+}

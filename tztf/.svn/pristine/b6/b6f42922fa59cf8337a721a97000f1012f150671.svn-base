@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>自动站管理</title>
+        <!-- <meta charset="UTF-8"> -->
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="author" content="grassinfo"/>
+        #parse("commons/commonJs.vm")
+        #parse("commons/commonCss.vm")
+        #parse("commons/commonRes.vm")
+        <link rel="stylesheet" href="${base}/static/css/basic.css">
+    	<link rel="stylesheet" href="${base}/static/css/global.css">
+        <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+        <link rel="stylesheet"type="text/css" href="/static/layui/css/layui.css">
+        <!-- 引用滚动条插件 -->
+        <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+        <style>
+        body{
+            background:none;
+        }
+        .m-table{
+            overflow-y:auto;
+            height:100%;
+        }
+        .m-popup{
+				min-height: 235px;
+		}
+		.m-popup .popup_bd{
+			overflow:auto;
+		}
+		.m-table table tr td{
+			padding:10px 0;
+		}
+		
+        </style>
+        <script type="text/javascript">
+          
+            
+            //删除
+            function del(id){
+                $(".m-poplayer").fadeIn(200);
+                /*添加popup内容*/
+                var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+                /*弹窗位置*/
+
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                var map = {};
+                var informations = '';
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+                /*点击确定*/
+                $(".m-btn.m-confirm").on("click", function () {
+                    parent.deleteKeyPlace(id);
+                    // parent.deleteTabStation(id);
+                    
+                });
+                /*点击取消*/
+                $(".m-btn.m-home-cancel").on("click", function () {
+                    $(".m-poplayer").fadeOut(200);
+                });
+            }
+            //修改保存
+            function isUpdate(){
+            var page = document.getElementById('nowPage').innerText;
+            var size = document.getElementById('pageSize').innerText;
+                var isOk = true;
+                //站号
+                var theIiiii = document.getElementById('uiiiii').value;
+                if(theIiiii == ""){
+                    isOK = false;
+                    layer.msg("请输入站号！");
+                    return false;
+                }
+                
+                //站名
+                var theStationName = document.getElementById('ustationName').value;
+                if(theStationName == ""){
+                    isOK = false;
+                    layer.msg("请输入站名！");
+                    return false;
+                     }
+                if(isOk == true){
+                    document.getElementById('iiiii').value = document.getElementById('uiiiii').value;
+                    document.getElementById('stationName').value = document.getElementById('ustationName').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/tabStation/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                         if( data == '该站号已存在!') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        //parent.location.reload();
+                        sbyPage(page,size);
+                        }
+                        }
+                    });
+                }
+            }
+           
+            
+            
+            //修改
+            function edit(id){
+                document.getElementById('id').value = id;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/yzt/tabStation/editTabStation',
+                    data:"id="+id,
+                    dataType:"JSON",
+                    success:function(data){
+                        document.getElementById('uiiiii').value = data.iiiii?data.iiiii:'';
+                        document.getElementById('ustationName').value = data.stationName?data.stationName:'';
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+                $("#updateDiv").show();
+                $("#newDiv").hide();
+            }
+            
+            
+            
+            
+            //新增
+            function addNew(){
+                document.getElementById('niiiii').value = '';
+                document.getElementById('nstationName').value = '';
+                $("#newDiv").show();
+                $("#updateDiv").hide();
+            }
+			
+            
+            function alertBox(value){
+                $(".m-poplayer").fadeIn(200);
+                _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+                /*弹窗位置*/
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>"+value+"</span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                setTimeout(function () { 
+                    $(".m-poplayer").fadeOut(200);
+                }, 2000);
+            }
+            
+            //新增保存
+            function isAdd(){
+                var isOK = true;
+                //站号
+                var theIiiii = document.getElementById('niiiii').value;
+                if(theIiiii == ""){
+                    isOK = false;
+                    layer.msg("请输入站号！");
+                    return false;
+                }
+                
+                //站名
+                var theStationName = document.getElementById('nstationName').value;
+                if(theStationName == ""){
+                    isOK = false;
+                    layer.msg("请输入站名！");
+                    return false;
+                     }
+               
+             
+                
+                if(isOK == true){
+                    document.getElementById('id').value = '';
+                    document.getElementById('iiiii').value = document.getElementById('niiiii').value;
+                    document.getElementById('stationName').value = document.getElementById('nstationName').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/tabStation/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            alert("Connection error");
+                        },
+                        success: function(data) {
+                        if( data == '该站号已存在!') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                        }
+                        }
+                    });
+                }
+            }
+            
+            
+        </script>
+        
+    </head>
+    <body>
+        <!--弹窗开始-->
+        <div class="m-poplayer">
+            <div class="popup_con"></div>
+        </div>
+        <!--弹窗结束-->
+        <form id="f">
+            <input id="id" name="id" type="hidden"/>
+            <input id="iiiii" name="iiiii" type="hidden"/>
+            <input id="stationName" name="stationName" type="hidden"/>
+        </form>
+		 <!--弹窗结束-->
+        <form id="f2">
+            <input id="id2" name="id" type="hidden"/>
+            <input id="id3" name="id" type="hidden"/>
+            <input id="id4" name="id" type="hidden"/>
+            <input id="id5" name="id" type="hidden"/>
+        </form>
+        
+        <!--修改弹窗 -->
+        <div id="newDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>自动站管理添加</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">站号</td>
+                            <td><input type="text" id="niiiii" value=""></td>
+                        </tr>
+                       <tr>
+                            <td class="rtit">自动站名</td>
+                            <td><input type="text" id="nstationName" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isAdd()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!--修改弹窗 -->
+        
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>自动站管理修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                       <tr>
+                            <td class="rtit">站号</td>
+                            <td><input type="text" id="uiiiii" value=""></td>
+                        </tr>
+                       <tr>
+                            <td class="rtit">自动站名</td>
+                            <td><input type="text" id="ustationName" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        </div>
+        <div class="m-table" >
+            <table>
+                <thead>
+                        <td>站号</td>
+                        <td>自动站名</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                  #set($list = $!{page.get("list")})##
+                    #foreach($tabStation in $list)##
+                        <tr  value='$!{tabStation.get("id")}'>
+                            <td>$!{tabStation.get("iiiii")}</td>
+                            <td>$!{tabStation.get("stationName")}</td>
+							<td>
+							 <button onclick="edit($!{tabStation.get("id")})">修改</button>
+							 <button class="details btn-delete" onclick="del($!{tabStation.get("id")})">删除</button>
+							</td>
+                        </tr>
+                    #end##
+                </tbody>
+            </table>
+            #parse("commons/pagerTemplate.vm")	
+          
+            
+            
+        </div>
+    </body>
+</html>

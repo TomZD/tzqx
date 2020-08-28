@@ -1,0 +1,341 @@
+/**
+ * 按钮
+ */
+/**
+ * 混合使用
+ */
+/**
+ * 线性渐变
+ * 只支持水平和垂直方向，滤镜在IE6、IE7中须配合width或者height属性方可生效
+ * @param  {string} @startColor            起始颜色
+ * @param  {string} @endColor              结束颜色
+ * @param  {string} @layout 			   方向。默认:h 垂直方向
+ */
+/**
+ * 占位符 颜色设置
+ * @param  {string} @fontFamily 字体
+ * @param  {string} @color      颜色
+ */
+/**
+ * 清楚浮动产生的影响样式
+ */
+/**
+ * 行内块化元素
+ */
+/**
+ * 文本超出省略符号显示
+ */
+/**
+ * 禁止用户选择文本
+ */
+/**
+ * 解决IE6下png24半透明 图片地址需要绝对路径
+ * @param  {string} @url 
+ */
+/**
+ * 半透明
+ * @param  {number} @num     透明度。取值区间0-1，默认值：0.5
+ */
+/**
+ * 2d 缩放
+ * @param  {number} @x x轴缩放比例
+ * @param  {number} @y y轴缩放比例
+ */
+/**
+ * 过渡效果
+ * @param  {[type]} @property [description]
+ * @param  {[type]} @duration [description]
+ * @param  {[type]} @timing   [description]
+ */
+/**
+ * 三角形
+ * @param  {string} @size      大小，默认4px
+ * @param  {string} @color     颜色，默认#333 
+ * @param  {string} @direction 方向，默认top
+ */
+/* 基础 */
+.btn,
+.btn-group,
+.btn-tabs {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+}
+a.btn:hover,
+a.btn-group:hover,
+a.btn-tabs:hover {
+  text-decoration: none;
+}
+.btn {
+  text-align: center;
+  cursor: pointer;
+  height: 16px;
+  line-height: 16px;
+  border: 1px solid #999999;
+  color: #333;
+  padding: 6px 10px;
+  background-color: #dadada;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dadada));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dadada);
+  background-image: -moz-linear-gradient(top, #ffffff, #dadada);
+  background-image: -o-linear-gradient(top, #ffffff, #dadada);
+  background-image: -ms-linear-gradient(top, #ffffff, #dadada);
+  background-image: linear-gradient(top, #ffffff, #dadada);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffffff, endColorstr=#ffdadada, GradientType=0);
+}
+button.btn,
+input.btn {
+  box-sizing: content-box;
+}
+.btn:hover {
+  background-color: #e5e5e5;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c7c7c7), to(#e5e5e5));
+  background-image: -webkit-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -moz-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -o-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -ms-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: linear-gradient(top, #c7c7c7, #e5e5e5);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffc7c7c7, endColorstr=#ffe5e5e5, GradientType=0);
+}
+/* 颜色 */
+.btn-blue {
+  border-color: #195cb3;
+  color: white;
+  background-color: #114c9a;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#467fce), to(#114c9a));
+  background-image: -webkit-linear-gradient(top, #467fce, #114c9a);
+  background-image: -moz-linear-gradient(top, #467fce, #114c9a);
+  background-image: -o-linear-gradient(top, #467fce, #114c9a);
+  background-image: -ms-linear-gradient(top, #467fce, #114c9a);
+  background-image: linear-gradient(top, #467fce, #114c9a);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff467fce, endColorstr=#ff114c9a, GradientType=0);
+}
+.btn-blue:hover {
+  background-color: #467fce;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#114c9a), to(#467fce));
+  background-image: -webkit-linear-gradient(top, #114c9a, #467fce);
+  background-image: -moz-linear-gradient(top, #114c9a, #467fce);
+  background-image: -o-linear-gradient(top, #114c9a, #467fce);
+  background-image: -ms-linear-gradient(top, #114c9a, #467fce);
+  background-image: linear-gradient(top, #114c9a, #467fce);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff114c9a, endColorstr=#ff467fce, GradientType=0);
+}
+.btn-sky {
+  color: white;
+  background-color: #2b73d9;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#5297ff), to(#2b73d9));
+  background-image: -webkit-linear-gradient(top, #5297ff, #2b73d9);
+  background-image: -moz-linear-gradient(top, #5297ff, #2b73d9);
+  background-image: -o-linear-gradient(top, #5297ff, #2b73d9);
+  background-image: -ms-linear-gradient(top, #5297ff, #2b73d9);
+  background-image: linear-gradient(top, #5297ff, #2b73d9);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff5297ff, endColorstr=#ff2b73d9, GradientType=0);
+}
+.btn-sky:hover {
+  background-color: #5297ff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#2b73d9), to(#5297ff));
+  background-image: -webkit-linear-gradient(top, #2b73d9, #5297ff);
+  background-image: -moz-linear-gradient(top, #2b73d9, #5297ff);
+  background-image: -o-linear-gradient(top, #2b73d9, #5297ff);
+  background-image: -ms-linear-gradient(top, #2b73d9, #5297ff);
+  background-image: linear-gradient(top, #2b73d9, #5297ff);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff2b73d9, endColorstr=#ff5297ff, GradientType=0);
+}
+/* 大小 */
+.btn-big {
+  padding: 12px 10px;
+}
+.btn-bigger {
+  padding: 12px 10px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+}
+.btn-super {
+  padding: 33px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 20px;
+}
+/* 按钮组 */
+.btn-group {
+  overflow: hidden;
+  border: 1px solid #999;
+}
+.btn-group .btn {
+  vertical-align: top;
+  border: 0;
+}
+.btn-group .btn:hover {
+  position: relative;
+}
+.btn-group-plat {
+  border: none;
+}
+.btn-group-plat .btn {
+  background: #cccccc;
+  border: 1px solid #cccccc;
+}
+.btn-group-plat .btn-sky {
+  background: #3d9cd4;
+  border: 1px solid #2781b5;
+}
+/**
+ * 下拉按钮
+ */
+.btn-select {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+}
+.btn-select.btn-selected .btn-select-hd,
+.btn-select:hover .btn-select-hd {
+  background-color: #e5e5e5;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c7c7c7), to(#e5e5e5));
+  background-image: -webkit-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -moz-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -o-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: -ms-linear-gradient(top, #c7c7c7, #e5e5e5);
+  background-image: linear-gradient(top, #c7c7c7, #e5e5e5);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffc7c7c7, endColorstr=#ffe5e5e5, GradientType=0);
+  border-top-color: #fff;
+}
+.btn-select.btn-selected .btn-select-options,
+.btn-select:hover .btn-select-options,
+.btn-select.btn-selected .btn-select-bd,
+.btn-select:hover .btn-select-bd {
+  display: block;
+}
+.btn-select input {
+  vertical-align: middle;
+}
+.btn-select-hd {
+  height: 28px;
+  font-size: 0;
+  padding: 0;
+}
+.btn-select-hd-title {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  padding: 6px 10px;
+  border-right: 1px solid #c3c3c3;
+  line-height: 16px;
+  vertical-align: top;
+  font-size: 12px;
+}
+.btn-select-hd-tri {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 8px;
+  height: 20px;
+  padding: 4px 10px;
+  border-left: 1px solid #fff;
+  vertical-align: top;
+}
+.btn-select-hd-tri .b {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border-width: 4px;
+  border-color: transparent transparent #a2a2a2;
+  border-style: solid;
+  display: block;
+}
+.btn-select-hd-tri .t {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border-width: 4px;
+  border-color: #a2a2a2 transparent transparent;
+  border-style: solid;
+  display: block;
+  margin-top: 4px;
+}
+.btn-select-options {
+  display: none;
+  float: left;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  *border: 1px solid #ababab;
+  border: 1px solid #ababab\0\9;
+  background-color: #c9c9c9;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  font-size: 12px;
+}
+.btn-select-option {
+  position: relative;
+  display: block;
+  padding: 7px 10px;
+  line-height: 16px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+}
+.btn-select-option:hover {
+  background-color: #4b81c5;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#5a9ad1), to(#4b81c5));
+  background-image: -webkit-linear-gradient(top, #5a9ad1, #4b81c5);
+  background-image: -moz-linear-gradient(top, #5a9ad1, #4b81c5);
+  background-image: -o-linear-gradient(top, #5a9ad1, #4b81c5);
+  background-image: -ms-linear-gradient(top, #5a9ad1, #4b81c5);
+  background-image: linear-gradient(top, #5a9ad1, #4b81c5);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff5a9ad1, endColorstr=#ff4b81c5, GradientType=0);
+  color: #fff;
+}
+.btn-select-option:hover a {
+  color: #fff;
+}
+.btn-select-option .btn-select-options {
+  left: 100%;
+  top: 0;
+  right: auto;
+}
+.btn-select-bd {
+  display: none;
+  float: left;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  border: 1px solid #ccc;
+  padding: 20px;
+  background: #c9c9c9;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+}
+.btn-select-top .btn-select-options {
+  bottom: 100%;
+  top: auto;
+}
+.btn-tabs {
+  box-shadow: none;
+}
+.btn-tabs .btn-tab {
+  box-shadow: none;
+  margin-right: -1px;
+  margin-left: -1px;
+}
+.btn-tab-on {
+  background: #ecf3fb;
+  border-bottom-color: #ecf3fb;
+  color: #2765bc;
+}
+.btn-tab-on:hover {
+  background: #ecf3fb;
+}

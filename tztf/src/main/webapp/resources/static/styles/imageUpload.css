@@ -1,0 +1,51 @@
+@charset "utf-8";
+#uploader-demo{
+    display: inline-table;
+    width: calc(100% - 160px);
+}
+#filePicker .webuploader-pick{
+	white-space: nowrap;
+    padding: 0 32px;
+    height: 36px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 36px;
+    margin-top: -4px;
+	background: #2d5a9d;
+}
+#fileList>div{
+    width: 120px;
+    margin-right: 2%;
+    height: 0;
+    padding-bottom: 120px;
+    overflow: hidden;
+    float: left;
+    border: 2px solid #2d5a9d;
+    border-radius: 3px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+}#fileList>div img{
+     width: 80px;
+     margin-top: 20px;
+ }
+ .uploader-list em{
+     width: 20px;
+     height: 20px;
+     display: block;
+     background: url(/resources/static/images/delet_icon.png) 0 0 no-repeat;
+     background-size: 100%;
+     position: absolute;
+     top: 1px;
+     right: 2px;
+     cursor: pointer;
+ }
+ .uploader-list{
+     margin-top: 20px;
+ }
+.uploader-list .info{
+    line-height: 20px;
+    font-size: 14px;
+    margin-top: -5px;
+}

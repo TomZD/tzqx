@@ -1,0 +1,48 @@
+@charset "utf-8";
+/*发布内容*/
+.release_content{
+	width: 20%;
+}
+.m-tool ul li{
+	margin-right: 8px;
+}
+.m-table tbody button{
+	color:#0f8ffe;
+	font-size: 14px;
+	margin-left: 5px;
+}
+/*弹窗*/
+.m-popup{
+	width: 800px;
+	left: 20%;
+}
+.m-checkbox span{
+	padding-right: 10px;
+    line-height: 37px;
+    color: #333;
+}
+.m-popup h3{
+	font-weight: normal;
+	text-align: center;
+	color: #333;
+	font-size: 20px;
+}
+.m-popup ul{
+	width: 220px;
+	float: right;
+}
+.m-popup button.abandon {
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    position: relative;
+    top: -9px;
+    border-radius: 3px;
+    color: #333;
+}
+/*highchart表*/
+#information{
+	height: 350px;
+	width: 700px;
+	margin: 0 auto;
+}

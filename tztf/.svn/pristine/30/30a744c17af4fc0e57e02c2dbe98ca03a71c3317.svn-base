@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>历史预警查询</title>
+		<!-- <meta charset="UTF-8"> -->
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="author" content="movinginfo"/>
+		#parse("commons/commonJs.vm")
+		#parse("commons/commonCss.vm")
+		#parse("commons/commonRes.vm")
+		
+		<!-- START 历史预警资源 -->
+	    <!-- 样式 -->
+	    <link rel="stylesheet" href="${base}/static/js/lib/My97DatePicker/skin/WdatePicker.css">
+	    <link rel="stylesheet" href="${base}/static/css/basic.css">
+	    <link rel="stylesheet" href="${base}/static/css/global.css">
+	    <link rel="stylesheet" href="${base}/static/css/historyQuery.css">
+	    <!-- JS -->
+	    <!-- 引用滚动条插件 -->
+	   <!-- <script type="text/javascript" src="${base}/static/js/lib/jquery.min.js"></script>-->
+		<script type="text/javascript" src="${base}/static/js/public.js"></script>
+		<script type="text/javascript" src="${base}/static/js/historyQuery.js"></script>
+		<script type="text/javascript" src="${base}/static/js/layer/layer.js"></script>
+		<script type="text/javascript" src="${base}/static/js/lib/My97DatePicker/WdatePicker.js"></script>
+	    <!-- END 历史预警资源 -->
+	    <style>
+	    	.m-table{
+	    		height:100% !important;
+	    	}
+	    </style>
+		
+	</head>
+	<body>
+	     <!--弹窗开始-->
+	#*<div class="m-popup">
+		<div class="popup_hd">
+			<span>发布进度详情</span>
+		</div>
+		<div class="popup_bd">
+			<div class="checkbox_bd">
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="需要发送">
+                    <i class="checkbox on_check"></i>
+                    <span>需要发送</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已递交">
+                    <i class="checkbox"></i>
+                    <span>已递交</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已发出">
+                    <i class="checkbox"></i>
+                    <span>已发出</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已确认">
+                    <i class="checkbox"></i>
+                    <span>已确认</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已完成">
+                    <i class="checkbox"></i>
+                    <span>已完成</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="出错">
+                    <i class="checkbox"></i>
+                    <span>出错</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="完成">
+                    <i class="checkbox"></i>
+                    <span>完成</span>
+                </div>
+            </div>
+            <!--标题-->
+            <h3>突发突发事件信息表</h3>
+
+            <!--highchart表-->
+            <div id ="information"></div>
+			<ul>
+				<li>
+					<button class="abandon">取消</button>
+				</li>
+				<li>
+					<button class="m-event-button">确定</button>
+				</li>
+			</ul>
+		</div>
+	</div>*#
+	<!--弹窗结束-->
+
+	
+	     
+		<div class="m-table" style="overflow-y: auto;">
+			<table>
+				<thead>
+					<tr>
+						<td>编号</td>
+						<td>类型级别</td>
+						<td>上报部门</td>
+						<td>发布内容</td>
+						<td>发布时间</td>
+						<td>发布时效#*周期*#</td>
+						<td>发布范围</td>
+						<td>状态</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					#set($list = $!{page.get("list")})##
+					#set($alarm_index = $!{page.get("startRow")})##
+					#foreach($alarm in $list)##
+						<tr>
+							#*
+							<td>$!{alarm.get("pubNo")}QXJ_20170728_${alarm_index}</td>
+							*#
+							<td>#if(${alarm.get("pubNo")})$!{alarm.get("pubNo")}#else QXJ_20170728_${alarm_index}#end</td>
+							<td>$!{alarm.get("alarmTypeName")}</td>
+							#foreach($depart in $!{departList})
+							#if($!depart.id==$!{alarm.get("deptId")})
+							<td>$!depart.name</td>
+							#end
+							#end
+							<td class="release_content">
+							#set($str=  $!{alarm.get("content")})   
+                               #if($str.length()>20)  
+                               <p title="$!{alarm.get("content")}"> 
+                                  #set($str=$str.substring(0,20))  
+                                  $str ...  
+                                   </p>
+                               #else  
+                                    $!{la.checkContent}  
+                            #end 
+							</td>
+							<td>$!{alarm.get("pubDate")}</td>
+							<td>$!{alarm.get("duration")}</td>
+							<!-- <td>$!{alarm.get("durationStr")}</td> -->
+							<td>
+							
+							#set($str=  $!{alarm.get("pubRangeName")})   
+                               #if($str.length()>20)  
+                               <p title="$!{alarm.get("pubRangeName")}"> 
+                                  #set($str=$str.substring(0,20))  
+                                  $str ...  
+                                   </p>
+                               #else  
+                                    <!--$!{la.checkContent}-->
+                                      $str
+                            #end 
+							
+							</td>
+							<td>#*$!{alarm.get("")}*#
+								<span>$!{alarm.get("pubStateStr")}</span>
+								#*<button>结果</button>*#
+							</td>
+							<td>
+								<button class="details" onclick="parent.window.location.href='/sev/alarm/releaseNowAlarm?alarmId=${alarm.get("id")}';">详情</button>
+								#if($!session.getAttribute("departmentId")==18)
+									#if($!{alarm.get("type")}=='alarm')
+										#if($!{alarm.get("isSend")}==1)
+											<button class="details" onclick="parent.window.location.href='/sev/alarm-notice/query?alarmId=${alarm.get("id")}';">通知单详情</button>
+										#else
+											<button class="details" style="display:none;" onclick="parent.window.location.href='/sev/alarm/generateAlarmNotice?alarmId=${alarm.get("id")}';">通知单</button>
+										#end
+									#end
+								#end
+							</td>
+						</tr>
+						#set($alarm_index = $alarm_index + 1)
+					#end##
+					
+				</tbody>
+			</table>
+			
+#parse("commons/pagerTemplate.vm")
+#*
+#parse("commons/alarmPage.vm")
+*#
+#*
+#parse("commons/alarmPage_publish.vm")##
+*#
+		</div>
+	</body>
+</html>
+<script>
+  //  window.onload = function(){ 
+    	//判断是否IE<11浏览器
+    	//var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串 
+    	//var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; 
+    	//setHeight();
+        //if(isIE){
+	     //  $(window).resize(function(event) {
+	      //  	setHeight();	
+	      //  });
+	    //}
+
+        //设置高度，初始化滚动条
+        //function setHeight(){
+        //	var obj=$(".m-table");
+             /*左侧高度*/
+        //     var _h = $(window).height();
+             /*右侧高度*/
+            // obj.height(_h);
+            // if(hasScroll(obj)) useNiceScroll(obj);
+        //}
+    //} 
+</script>

@@ -1,0 +1,134 @@
+@charset "utf-8";
+body{
+    min-width: 1200px;
+}
+.m-table tbody button{
+	color:#0f8ffe;
+	font-size: 14px;
+	margin-left: 5px;
+}
+.popup_bd table tr td{
+	height: 40px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 40px;
+    font-family: '宋体';
+    color: #666666;
+    border: 1px solid #d2d1d1;
+    text-indent:20px;
+}
+/*弹窗设置*/
+.popup_bd table{
+	width: 100%;
+	margin:15px auto;
+}
+.popup_bd table tr{
+	text-align: center;
+	background-color: #fafafb;
+    -moz-box-shadow: 0px 2px 1px #FFF inset;
+    -webkit-box-shadow: 0px 2px 1px #FFF inset;
+    box-shadow: 0px 2px 1px #FFF inset;
+    behavior: url(../static/js/PIE/PIE.htc);  
+}
+.popup_bd .row{
+	    text-indent: 0;
+    padding: 0 14px;
+}
+.popup_bd .rtit{
+    white-space: nowrap;
+}
+.popup_bd table tr td{
+	height: 40px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 40px;
+    font-family: '宋体';
+    color: #666666;
+    border: 1px solid #d2d1d1;
+        text-indent: 0;
+    padding: 0px 12px;
+        white-space: nowrap;
+}
+
+.popup_bd table tr td input,.popup_bd table tr td select{
+	border: 1px solid #c3c3c3;
+    line-height: 22px;
+    border-radius: 3px;
+    /* width: 200px; */
+    width: 285px;
+    height: 24px;
+    background: #FFF;
+    color: #222222;
+    font-size: 12px;
+    text-indent: 1em;
+    -webkit-box-shadow: 0px 2px 1px #e6e6e6 inset;
+    box-shadow: 1px 2px 1px #e6e6e6 inset;
+    behavior: url(../static/js/PIE/PIE.htc);  
+}
+.popup_bd table tr td input[type='radio']{
+	position:relative;
+	top:5px;
+	margin-left:20px;
+}
+.popup_bd table tr td input[type='text']{
+	text-align:left;
+}
+.popup_bd table tr td input[type='radio']:first-child{
+	margin-left:0;
+}
+.popup_bd table tr td  .m-text-textarea{
+	line-height: 24px;
+    color: #333;
+    height: 90px;
+    margin-top:15px;
+}
+.popup_bd ul{
+	float: right;
+	margin-right: 7px;
+}
+.popup_bd ul li{
+	display: inline-block;
+	margin-right: 10px;
+	padding-top:0;
+}
+/*点击编辑后input样式*/
+.m-tab tr td input{
+    border: 1px solid #d5d5d5;
+    line-height: 22px;
+    border-radius: 3px;
+    behavior: url(../static/js/PIE/PIE.htc);  
+    width: 140px;
+    background: #FFF;
+    color: #d5d5d5;
+    font-size: 12px;
+    text-indent: 1em;
+}
+.m-popup button{
+    margin-bottom: 3px;
+    margin-top: 0;
+    right: 0;
+}
+.m-popup button.abandon{
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    position: relative;
+    top: -11px;
+    border-radius: 3px;
+    behavior: url(../static/js/PIE/PIE.htc);  
+    color: #333;
+}
+.combo .combo-text{
+	vertical-align: top!important;
+}
+.popup_bd table tr td input{
+	text-indent: 0;
+	vertical-align: middle;
+	padding-left:2px;
+}
+#addTab{
+	width:100%;
+	max-height:125px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}

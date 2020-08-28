@@ -1,0 +1,61 @@
+html,body{
+	min-height: 550px;
+	min-width: 1280px;
+}
+iframe{
+	display: block;
+}
+.g-hd .m-hd{
+	height:70px;
+	line-height: 70px;
+	font-size: 24px;
+	color: #fff;
+	padding: 0 20px;
+	background: url("../images/g-hd.png") 0 0 no-repeat ;
+	background-size: 100% 162%;
+	overflow: hidden;
+}
+.g-hd .m-notes{
+	margin-top: 10px;
+    line-height: 70px;
+    float: left;
+}
+.g-hd .m-notes.hd_time{
+	float: right;
+}
+.g-hd .m-notes span{
+	font-size: 40px;
+	color:#00fffe;
+	line-height: 0;
+}
+.g-hd .m-hd i{
+	display: block;
+	width: 34px;
+	height: 34px;
+	background: url("../images/logo.png") 0 0 no-repeat;
+	background-size: 100% 100%;
+	float: left;
+    position: relative;
+    top: 18px;
+    left: -8px;
+}
+.g-hd h2{
+	font-size: 34px;
+    font-weight: 500;
+    -webkit-box-reflect: below -34px -webkit-linear-gradient(transparent,transparent 50%,rgba(0,0,0,.3));
+    text-shadow: 0 2px 8px rgba(255,255,255,0.53);
+}
+.g-hd .m-hd li:nth-child(2){
+	width: 550px;
+    position: absolute;
+    left: calc(50% - 275px);
+}
+.g-bd{
+	height: calc(100% - 70px);
+    width: 100%;
+    position: relative;
+}
+.m-map{
+	height: 100%;
+	width: 100%;
+}

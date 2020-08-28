@@ -1,0 +1,7 @@
+service_provider=net.ryian.sms.service.impl.TzSmsService
+
+#tzsms.settings
+tzsms.ip=111.1.5.172
+tzsms.no=106575257697
+tzsms.username=tz07371
+tzsms.pwd=7371

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>气象要素管理</title>
+        <!-- <meta charset="UTF-8"> -->
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="author" content="grassinfo"/>
+        #parse("commons/commonJs.vm")
+        #parse("commons/commonCss.vm")
+        #parse("commons/commonRes.vm")
+        <link rel="stylesheet" href="${base}/static/css/basic.css">
+    	<link rel="stylesheet" href="${base}/static/css/global.css">
+        <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+        <link rel="stylesheet"type="text/css" href="/static/layui/css/layui.css">
+        <!-- 引用滚动条插件 -->
+        <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+        <style>
+        body{
+            background:none;
+        }
+        .m-table{
+            overflow-y:auto;
+            height:100%;
+        }
+        .m-popup{
+				min-height: 235px;
+		}
+		.m-popup .popup_bd{
+			overflow:auto;
+		}
+		.m-table table tr td{
+			padding:10px 0;
+		}
+        </style>
+        <script type="text/javascript">
+        	
+        	//获取新增下拉框
+             function getAllType(){
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/yzt/elementInfo/getAllType',
+                    dataType:"JSON",
+                    success:function(data){
+                        $("#nelementType").empty();
+                        jQuery.each(data, function(i,item){
+                        $("#nelementType").append("<option value='" + item.value + "'>" + item.content + "</option>");
+                          });
+                    },
+                    
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+            }
+        
+           //获取编辑下拉框
+           function editPlaceType(){
+			var id=document.getElementById('id').value;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/yzt/elementInfo/editElementType?id='+id,
+                    dataType:"JSON",
+                    success:function(data){
+                    $("#uelementType").empty();
+                    $("#uelementType").append("<option value='" + data.elementType + "'>" + data.typeName + "</option>")
+                    jQuery.each(data.typeList, function(i,item){
+                        $("#uelementType").append("<option value='" + item.value + "'>" + item.content + "</option>");
+                        		
+                         });  
+                     $("#uisDec").empty(); 
+                     if(data.isDec=="1") {
+                      $("#uisDec").append("<option value ='1'>是</option><option value ='0'>否</option>")
+                     }else if(data.isDec=="0") {
+                     $("#uisDec").append("<option value ='0'>否</option><option value ='1'>是</option>")
+                     }   
+                            
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+            }
+          
+			
+            
+            
+            //删除
+            function del(id){
+                $(".m-poplayer").fadeIn(200);
+                /*添加popup内容*/
+                var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+                /*弹窗位置*/
+
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                var map = {};
+                var informations = '';
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+                /*点击确定*/
+                $(".m-btn.m-confirm").on("click", function () {
+                    parent.deleteKeyPlace(id);
+                    
+                });
+                /*点击取消*/
+                $(".m-btn.m-home-cancel").on("click", function () {
+                    $(".m-poplayer").fadeOut(200);
+                });
+            }
+            //修改保存
+            function isUpdate(){
+            var page = document.getElementById('nowPage').innerText;//分页
+            var size = document.getElementById('pageSize').innerText;
+                var isOk = true;
+               //要素名
+                var theElementId = document.getElementById('uelementId').value;
+                if(theElementId == ""){
+                    isOK = false;
+                    layer.msg("请输入要素名！");
+                    return false;
+                }
+                
+                //要素中文名
+                var theElementName = document.getElementById('uelementName').value;
+                if(theElementName == ""){
+                    isOK = false;
+                    layer.msg("请输入要素中文名！");
+                    return false;
+                     }
+               
+               //单位
+                var theDataUnit = document.getElementById('udataUnit').value;
+                if(theDataUnit == ""){
+                    isOK = false;
+                    layer.msg("请输入单位！");
+                    return false;
+                }
+                if(isOk == true){
+                    document.getElementById('elementId').value = document.getElementById('uelementId').value;
+                    document.getElementById('elementName').value = document.getElementById('uelementName').value;
+                    document.getElementById('elementType').value = document.getElementById('uelementType').value;
+                    document.getElementById('dataUnit').value = document.getElementById('udataUnit').value;
+                    document.getElementById('isDec').value = document.getElementById('uisDec').value;
+                    document.getElementById('isForecast').value = document.getElementById('uisForecast').value;
+                    document.getElementById('filePath').value = document.getElementById('ufilePath').value;
+                    document.getElementById('forecastHour').value = document.getElementById('uforecastHour').value;
+                    if(isNumeric(document.getElementById('uforecastHour').value)==false) {
+                    layer.msg("请输入有效值!");
+                    return false;
+                    }
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/elementInfo/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                         if( data == '该要素名已存在！' || data == '该要素中文名已存在！') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        //parent.location.reload();
+                        sbyPage(page,size);
+                        }
+                        }
+                    });
+                }
+            }
+           
+            
+            
+            //修改
+            function edit(id){
+                document.getElementById('id').value = id;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/yzt/elementInfo/editElementInfo',
+                    data:"id="+id,
+                    dataType:"JSON",
+                    success:function(data){
+                        document.getElementById('uelementId').value = data.elementId?data.elementId:'';
+                        document.getElementById('uelementName').value = data.elementName?data.elementName:'';
+                        document.getElementById('udataUnit').value = data.dataUnit?data.dataUnit:'';
+                        document.getElementById('uisForecast').value = data.isForecast?data.isForecast:'';
+                        document.getElementById('ufilePath').value = data.filePath?data.filePath:'';
+                        document.getElementById('uforecastHour').value = data.forecastHour?data.forecastHour:'';
+                        editPlaceType();
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+                $("#updateDiv").show();
+                $("#newDiv").hide();
+            }
+            
+            
+            
+            
+            //新增
+            function addNew(){
+                document.getElementById('nelementId').value = '';
+                document.getElementById('nelementName').value = '';
+                document.getElementById('ndataUnit').value = '';
+                document.getElementById('nforecastHour').value = '';
+                getAllType();
+                $("#newDiv").show();
+                $("#updateDiv").hide();
+            }
+			
+            
+            function alertBox(value){
+                $(".m-poplayer").fadeIn(200);
+                _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+                /*弹窗位置*/
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>"+value+"</span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                setTimeout(function () { 
+                    $(".m-poplayer").fadeOut(200);
+                }, 2000);
+            }
+            
+            
+            
+            //新增保存
+            function isAdd(){
+                var isOK = true;
+                //要素名
+                var theElementId = document.getElementById('nelementId').value;
+                if(theElementId == ""){
+                    isOK = false;
+                    layer.msg("请输入要素名！");
+                    return false;
+                }
+                
+                //要素中文名
+                var theElementName = document.getElementById('nelementName').value;
+                if(theElementName == ""){
+                    isOK = false;
+                    layer.msg("请输入要素中文名！");
+                    return false;
+                     }
+               
+               //单位
+                var theDataUnit = document.getElementById('ndataUnit').value;
+                if(theDataUnit == ""){
+                    isOK = false;
+                    layer.msg("请输入单位！");
+                    return false;
+                }
+                
+                
+                if(isOK == true){
+                    document.getElementById('id').value = '';
+                    document.getElementById('elementId').value = document.getElementById('nelementId').value;
+                    document.getElementById('elementName').value = document.getElementById('nelementName').value;
+                    document.getElementById('elementType').value = document.getElementById('nelementType').value;
+                    document.getElementById('dataUnit').value = document.getElementById('ndataUnit').value;
+                    document.getElementById('isDec').value = document.getElementById('nisDec').value;
+                    document.getElementById('isForecast').value = document.getElementById('nisForecast').value;
+                    document.getElementById('filePath').value = document.getElementById('nfilePath').value;
+                    if(isNumeric(document.getElementById('nforecastHour').value)==false) {
+                    layer.msg("请输入有效值!");
+                    return false;
+                    }
+                    document.getElementById('forecastHour').value = document.getElementById('nforecastHour').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/elementInfo/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            alert("Connection error");
+                        },
+                        success: function(data) {
+                        if( data == '该要素名已存在！' || data == '该要素中文名已存在！') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                        }
+                        }
+                    });
+                }
+            }
+            
+            //判断是否为数字
+			function isNumeric(str){  
+			var reg=/^\s*$/;
+		     if(!isNaN(str)){ 
+              //alert("是数字和数点"); 
+              return true;
+             }else{ 
+              //alert("请输入数字或数字与小数点组合的数字！"); 
+              return false;
+			}  
+		   }
+            
+            
+        </script>
+        
+    </head>
+    <body>
+        <!--弹窗开始-->
+        <div class="m-poplayer">
+            <div class="popup_con"></div>
+        </div>
+        <!--弹窗结束-->
+        <form id="f">
+            <input id="id" name="id" type="hidden"/>
+            <input id="elementId" name="elementId" type="hidden"/>
+            <input id="elementName" name="elementName" type="hidden"/>
+            <input id="elementType" name="elementType" type="hidden"/>
+            <input id="dataUnit" name="dataUnit" type="hidden"/>
+            <input id="isDec" name="isDec" type="hidden"/>
+            <input id="filePath" name="filePath" type="hidden"/>
+            <input id="isForecast" name="isForecast" type="hidden"/>
+            <input id="forecastHour" name="forecastHour" type="hidden"/>
+        </form>
+		 <!--弹窗结束-->
+        <form id="f2">
+            <input id="id2" name="id" type="hidden"/>
+            <input id="id3" name="id" type="hidden"/>
+            <input id="id4" name="id" type="hidden"/>
+            <input id="id5" name="id" type="hidden"/>
+        </form>
+        
+        <!--修改弹窗 -->
+        <div id="newDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>要素管理添加</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">要素名</td>
+                            <td><input type="text" id="nelementId" value=""></td>
+                        </tr>
+                       <tr>
+                            <td class="rtit">要素中文名</td>
+                            <td><input type="text" id="nelementName" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">要素类型</td>
+                            <td>
+                            	<select id="nelementType">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位</td>
+                            <td><input type="text" id="ndataUnit" value=""></td>
+                        </tr>
+                         <tr>
+                            <td class="rtit">是否除以10</td>
+                            <td>
+                            	<select id="nisDec">
+                                    <option value ="1">是</option>
+                                    <option value ="0">否</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">数据类型</td>
+                            <td>
+                            	<select id="nisForecast">
+                                    <option value ="0">实况</option>
+                                    <option value ="1">预报</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">文件路径</td>
+                            <td><input type="text" id="nfilePath" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">未来小时</td>
+                            <td><input type="text" id="nforecastHour" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isAdd()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!--修改弹窗 -->
+        
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>要素管理修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                       <tr>
+                            <td class="rtit">要素名</td>
+                            <td><input type="text" id="uelementId" value=""></td>
+                        </tr>
+                       <tr>
+                            <td class="rtit">要素中文名</td>
+                            <td><input type="text" id="uelementName" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">要素类型</td>
+                            <td>
+                            	<select id="uelementType">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">单位</td>
+                            <td><input type="text" id="udataUnit" value=""></td>
+                        </tr>
+                         <tr>
+                            <td class="rtit">是否除以10</td>
+                            <td>
+                            	<select id="uisDec">
+                                    <option value ="1">是</option>
+                                    <option value ="0">否</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">数据类型</td>
+                            <td>
+                            	<select id="uisForecast">
+                                    <option value ="0">实况</option>
+                                    <option value ="1">预报</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">未来小时</td>
+                            <td><input type="text" id="uforecastHour" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">文件路径</td>
+                            <td><input type="text" id="ufilePath" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        </div>
+        <div class="m-table" >
+            <table>
+                <thead>
+                        <td>要素名</td>
+                        <td>要素中文名</td>
+                        <td>要素类型</td>
+                        <td>单位</td>
+                        <td>是否除以10</td>
+                        <td>数据类型</td>
+                        <td>文件路径</td>
+                        <td>未来小时</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                  #set($list = $!{page.get("list")})##
+                    #foreach($elementInfo in $list)##
+                        <tr  value='$!{elementInfo.get("id")}'>
+                            <td>$!{elementInfo.get("elementId")}</td>
+                            <td>$!{elementInfo.get("elementName")}</td>
+                            <td>$!{elementInfo.get("typeName")}</td>
+                            <td>$!{elementInfo.get("dataUnit")}</td>
+                            <td>$!{elementInfo.get("decName")}</td>
+                            <td>$!{elementInfo.get("forecastName")}</td>
+                            <td>$!{elementInfo.get("filePath")}</td>
+                            <td>$!{elementInfo.get("forecastHour")}</td>
+							<td>
+							 <button onclick="edit($!{elementInfo.get("id")})">修改</button>
+							 <button class="details btn-delete" onclick="del($!{elementInfo.get("id")})" style="display:none;">删除</button>
+							</td>
+                        </tr>
+                    #end##
+                </tbody>
+            </table>
+            #parse("commons/pagerTemplate.vm")	
+          
+            
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>黄岩区气象防灾减灾综合平台</title>
+	<link rel="stylesheet" href="./static2/css/basic.css">
+	<link rel="stylesheet" href="./static2/css/global.css">
+	<link rel="stylesheet" href="./static2/css/fzjz_global.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/gi-gis.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz.css">
+    <link rel="stylesheet" type="text/css" href="static2/css/fzjz_media.css">
+</head>
+<style>
+.m-manage{
+	cursor: pointer;
+}
+</style>
+<body>
+	<!--head开始-->
+	<div class="g-hd">
+		<ul class="m-hd">
+			<li class="g-nav">
+				<table>
+					<tr>
+						
+					</tr>
+				</table>
+			</li>
+			<li>
+				<i></i>
+				<h2>黄岩区气象防灾减灾综合平台</h2>
+			</li>
+			<li class="g-nav">
+				<table>
+					<tr>
+						
+					</tr>
+				</table>
+			</li>
+		</ul>
+		<div class="hd_sh"></div>
+	</div>
+	<!--head结束-->
+	<!--内容开始-->
+	<div class="g-bd">
+		<iframe src="${base}/emergencySave" frameborder="0" width="100%" height="100%" name="sonframe"></iframe>
+	</div>
+	<!--内容结束-->
+	<!--js开始-->
+	<script type="text/javascript" src="./static2/js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="./static2/js/public.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/layer/layer.js"></script>
+	<script>
+		//刷新先走关闭 再加载 所以数据为0  关闭的话直接关闭   
+		window.onbeforeunload = onbeforeunload_handler;   //关闭之前
+		//window.onunload = onunload_handler;   //关闭
+		window.onload = onload_handler;  //加载
+		function onbeforeunload_handler(e){   
+			console.log(3);
+			//localStorage.clear();
+		}      
+		function onunload_handler(e){   
+			console.log(1);//关闭
+		} 
+		function onload_handler(){
+			console.log(2);//加载
+		}
+	</script>
+	<script type="text/javascript">
+		$.ajax({
+			url:'/sen/station/getTitleData',
+			type:'post',
+			success:function(data){
+				if(data){
+					var tet = '';
+					var middle = '<li><i></i><h2>杭州市防灾减灾监测预报预警平台</h2></li>';
+					for(var i=0;i<data.length;i++){
+						if(i<=1){
+						 	var str = '<td><a href="'+data[i].url+'" class="'+data[i].icon+'" target="sonframe"><em></em><span>'+data[i].name+'</span></a></td>';
+							$(".m-hd .g-nav:first-child table tr").append(str);
+						}else{
+							var str="";
+							if(data[i].url == "fzjzLogin") {
+							 	str = '<div class="m-manage" ><a onclick="login();" class="'+data[i].icon+'"><em></em><span>'+data[i].name+'</span></a></div>';
+							 	$(".m-hd .g-nav:last-child").append(str);
+							}else {
+								str = '<td><a href="'+data[i].url+'" class="'+data[i].icon+'" target="sonframe"><em></em><span>'+data[i].name+'</span></a></td>';
+								$(".m-hd .g-nav:last-child table tr").append(str);
+							}							
+							
+						}
+					}
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		})
+		
+		function login() {
+		top.location.href = "/fzjzLogin";
+		}
+	</script>
+	<!--js开始-->
+</body>
+</html>

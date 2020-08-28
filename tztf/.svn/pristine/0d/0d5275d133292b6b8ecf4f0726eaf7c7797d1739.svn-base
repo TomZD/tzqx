@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>人员组管理</title>
+    <!-- <meta charset="UTF-8"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    #parse("commons/commonJs.vm")
+    #parse("commons/commonCss.vm")
+    #parse("commons/commonRes.vm")
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/global.css">
+    <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css">
+    <link rel="stylesheet"type="text/css" href="/static/layui/css/layui.css">
+    <!-- 引用滚动条插件 -->
+    <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+    <script type="text/javascript" src="${base}/static/js/lib/decision.js"></script>
+    <style>
+        body{
+            background:none;
+        }
+        .m-table{
+            overflow-y:auto;
+            height:100%;
+        }
+        .m-popup{
+            min-height: 200px;
+        }
+        .m-popup .popup_bd{
+            overflow:auto;
+        }
+    </style>
+    <script type="text/javascript">
+        //删除
+        function del(id){
+            $(".m-poplayer").fadeIn(200);
+            /*添加popup内容*/
+            var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            var map = {};
+            var informations = '';
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+            $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+            /*点击确定*/
+            $(".m-btn.m-confirm").on("click", function () {
+                parent.deleteMenu(id);
+
+            });
+            /*点击取消*/
+            $(".m-btn.m-home-cancel").on("click", function () {
+                $(".m-poplayer").fadeOut(200);
+            });
+        }
+        //修改保存
+        function isUpdate(){
+            var page = document.getElementById('nowPage').innerText;
+            var size = document.getElementById('pageSize').innerText;
+            var isOk = true;
+            var theName = document.getElementById('uname').value;
+            var theDepartment = document.getElementById('udepartment').value;
+            var thePhone = document.getElementById('uphone').value;
+            var regex = new RegExp($('#uphone').attr('regex'));
+            if(theName == ""){
+                isOK = false;
+                layer.msg("请输入群组名称！");
+                return false;
+            }
+            if(theDepartment == ""){
+                isOK = false;
+                layer.msg("请输入部门名称！")
+            }
+            if(thePhone == ""){
+                isOK = false;
+                layer.msg("请输入手机号！")
+            }else if(!regex.test(thePhone)){
+                isOk = false;
+                layer.msg("请输入正确的电话格式！");
+                return false;
+            }
+            if(isOk == true){
+                document.getElementById('name').value = document.getElementById('uname').value;
+                document.getElementById('department').value = document.getElementById('udepartment').value;
+                document.getElementById('phone').value = document.getElementById('uphone').value;
+
+
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url:"${base}/sys/peoplegroup/saveOrUpdate",
+                    data:$('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function(request) {
+                        layer.msg("Connection error");
+                    },
+                    success: function(data) {
+                        if(data == '该部门已存在!') {
+                            layer.msg(data);
+                        }else {
+                            layer.msg("保存成功");
+                            sbyPage(page,size);
+                        }
+                    }
+                });
+            }
+        }
+
+
+        //修改
+        function edit(id){
+            document.getElementById('id').value = id;
+            $.ajax({
+                type:"POST",
+                url:'${base}/sys/peoplegroup/editPeopleGroup',
+                data:"id="+id,
+                dataType:"JSON",
+                success:function(data){
+                    document.getElementById('uname').value = data.name?data.name:'';
+                    document.getElementById('udepartment').value = data.department?data.department:'';
+                    document.getElementById('uphone').value = data.phone?data.phone:'';
+                     //getEditDepts();
+                },
+                error:function(data){
+                    alert("错误！");
+                }
+            });
+            $("#updateDiv").show();
+            $("#newDiv").hide();
+        }
+
+
+
+
+        //新增
+        function addNew(){
+            // document.getElementById('nname').value = '';
+            // getDepts();
+            $("#newDiv").show();
+            $("#updateDiv").hide();
+        }
+
+
+
+        function alertBox(value){
+            $(".m-poplayer").fadeIn(200);
+            _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>"+value+"</span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+            setTimeout(function () {
+                $(".m-poplayer").fadeOut(200);
+            }, 2000);
+        }
+
+        //新增保存
+        function isAdd(){
+            var isOK = true;
+            //姓名
+            var theName = document.getElementById('nname').value;
+            var theDepartment = document.getElementById('ndepartment').value;
+            var thePhone = document.getElementById('nphone').value;
+            var regex = new RegExp($('#nphone').attr('regex'));
+            if(theName == ""){
+                isOK = false;
+                layer.msg("请输入群组名称！");
+                return false;
+            }
+            if(theDepartment == ""){
+                isOK = false;
+                layer.msg("请输入部门名称！")
+            }
+            if(thePhone == ""){
+                isOK = false;
+                layer.msg("请输入手机号！")
+            }else if(!regex.test(thePhone)){
+                isOk = false;
+                layer.msg("请输入正确的电话格式！");
+                return false;
+            }
+
+            if(isOK == true){
+                document.getElementById('name').value = document.getElementById('nname').value;
+                document.getElementById('department').value = document.getElementById('ndepartment').value;
+                document.getElementById('phone').value = document.getElementById('nphone').value;
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url:"${base}/sys/peoplegroup/saveOrUpdate",
+                    data:$('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function(request) {
+                        alert("Connection error");
+                    },
+                    success: function(data) {
+                        if(data == '该部门已存在!') {
+                            layer.msg(data);
+                        }else {
+                            parent.location.reload();
+                        }
+
+                    }
+                });
+            }
+        }
+
+
+    </script>
+
+</head>
+<body>
+<!--弹窗开始-->
+<div class="m-poplayer">
+    <div class="popup_con"></div>
+</div>
+<!--弹窗结束-->
+<form id="f">
+    <input id="id" name="id" type="hidden"/>
+    <input id="name" name="name" type="hidden"/>
+    <input id="department" name="department" type="hidden"/>
+    <input id="phone" name="phone" type="hidden"/>
+</form>
+<!--弹窗结束-->
+<form id="f2">
+    <input id="id2" name="id" type="hidden"/>
+    <input id="id3" name="id" type="hidden"/>
+    <input id="id4" name="id" type="hidden"/>
+    <input id="id5" name="id" type="hidden"/>
+</form>
+
+
+
+
+
+<!--添加弹窗 -->
+<div id="newDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>人员组添加</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">人员组名称</td>
+                <td><input type="text"  id="nname" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">部门名称</td>
+                <td><input type="text" id="ndepartment" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">手机号</td>
+                <td><input type="text" id="nphone"  regex="^[1][3,4,5,6,7,8][0-9]{9}$" value=""></td>
+            </tr>
+
+        </table>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isAdd()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!--修改弹窗 -->
+
+<div id="updateDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>人员组修改</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">人员组名称</td>
+                <td><input type="text" id="uname" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">部门名称</td>
+                <td><input type="text" id="udepartment" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">手机号</td>
+                <td><input type="text" id="uphone"  regex="^[1][3,4,5,6,7,8][0-9]{9}$" value=""></td>
+            </tr>
+        </table>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isUpdate()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+<div class="m-table" >
+    <table>
+        <thead>
+
+        <td>短信组名称</td>
+        <td>部门</td>
+        <td>手机号</td>
+        <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+
+            #set($list = $!{page.get("list")})##
+            #foreach($peoplegroup in $list)##
+            <tr  value='$!{peoplegroup.get("id")}'>
+                <td>$!{peoplegroup.get("name")}</td>
+                <td>$!{peoplegroup.get("department")}</td>
+                <td>$!{peoplegroup.get("phone")}</td>
+                <td>
+                    <button onclick="edit($!{peoplegroup.get("id")})">修改</button>
+                    <button class="details btn-delete" onclick="del($!{peoplegroup.get("id")})">删除</button>
+                </td>
+            </tr>
+            #end##
+        </tbody>
+    </table>
+    #parse("commons/pagerTemplate.vm")
+
+
+
+</div>
+</body>
+</html>

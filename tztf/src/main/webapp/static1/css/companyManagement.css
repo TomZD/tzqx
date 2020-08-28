@@ -1,0 +1,13 @@
+@charset "utf-8";
+select{
+	color:#bebed8;
+	width: 160px;
+	line-height: 25px;
+	height: 25px;
+	border:1px solid #363e5a;
+}
+.m-table tbody button{
+	color:#0f8ffe;
+	font-size: 14px;
+	margin-left: 5px;
+}

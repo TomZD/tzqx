@@ -1,0 +1,106 @@
+/*不显示滚动条*/
+::-webkit-scrollbar{
+	display:none;
+}
+.info-box{
+	width: 100%;
+	margin-top: 0.266667rem;
+	background-color: #fff;
+	padding-bottom: 0.333333rem;
+}
+.box-title{
+	position: relative;
+	height: 1.133333rem;
+	border-bottom: 1px solid #e6e6e6;
+}
+.box-title i{
+	left: 0.4rem;
+	display: inline-block;
+	width: 0.426667rem;
+	height: 0.426667rem;
+	background-image: url(../images/Resettlement.png);
+	background-size: 100% 100%;
+}
+.box-title span{
+	display: inline-block;
+	margin-left: 1.0rem;
+	font-size: 0.426667rem;
+	color: #333;
+	line-height: 1.133333rem;
+}
+.info-con{
+	width: 91.7%;
+	border:1px solid #e6e6e6;
+	margin: 0 auto;
+	margin-top: 0.266667rem;
+}
+.info-con tr{
+	height: 0.933333rem;
+	border-bottom: 1px solid #e6e6e6;
+}
+.info-con tr:last-child{
+	border-bottom: none;
+}
+.info-con td:first-child{
+	width: 0.666667rem;
+	height: 0.933333rem;
+}
+.info-con i{
+	display: block;
+	width: 0.36rem;
+	height: 0.36rem;
+	float: right;
+}
+.address-info i{
+	background-image: url(../images/address-info.png);
+	background-size: 100% 100%;
+}
+.lon-info i{
+	background-image: url(../images/lon-info.png);
+	background-size: 100% 100%;
+}
+.lat-info i{
+	background-image: url(../images/lat-info.png);
+	background-size: 100% 100%;
+}
+.mgr-info i{
+	background-image: url(../images/mgr-info.png);
+	background-size: 100% 100%;
+}
+.gover-info i{
+	background-image: url(../images/gover-info.png);
+	background-size: 100% 100%;
+}
+.population-info i{
+	background-image: url(../images/population-info.png);
+	background-size: 100% 100%;
+}
+.phone-info i{
+	background-image: url(../images/phone-info.png);
+	background-size: 100% 100%;
+}
+.acreage-info i{
+	background-image: url(../images/acreage-info.png);
+	background-size: 100% 100%;
+}
+.info-con tr{
+	width: 100%;
+}
+.info-con tr td:nth-child(2){
+	font-size: 0.4rem;
+	color:#333;
+	padding-left: 0.133333rem;
+	float: left;
+	line-height: 0.933333rem;
+}
+.info-con tr td:last-child{
+	padding-right: 0.266667rem;
+	line-height: 0.933333rem;
+	color: #666;
+	font-size: 0.4rem;
+	float: right;
+	max-width: 80%;
+    overflow: hidden;
+    display: block;
+    height: 0.93rem;
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>杭州市防灾减灾监测预报预警平台--灾害信息</title>
+	<link rel="stylesheet" href="./static2/css/basic.css">
+	<link rel="stylesheet" href="./static2/css/global.css">
+	<link rel="stylesheet" href="./static2/css/fzjz_global.css">
+	<link rel="stylesheet" href="/static/js/lib/viewer/viewer.min.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/gi-gis.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz_media.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/MapStyle.css">
+	<style>
+	body{
+		overflow: hidden;
+		min-height: 450px;
+		min-width: 0;
+	}
+	.m-nav ul ul li{
+		text-align:center;
+		text-indent: 0;
+	}
+	.m-nav>ul>li>i {
+	    background-position: -4px 0;
+	}
+	.m-time-axis{
+		width:calc(100% - 210px)!important;
+	}
+	.m-paly {
+	    display: inline-table;
+	    width: 45px;
+	    height: 46px;
+	    background: url(./static2/images/play_btn.png) 0 0 no-repeat;
+	    background-size: 100% 100%;
+	}
+	.m-time-axis{
+		width:calc(100% - 520px);
+	}
+	.code {
+		bottom:10px;
+	}
+	.no_risk {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            width: 192px;
+            height: 107px;
+            left: calc(50% - 96px);
+            top: calc(50% - 53px);
+        }
+	.export {
+	 display:none;
+	 cursor: pointer;
+	}
+	m-time-axis
+
+
+	
+</style>
+</head>
+<body>
+	<div class="g-pager">
+		<div class="code color_code1">
+			<div>风险等级:</div>
+			<ul class="code1">
+			
+			</ul>
+		</div>
+		<div class="m-nav">
+			<ul class="fzjz-save">
+				
+			</ul>
+		</div>
+		<div class="maptitle" style="display:none;"></div>
+		<div id="map" class="map m-map"></div>
+		<div class='no_risk'><img src='../static2/images/warning_icon/noRisk.png'/></div>
+		<div class="m-decision" style="display:none;" align="center"></div>
+		<div class="m-tool-box">
+			<ul>
+				<li class="m-time">
+					<span>时间选择</span>
+					<div class="m-select-time">
+						<span></span>
+						<i></i>
+						<ul>
+							
+						</ul>
+					</div>
+				</li>
+				
+				<li class="m-time-axis">
+					<div class="m-time-axis-box">
+						<ul class="m-axis-list">
+							
+						</ul>
+					</div>
+					<div class="m-time-axis-control">
+						<table>
+							<tr>
+                                <td><img class="m-prev" src="./static2/images/prev_btn.png" title="下一个时次"></td>
+                                <td><i class="m-paly" title="播放/暂停"></i></td>
+                                <td><img class="m-next" src="./static2/images/next_btn.png" title="下一个时次"></td>
+                                <td class="export" style="white-space: nowrap;">导出</td>
+							</tr>
+						</table>
+					</div>
+				</li>
+				
+			</ul>
+		</div>
+		<ul id="radarColorList"></ul>
+	</div>
+	
+	         
+	<!--js开始-->
+	<script type="text/javascript" src="./static2/js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="./static2/js/public.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/openLayers.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/sea.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/highcharts.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/layer/layer.js"></script>
+	<script type="text/javascript" src="/static/js/lib/viewer/viewer.min.js"></script>
+	<script type="text/javascript">
+		seajs.config({
+			"base": "./static2/js"
+		});
+		seajs.use('zhxx');
+	</script>
+	<!--js开始-->
+	<iframe id="VideoFrame" style="width:100%;height:100%;" src="">
+</body>
+</html>

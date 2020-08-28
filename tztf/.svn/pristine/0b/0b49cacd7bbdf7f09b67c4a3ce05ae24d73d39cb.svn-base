@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布-待发布</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/publishApplication.css">
+      <!--日历控件开始-->
+    <link rel="stylesheet" href="/static/js/datepicker/css/jqueryui.min.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/timepick.css">
+    <!--日历控件结束-->
+     <script type="text/javascript">
+       var pubNo = '$!{alarm.pubNo}';
+       var version = '$!{alarm.version}';
+       var releaseChannel = $!{releaseChannel};
+       var imagePath = '$!{alarm.imagePath}';
+    </script>
+    <style>
+           body{
+               background: url(/static/images/bg_img.png) no-repeat;
+                   background-size: 100% 100%;
+           }
+		   .popup_bd{
+			max-height:330px;
+			overflow-x: auto;
+		}
+        .checkbox_style input{
+            float: left;
+            width: 10px !important;
+            height: 10px !important;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+       .typeColor,.reviewer,.issuer{
+            width: 229px;
+            height: 32px;
+            color: #bebed8;
+       } 
+       .type{
+            width: 229px;
+            height: 32px;
+            color: #bebed8;
+       } 
+       .publishForm{
+            width: 172px;
+            height: 35px;
+            line-height: 35px;
+            color: #FFF;
+            text-align: center;
+            background: #0f8ffe;
+            border-radius: 3px;
+            margin-right: 12px;
+            display: inline-block;
+        }
+        .g-bd-left-con ul li .m-checkbox span{
+            text-align: left;
+            width:80px;
+            margin-left:12px;
+        }
+            .channelContentSel{
+               width:95%;
+                border: 1px solid rgba(190, 190, 216, 0.2);
+                background: rgba(0, 0, 0, 0.1);
+                line-height: 34px;
+                padding: 0 15px;
+                border-radius: 4px;
+            }
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 7px 15px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            margin-right:20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+        .m-select select.m-text-input,.m-select .m-text-input-text {
+            border: 1px solid rgba(190,190,216,0.2);
+            border-radius: 5px;
+            height: 32px;
+            background: rgba(0,0,0,0.1);
+        }
+        .m-select .m-text-input-text{
+            padding:0 15px;
+            margin-right:5px;
+        }
+        .checkboxAreaAll,.checkboxChannelAll{
+            width: 16px;
+            height: 16px;
+            float: left;
+            cursor: pointer;
+            margin-top: 10px;
+            text-align: center;
+            background-image: url(/static/images/oncheck_img.png);
+            background-repeat: no-repeat;
+        }
+        .m-text-input{
+        height:34px;
+        }
+        .m-text-textarea.on_auto{
+        min-height:70px;
+        overflow-y:auto;
+        overflow-x:hidden;
+        }
+    </style>
+</head>
+<body>
+   <!--弹窗开始-->
+    <div class="m-poplayer">
+        <div class="popup_con"></div>
+    </div>
+    
+    <!--弹窗结束-->
+    <!--时间轴开始-->
+    <div class="m-event mb10">
+        <div class="m-event-schedule">
+                <div class="m-event-schedule">
+                   <p>
+                       #if($!alarm.pubState == "5" || $!alarm.pubState == "12")
+                             <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                             
+                             <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.releaseDate})</span>
+                             <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.completeDate})</span>
+                       #end
+                   </p>
+                </div>
+            <div class="m-event-timeAxis">
+                <!--事件进度时间轴底部开始-->
+                <div class="m-timeAxis-bg">
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴底部结束-->
+                <!--事件进度时间轴进度开始-->
+                <div class="m-timeAxis-con">
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    
+                     <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                     <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴进度结束-->
+            </div> 
+            <!--事件进度说明开始-->
+            <li class="m-event-explain">
+                <p><span>$!{alarm.deptName}申请解除</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                </p>
+            </li>
+            <!--事件进度说明开始-->
+        </div>   
+    </div>                          
+    <!--时间轴结束-->
+<form action="" method="post" id="form" name="form">
+    <input type="hidden" name="pubId" value='$!{alarm.id}';>
+    <input type = "hidden" id="alarmTypeName" name = "alarmTypeName" value="$!{alarm.alarmTypeName}">
+    <input type="hidden" id="imagePath" name="imagePath" value='$!{alarm.imagePath}';>
+    <input type="hidden" id="pubNo" name="pubNo" value='$!{alarm.pubNo}';>
+    <input type="hidden"  name="type" value='$!{alarm.type}';>
+    <input type="hidden"  name="deptId" value='$!{alarm.deptId}';>
+    <!--内容开始-->
+    <div class="g-bd-cont">
+        <!--标题开始-->
+        <div class="g-bd-tit">
+            <span>$!{alarm.deptName}解除申请</span><span class="filenum">$!{alarm.pubNo}</span>
+        </div>
+        <!--标题结束-->
+        <!--左边开始-->
+        <div class="g-bd-left">
+            <!--内容开始-->
+            <div class="g-bd-left-con">
+                <ul>
+                    <!--标题开始-->
+                    <li><span>标题</span><input type="text" class="m-text-input on_auto" name="title" value="$!{alarm.title.replace("发布的","解除")}" /></li>
+                    <!--标题结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--信息类别开始-->
+                    <li>
+                        <span>信息类别</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{type}</span></a>
+                        </div>
+                    </li>
+                    <!--信息类别结束-->
+                    <!--预警级别开始-->
+                    <li class="pl10">
+                        <span>预警级别</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{level}</span></a>
+                        </div>
+                    </li>
+                    <!--预警级别结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--发布时间开始-->
+                    <li><span>发布时间</span><input type="text" id="basic_example_1" name="pubDate" class="inputTimepick m-text-input on_auto" value="" style="font-family: 'Microsoft YaHei';"></li>
+                    <!--发布时间结束-->
+                    <!--发布时效开始-->
+                    <li class="pl10">
+                        <span>发布时效</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{alarm.duration}小时</span></a>
+                        </div>
+                    </li>
+                    <!--发布时效结束-->
+                </ul>
+                <ul>
+                    <!--发布范围开始-->
+                    <li>
+                        <span class="fl">发布范围</span>
+                        <textarea class="m-text-textarea on_auto" disabled="disabled">$!{alarm.pubRangeName}</textarea>
+                    </li>
+                    <!--发布范围结束-->
+                </ul>
+                <ul>
+                    <!--发布渠道开始-->
+                    <li>
+                        <span class="fl">发布渠道</span>
+                        <textarea class="m-text-textarea on_auto" name = "releaseChannelName" readOnly="readOnly">$!{channel}</textarea>
+                    </li>
+                    <!--发布渠道结束-->
+                </ul>
+                <ul>
+                    <!--发布内容开始-->
+                    <li>
+                        <span class="fl">发布内容</span>
+                        <textarea id="limitWord" class="m-text-textarea on_auto" name="content">$!{alarm.content.replace("发布","解除")}</textarea>
+                    </li>
+                    <!--发布内容结束-->
+                </ul> 
+                <ul class="m-sets-sets">
+                    <!--操作人员开始-->
+                    <li>
+                       <span>操作人员</span>
+                        <div class="m-select">
+                           <input type="text" value="$alarm.publisher" name="publisher" class="m-text-input-text" style="width: 273px;font-family: 'Microsoft YaHei';">
+                        </div>
+                    </li>
+                    <!--审稿人员结束-->                    
+                </ul> 
+                
+                <ul class="m-sets-sets">
+                    <!--操作人员开始-->
+                    <li>
+                       <span>签发人员</span>
+                        <div class="m-select">
+                           <input type="text" value="$alarm.issuer" name="issuer" class="m-text-input-text" style="width: 273px;font-family: 'Microsoft YaHei';">
+                        </div>
+                    </li>
+                    <!--审稿人员结束-->                    
+                </ul> 
+            </div>
+            <!--内容结束-->
+        </div>
+    <!--左边结束-->
+
+    <!--右边开始-->
+        <div class="g-bd-right form_right"> 
+            <!--渠道总汇开始-->       
+            <div class="g-bd-right-modular h100">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>发布预览</span>
+                    <!--切换开始-->
+                    <ul class="query_hd fr" id="channelAll">
+                        
+                    </ul>
+                    <!--切换结束-->
+                </div>
+                <!--标题结束-->
+                <!--内容开始-->
+                <div id="contentAll">                   
+              
+                </div>
+                <!--内容结束-->
+                <!--按钮1开始-->  
+                    <div class="m-button">
+                        <a id="publishForm" class="publishForm" style="cursor:pointer">生成解除表单</a>
+                        <a href="javascript:;" class="file" style="top:13px;">领导签字后上传预览
+                                <input type="file" name="file" id="file" onChange="FileUpload()">
+                            </a>
+                    </div>              
+                <!--按钮1结束-->
+                <ul style="width: 100%; margin-top:20px;float:left">
+                    <!--审批单开始-->
+                    <li>
+                        <span class="fl" style="line-height: 30px; text-indent: 0.8em;">审批单</span>
+                        <div class="m-text-textarea dpi" style="width:92%">
+                          #if($!alarm.imagePath != "")
+                            <img src="/upload/$!{alarm.imagePath}" style ="height:99px;" />
+                         #else
+                            <h3>未上传</h3> 
+                         #end 
+                        </div>
+                    </li>
+                    <!--发布内容结束-->
+                </ul>
+                <!--按钮2开始-->                
+                <div class="m-button-bottom">
+                    <a href="javascript:history.go(-1)" class="m-event-buttons" id="comback" >后退</a>
+                    <button class="report">解除预警</button>
+                </div>
+                <!--按钮2结束-->
+            </div>
+            <!--渠道总汇开始-->   
+        </div>
+    <!--右边结束-->
+    </div>
+    <!--内容结束-->
+</form>   
+    <!--js开始-->
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <!-- <script type="text/javascript" src="/static/js/publishApplication.js"></script>
+     <script type="text/javascript" src="/static/js/publishingFailure.js"></script> -->
+     <script type="text/javascript" src="/static/js/pendingRemoveExternalAlarm.js"></script>
+      <script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+    <!--js开始-->
+    <!--日历开始-->    
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/useDatepick.js"></script>
+    <!--日历结束-->
+</body>
+</html>
+<script type="text/javascript">
+$('document').ready(function(){
+     ach();
+     var appContent = "$!{alarm.deptName}"+$("#basic_example_1").val()+"解除"+"$!{alarm.alarmTypeName}"+"预警："; 
+     var txt1 = $("#limitWord").val();
+     var index1 = txt1.indexOf("：");
+     var subTxt = txt1.substring(0,index1+1);
+     txt1 = txt1.replace(subTxt,appContent);
+     $("#limitWord").val(txt1);
+     $("#limitWord").trigger("keyup");
+    //生成发布表单
+    $("#publishForm").click(function(){
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:"/sev/alarm/createRemoveForm",
+            data:$('#form').serialize(),// 你的formid
+            async: false,
+            error: function(request) {
+                alert("Connection error");
+            },
+            success: function(data) {
+                window.location.href="/sev/alarm/download?data="+data;
+            }
+        });
+    });
+
+    
+    /*限制字数*/
+    $("#limitWord").keyup(function(){
+        var curLength=$("#limitWord").val().length;    
+        if(curLength>=200){
+            var num=$("#limitWord").val().substr(0,200);
+            $("#limitWord").val(num);
+            $("#textCount").text(0);
+            $(".m-text-textarea.form_text").val(num);
+        }
+        else{
+            $("#textCount").text(200-$("#limitWord").val().length);
+            var num=$("#limitWord").val();
+            $(".m-text-textarea.form_text").val(num);
+        }
+    });
+    
+    /*日历加载*/
+    $('#basic_example_1').datetimepicker({//时间格式化
+        timeFormat: "HH:mm",
+        dateFormat: "yy-mm-dd",
+        showMonthAfterYear: false,
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1990:2050",
+        setColorstyle: false,
+        maxDate: new Date().format("yyyy-MM-dd HH:mm"),
+        //maxDate: new Date($('#basic_example_1').val() + ":00").format("yyyy-MM-dd"),
+        Colorstyle: { "topColor": "#900", "bodyColor": "#000", "activeColor": "#900", "sliderColor": "#900", "hoverColor": "#900" },//定义外观颜色
+        onSelect: function () {//选择日期后执行的操作  
+            var appContent = "$!{alarm.deptName}"+$("#basic_example_1").val()+"解除"+"$!{alarm.alarmTypeName}"+"预警："; 
+            var txt1 = $("#limitWord").val();
+            var index1 = txt1.indexOf("：");
+            var subTxt = txt1.substring(0,index1+1);
+            txt1 = txt1.replace(subTxt,appContent);
+            $("#limitWord").val(txt1);
+            $("#limitWord").trigger("keyup");
+            //getTimeList();
+            //getRadarMosaic();
+        }
+    });
+});
+function ach(){
+    $("#imgClick").click(function(){
+        var imagePathT = $(this).attr("src");
+        window.open(imagePathT);
+    });
+    $(".abandon").click(function(){
+        history.go(-1);
+    })
+}
+function FileUpload() {
+    $.ajaxFileUpload({
+        url : '${base}/sev/alarm/uploadPage',// 用于文件上传的服务器端请求地址
+        dataType : "json",
+        secureuri : false,// 一般设置为false
+        fileElementId : 'file',// 文件上传空间的id属性 
+        error : function(data) {
+            alert("请选择文件上传");
+        },
+        success : function(data) {
+            $("#imagePath").val(data.data);
+            $(".m-text-textarea.dpi").empty();
+            var ddiv = "<img src='/upload/"+data.data+"' id='imgClick' style ='height:99px;cursor:pointer;)'/>";
+            $(".m-text-textarea.dpi").append(ddiv);
+            ach();
+        }
+    });
+}
+$(function(){
+    
+//  $.ajax({
+//      async : false,
+//      type : "POST",
+//      url : "/sev/check/getText",
+//      data : {pubNo:pubNo},
+//      dataType : "json",
+//      success : function(d) {
+//          var text ="";
+//         for(var i=0;i<d.data.length;i++){
+//              var dataList = d.data[i];
+//              if(i%2==0){
+//                  text += " <tr class=\"co1\"><td>"+dataList.channel+"</td><td>"+dataList.content+"</td><td><span>"+dataList.time+"</span><span>"+dataList.hour+"</span></td>"
+//                         + "<td>递交完毕</td><td>100%</td><td><a class=\"details\">详情</a></td></tr>";
+//              }else{
+//                  text += " <tr><td>"+dataList.channel+"</td><td>"+dataList.content+"</td><td><span>"+dataList.time+"</span><span>"+dataList.hour+"</span></td>"
+//                    + "<td>递交完毕</td><td>100%</td><td><a class=\"details\">详情</a></td></tr>";
+//              }
+//           }
+//         $("#detail").html(text);
+//      }
+//         
+//  }); 
+    window.onload = function(){ 
+    /*左侧高度*/
+    var _h = $(window).height();
+    $(".g-bd-left").height(_h);
+    /*右侧高度*/
+    $(".g-bd-right").height(_h);
+    $(".g-bd-right .h100").height(_h -$(".m-event").height() - 24);
+    /*左侧内容每个格子宽度*/
+    var ulWidth = $(".g-bd-left-cont").find("ul").width();
+    $(".g-bd-left-cont ul li").width((ulWidth - 4) / 5);
+} 
+
+    /*右侧时间轴每一格的位置*/
+    var eventWidth= $(".m-event-schedule").width()-10;
+    $(".m-event-timeAxis").width(eventWidth);
+    $(".m-timeAxis-bg dl").width((eventWidth) / 3 );
+    $(".m-timeAxis-con dl").width((eventWidth) / 3 );
+    $(".m-event-schedule p span").width(eventWidth / 3 -3 );
+    $(".g-bd-right-modular").find(".m-timeAxis-con").each(function(i){
+        if($(this).find("dd").hasClass("alert")){
+            var _index = $(this).find("dd.alert").parent().index();
+            var conDlWidth = ($(this).find("dd.alert").parent().width() - 29) / 2;
+            $(this).find("dd.alert").parent().width($(this).find("dd.alert").parent().width() / 2 + 10);
+            var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+            // $(this).width(timeAxisWidth);
+            /*红点下面的文字也为红色*/
+            $(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("color","#ff4747");
+            /*判断红字是否换行，如果换行就加上一定的高度*/
+            if($(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+                $(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+                $(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+            }
+        }else if($(this).find("dd").hasClass("finish")){
+            var _index = $(this).find("dd.finish").parent().index();
+            var conDlWidth = ($(this).find("dd.finish").parent().width() - 29) / 2;
+            $(this).find("dd.finish").parent().width($(this).find("dd.finish").parent().width() / 2 + 10);
+            var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+            // $(this).width(timeAxisWidth);
+            /*判断完成的说明是否换行，如果换行就加上一定的高度*/
+            if($(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+                $(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+                $(this).parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+            }
+        }
+    });
+
+})
+$(function(){   
+    /*发布申请未通过时间轴*/
+    var eventWidth= $(".m-event").width();
+    if($(".m-timeAxis-con").find("dd").hasClass("alert")){
+        var _index = $(".m-timeAxis-con").find("dd.alert").parent().index();
+        var conDlWidth = ($(".m-timeAxis-con").find("dd.alert").parent().width() - 29) / 2;
+        $(".m-timeAxis-con").find("dd.alert").parent().width($(this).find("dd.alert").parent().width() / 2 + 10);
+        var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+        // $(".m-timeAxis-con").width(timeAxisWidth);
+        /*红点下面的文字也为红色*/
+        $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("color","#ff4747");
+        /*判断红字是否换行，如果换行就加上一定的高度*/
+        if($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+        }
+    }else if($(".m-timeAxis-con").find("dd").hasClass("finish")){
+        var _index = $(".m-timeAxis-con").find("dd.finish").parent().index();
+        var conDlWidth = ($(".m-timeAxis-con").find("dd.finish").parent().width() - 29) / 2;
+        $(".m-timeAxis-con").find("dd.finish").parent().width($(this).find("dd.finish").parent().width() / 2 + 10);
+        var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+        // $(".m-timeAxis-con").width(timeAxisWidth);
+        /*判断完成的说明是否换行，如果换行就加上一定的高度*/
+        if($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+        }
+    }
+});
+</script>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>登录</title>
+	<link rel="stylesheet" href="${base}/static1/css/basic.css">
+	<link rel="stylesheet" href="${base}/static1/css/login.css">
+	<script type="text/javascript" src="${base}/static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${base}/static/js/public.js"></script>
+	<script type="text/javascript" src="${base}/static/js/login.js"></script>
+</head>
+<body onkeydown="keyLogin();">
+	<div class="g-pager">
+		<div class="pager_hd">
+			<img src="${base}/static1/images/login_hd.png">
+		</div>
+		<div class="pager_bd">
+			<i></i>
+			<h1>
+				欢迎登录黄岩区<br>
+				公共突发事件预警信息发布平台
+			</h1>
+			<div class="m-login">
+				<table>
+					<tr>
+						<td colspan="2">
+							<span>登录</span>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="text" placeholder="用户名" name="password" id="username" class="sign_input "    style="color: rgb(0, 0, 0); ">
+							<i class="user_icon"></i>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">							
+							<input type="password" placeholder="密码" name="password" id="password" class="sign_input "    style="color: rgb(0, 0, 0); ">
+							<i class="password_icon"></i>
+						</td>
+					</tr>
+					<tr>
+						<td class="m-code">
+							
+							<input type="text"  placeholder="验证码" id="captcha" name="captcha" class="sign_input " onblur="if(this.value=='输入验证码') {this.value='000000'}" value="" style="color: rgb(0, 0, 0);">
+						</td>
+						<td>
+						
+							<img src="/sys/dept/imageCode" alt="验证码" id="authCode" onclick="changeImg()" class="codeImg"  style="margin:0 auto;display:block;">
+						</td>
+					</tr>
+					
+					<tr>
+					
+						<td colspan="2">
+						<div id="pwerror"  style=" text-align: center;height: 0px;line-height: 50px;font-size: 26px;color: red;font-weight: bold;display:none;">用户名/不正确</div>
+						#if($error)
+              <div id="tips1" style="display:none; text-align: center;height: 0px;line-height: 50px;font-size: 26px;color: red;font-weight: bold; ">$!{error}</div>
+    						 #end
+							<button id=keylogin onclick="verify()">登录</button>
+
+
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+<script>
+
+function verify(){
+             var pw=$("#password").val();
+             if(pw==""){
+             $("#tips1").hide();
+             $("#pwerror").html("用户名/不正确");
+             $("#pwerror").show();
+             return false;
+             }
+             if(pw!=""){
+             var password=$("#password").val();
+             var captcha=$("#captcha").val();
+             var username=$("#username").val();
+              $.ajax({
+		    type:"post",
+			url:"/login",
+			dataType:"json",
+			data: {password: password, captcha: captcha, username: username},
+			success:function(data){	
+				$("#pwerror").html(data.error1);
+				$("#pwerror").show();
+
+			},
+			error:function (){
+			window.location.reload(); 
+			}
+		})
+             }
+             return false;
+             
+		 
+    //进行下一步
+}
+	
+	function changeImg(){       
+            $("#authCode").attr("src","/sys/dept/imageCode?d="+new Date().valueOf());  
+            
+                 
+        }
+        //回车登录
+        function keyLogin(){
+		 if (event.keyCode==13)  //回车键的键值为13
+		 document.getElementById("keylogin").click(); //调用登录按钮的登录事件
+          }
+
+	
+	//用于获取ie或者火狐兼容的event事件
+	function getEvent(){
+      if(document.all)    return window.event;
+      func=getEvent.caller;
+      while(func!=null){
+        var arg0=func.arguments[0];
+        if(arg0){if((arg0.constructor==Event || arg0.constructor ==MouseEvent) || (typeof(arg0)=="object" && arg0.preventDefault && arg0.stopPropagation)){return arg0;}            }
+        func=func.caller;
+       }
+       return null;
+     }
+
+
+    //回车时，默认是登陆
+   function on_return(){
+ /*     var event = getEvent();
+      if(event.keyCode == 13){
+       //   var username = $("#username").get(0).value;
+          var password = $("#fpassword").get(0).value;
+	      if(departname==null || departname==""){
+	          $("#username").focus();
+	          return false;
+	      }else if(password == null || password==""){
+	          $("#fpassword").focus();
+	          return false;
+	      }else{
+	        if (document.all('submit')!=null){
+	             document.all('submit').click();
+	         }
+	      }
+      }*/
+    } 
+		</script>
+	
+</body>
+</html>

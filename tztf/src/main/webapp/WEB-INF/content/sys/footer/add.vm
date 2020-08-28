@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>联系人新增</title>
+#parse("commons/commonJs.vm")
+#parse("commons/commonCss.vm")
+<script type="text/javascript">
+	function save(){            
+		jQuery('#fm').form('submit',{                
+			url: '${base}/sys/dept/saveOrUpdateUser',                
+			onSubmit: function(){
+				return jQuery(this).form('validate');
+			},
+			success: function(result){
+				result = jQuery.parseJSON(result);
+				Magic.closeWin();  
+				if(!result.success){  
+					window.parent.jQuery.messager.show({title: '错误', msg: result.message });                  
+				} else {                  
+					window.parent.jQuery('#dg').datagrid('reload');   
+					window.parent.jQuery.messager.show({title: '正确', msg: "保存成功！" });
+				}             
+			}         
+		});     
+	}
+</script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center',border:false" style="padding: 10px 60px 20px 60px;background:#fff;border:1px solid #ccc;">
+      <form id="fm" method="post">
+		<div id="newDiv" class="m-popup">
+			<div class="popup_hd">
+			</div>
+			<div class="popup_bd">
+				<table>
+					<tr>
+						<td>单位名称</td>
+						<td><input type="text" id="name" name="name" value=""></td>
+					</tr>
+					<tr>
+						<td>单位地址</td>
+						<td><input type="text" id="address" name="address" value=""></td>
+					</tr>
+					<tr>
+						<td>联系人</td>
+						<td><input type="text" id="linker" name="linker" value=""></td>
+					</tr>
+					<tr>
+						<td>联系方式</td>
+						<td><input type="text" id="phone" name="phone" value=""></td>
+					</tr>
+					<tr>
+						<td>传真</td>
+						<td><input type="text" id="fax" name="fax" value=""></td>
+					</tr>
+					<tr>
+						<td>单位名称缩写</td>
+						<td><input type="text" id="code" name="code" value=""></td>
+					</tr>
+					<tr>
+						<td>国家单位编码</td>
+						<td><input type="text" id="nationalUnitCode" name="nationalUnitCode" value=""></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+	</div>
+        <div region="south" border="false" style="text-align: right; height: 30px;padding-top:3px;padding-right:10px">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="Magic.closeWin()">取消</a>
+        </div>
+</body>
+</html>

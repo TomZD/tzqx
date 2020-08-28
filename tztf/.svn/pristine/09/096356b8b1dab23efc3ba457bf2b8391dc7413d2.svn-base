@@ -1,0 +1,146 @@
+@charset "UTF-8";
+/*不显示滚动条*/
+::-webkit-scrollbar{
+	display:none;
+}
+.splitLine{
+    height:0.266667rem;
+    background:#f2f2f4;
+}
+.container{
+    display:-webkit-flex;
+    display:flex;
+    flex-decoration:row;
+    justify-content: space-between;
+    padding:0.4rem;
+    background-color: #fff;
+}
+.uploadImg div{
+	height:100%;
+	width:100%;
+	z-index:2;
+	position:relative;
+}
+.uploadImg div img{
+	height:100%;
+	width:100%;
+}
+.uploadImg input{
+	display:block;
+	width:100%;
+	height:100%;
+	position:absolute;
+	opacity:0;
+	top:0;
+	z-index:2;
+}
+.uploadImg{
+    border:0.013333rem solid #e6e6e6;
+    width:25vw;
+    height:25vw;
+    position:relative;
+}
+.uploadImg::before{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10vw;
+    transform:translate(-50%, -50%);
+    border-top: 1vw solid #e6e6e6;
+}
+.uploadImg::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height:10vw;
+    transform: translate(-50%,-50%);
+    border-left: 1vw solid #e6e6e6;
+}
+.zq_detail{
+    padding-left:0.4rem;
+}
+.zq_detail{
+    background-color: #fff;
+}
+.zq_detail>ul>li{
+    height:1.133333rem;
+    line-height:1.133333rem;
+    font-size:0.4rem;
+    border-bottom:0.013333rem solid #e6e6e6;
+}
+.zq_detail>ul>li>span:first-child{
+	float:left;
+    display:inline-block;
+    width:24vw;
+    font-size: 0.426667rem;
+}
+.checkHistory{
+    float:right;
+    margin-top:0.4rem;
+   	margin-right:0.4rem;
+}
+.checkHistory>a{
+    color:#3399ff;
+    font-size:0.32rem;
+}
+.zq_submit>div{
+    padding:0 0.4rem;
+}
+.footer{
+	margin-top:3.533333rem;
+	text-align: center;
+}
+.footer>button{
+	width:9.133333rem;
+	height:1.173333rem;
+	background:#3399ff;
+	border-radius:10px;
+	color:#fff;
+	font-size: 0.533333rem;
+}
+.inputcolor,.inputcolor::-webkit-input-placeholder{
+	color:#666;
+}
+.desc{
+	margin-top:0.3rem;
+	width:72%;
+	height:82%;
+}
+.desc+span {
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.5rem;
+    font-size: 0.3rem;
+    line-height: 0.5rem;
+}
+.name,.name::-webkit-input-placeholder{
+	display: inline-block;
+	width:20vw;
+	color:#666;
+}
+.time{
+	color:#666;
+	font-size:0.4rem;
+}
+.footer{
+	position:absolute;
+	bottom:0.4rem;
+	left:0.4rem;
+	text-align: center;
+}
+.footer>button{
+	width:9.133333rem;
+	height:1.173333rem;
+	background:#3399ff;
+	border-radius:10px;
+	color:#fff;
+	font-size: 0.533333rem;
+}
+.map span:last-child{
+	max-width:76vw;
+	float:left;
+	display:inline-block;
+	overflow:hidden;
+}

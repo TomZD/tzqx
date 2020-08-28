@@ -1,0 +1,129 @@
+﻿.g-hd .m-hd{
+    background: url(../images/fzjz_nav.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 7%;
+}
+.g-hd h2{
+    -webkit-box-reflect: initial;
+    text-shadow: none;
+    font-size: 22px;
+    float: left;
+}
+.g-hd .m-hd li:nth-child(2){
+    width: auto;
+    position: static;
+    left: 0;
+}
+.g-nav{
+    width: 25%;
+}
+.g-nav a{
+    color:#fff;
+    font-size: 14px;
+    display: block;
+    height: 32px;
+    line-height: 32px;
+    background:url("../images/nav_bk.png") 0 0 no-repeat;
+    background-size: 100% 100%;
+}
+.g-nav a em{
+    display: inline-table;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+    background-position:  0 0;
+    background-repeat: no-repeat;
+    position: relative;
+    top: 5px;
+}
+.g-nav a.m-live em{
+    background-image: url("../images/live_icon.png");
+}
+.g-nav a.m-forcast em{
+    background-image: url("../images/forcast_icon.png");
+}
+.g-nav a.m-disaster em{
+    background-image: url("../images/disaster_icon.png");
+}
+.g-nav a.m-emergency em{
+    background-image: url("../images/emergency_icon.png");
+}
+.g-nav a.m-wisdom em{
+    background-image: url("../images/wisdom_icon.png");
+}
+.g-nav a.m-install em{
+    background-image: url("../images/install_icon.png");
+}
+.g-nav table{
+    position: relative;
+    top: 20px;
+}
+.g-nav table td{
+    border:none;
+    border-right: 10px solid transparent;
+}
+.g-nav table td:last-child{
+    border-right: none;
+}
+.GiBaseLayerSwitcher{
+    width: 100px !important;
+    height: 100px !important;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 4px 28px 2px rgba(9,156,202,0.68) !important;
+}
+.GiBaseLayerSwitcher .olButton{
+    height: 100% !important;
+    width: 100% !important;
+    background-size: 100% 100% !important;
+    position: relative;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 100px !important;
+    padding: 0 !important;
+}
+.olControlZoom{
+   background: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    width: 0 !important;
+}
+.olControlZoom a{
+    background: rgba(11,62,98,0.8);
+    position: absolute;
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 50% !important;
+    line-height: 26px !important;
+    box-shadow: 0 0 12px 0px rgba(9,156,202,0.67);
+    border: 1px solid #2e8cac;
+    color: #fff !important;
+}
+.map-shaw{
+    opacity: 0.4;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    right: 0;
+}
+.fzd_num{
+    position: absolute;
+    top: 12px;
+    left: 34px;
+    color: #fff;
+}
+.fzd-num-save{
+    position: absolute;
+    top: 24px;
+    left: 30px;
+    width: 125px;
+    height: 40px;
+    color: #fff;
+    background-image: url(../images/arrow.png);
+    background-size: 100% 100%;
+    line-height: 40px;
+    padding-left: 27px;
+    font-size: 12px;
+}

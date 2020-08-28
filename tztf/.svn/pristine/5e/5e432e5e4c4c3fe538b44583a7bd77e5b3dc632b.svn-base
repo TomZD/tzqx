@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>预警信号发布任务反馈</title>
+#parse("commons/commonJs.vm")
+#parse("commons/commonCss.vm")
+<script type="text/javascript">
+	$(function() {
+		jQuery('#isReceiveMassages').combobox({
+			editable:false
+		});
+		jQuery('#departmentId').combobox({
+			editable:false
+		});
+	});
+
+	function save(){            
+		jQuery('#fm').form('submit',{                
+			url: '${base}/sev/alarm-notice/save',                
+			onSubmit: function(){
+				return jQuery(this).form('validate');
+			},
+			success: function(result){
+				result = jQuery.parseJSON(result);
+				Magic.closeWin();  
+				if(!result.success){  
+					window.parent.jQuery.messager.show({title: '错误', msg: result.message });                  
+				} else {                  
+					window.parent.jQuery('#dg').datagrid('reload');   
+					window.parent.jQuery.messager.show({title: '正确', msg: "保存成功！" });
+				}             
+			}         
+		});     
+	}
+</script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center',border:false" style="padding: 10px 60px 20px 60px;background:#fff;border:1px solid #ccc;">
+      <form id="fm" method="post">
+      	<input id="id" name="id" value="$!{model.id}" type="hidden"/>
+		<div id="newDiv" class="m-popup">
+			<div class="popup_hd">
+			</div>
+			<div class="popup_bd">
+				<table>
+					<tr>
+						<td>发布是否正常</td>
+						<td><input type="radio" id="publish1" name="isPublish" value="1">是<input type="radio" id="publish0" name="isPublish" value="0">否</td>
+					</tr>
+					<tr>
+						<td>发布时间</td>
+						<td><input class="inputTimepick m-text-input" type="text" name="pubishDate" id="basic_example_1" value=""></td>
+					</tr>
+					<tr>
+						<td>发布详情</td>
+						<td><textarea class="m-text-textarea" name="content" id="limitWord"></textarea></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+	</div>
+        <div region="south" border="false" style="text-align: right; height: 30px;padding-top:3px;padding-right:10px">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存并反馈</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="Magic.closeWin()">取消</a>
+        </div>
+</body>
+</html>

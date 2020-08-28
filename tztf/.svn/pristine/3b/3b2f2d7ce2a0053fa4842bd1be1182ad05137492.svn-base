@@ -1,0 +1,211 @@
+@charset "UTF-8";
+input::-webkit-input-placeholder,input::-moz-input-placeholder,input::-ms-input-placeholder{
+	color:#cccccc;
+}
+body{	
+	background-color:#fff;
+	background:url(../images/contact-info_1.png);
+	background-size:100% 4.8rem;
+	background-repeat: no-repeat;
+}
+input{
+	font-size: 0.533333rem;
+}
+.container{
+	position:relative;
+	height: 100%;
+}
+/*头部*/
+.top-nav{
+	display:none;
+	position: relative;
+	z-index: 1;
+	height: 1.173333rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+.top-nav span{
+	color: #fff;
+}
+.top-nav i{
+	left: 0.4rem;
+	height: 0.466667rem;
+	width: 0.266667rem;
+	background: url(../images/back.png);
+	background-size: 100% 100%;
+}
+.top-back{
+	left: 0.933333rem;
+	font-size: 0.426667rem;
+	line-height: 1.173333rem;
+}
+.top-title{
+	font-size: 0.48rem;
+	line-height: 1.173333rem;
+}
+.top-more{
+	font-size: 0.426667rem;
+	right: 0.4rem;
+	line-height: 1.173333rem;
+}
+/*中间头像*/
+.peopleHead{
+	display: block;
+	position:relative;
+	height: 4.8rem;
+	width: 4.8rem;
+	background-image: url(../images/touxiang.png);
+	background-size: 100% 100%;
+	left: 50%;
+	top: 1.2rem;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+.peopleHead>img{
+	width:4.8rem;
+}
+/*底部编辑信息*/
+.contactEdit{
+	width:7.866667rem;
+	height:6.266667rem;
+	margin:0 auto;
+	margin-top: 2.066667rem;
+	position:relative;
+}
+.contactEdit>.bg_1{
+	height:1.2rem;
+	background-image: url(../images/contact-info_3.png);
+	background-size:100% 100%;
+	z-index: 5;
+}
+.contactEdit>.bg_2{
+	width:7.866667rem;
+	height:6.266667rem;
+	position:absolute;
+	top:0;
+	background-image: url(../images/contact-info_4.png);
+	background-size:100% 100%;	
+	z-index: 100;
+}
+.contactName{
+	padding:0.333333rem 0.533333rem 1.333333rem 0.8rem;
+}
+.contactName>i{
+	display: block;
+	float:left;
+	width:0.533333rem;
+	height:0.533333rem;
+	background-image: url(../images/cf_1.png);
+	background-size:100% 100%;
+	margin-right:0.666667rem;
+}
+.contactName>span{
+	width:4.0rem;
+	font-size:0.4rem;
+	padding:0 0.266667rem;
+	color:#666;
+}
+.contactName>img{
+	width:0.4rem;
+	height:0.4rem;
+	vertical-align: bottom;
+}
+/*手机号*/
+.phoneNum{
+	padding:0 0.533333rem 0.666667rem 0.8rem;
+}
+.phoneNum-i{
+	display: block;
+	float:left;
+	width:0.533333rem;
+	height:0.666667rem;
+	background-image: url(../images/cf_2.png);
+	background-size:100% 100%;
+	margin-right:0.666667rem;
+}
+.select-down{
+	position:relative;
+}
+.select-down i{
+	position:absolute;
+	right:0.3rem;
+	top:0.2rem;
+}
+.select-down ul{
+	display:block;
+	display:none;
+	width:100%;
+	max-height:300%;
+	position:absolute;
+	top:0;
+	border:1px solid #000;
+	border-top:none;
+	background-color:#fff;
+	z-index:2;
+	box-sizing:border-box;
+	overflow:auto;
+}
+.select-down ul li{
+	font-size:0.4rem;
+	color:#666;
+	display:block;
+	width:100%;;
+	height:0.6rem;
+	padding-left:0.266667rem;
+	box-sizing:border-box;
+}
+.phoneNum>div>input,.phoneNum>div>span,.name{
+	width:4.0rem;
+	font-size:0.4rem;
+	padding:0 0.266667rem;
+	color:#666;
+}
+.phoneNum>div>img{
+	width:0.4rem;
+	height:0.4rem;
+	vertical-align: center;
+}
+.phoneNum>div{
+	border-bottom:1px solid #e6e6e6;
+	margin-left:1.2rem;
+}
+.groupsName-i{
+	display: block;
+	float:left;
+	width:0.533333rem;
+	height:0.666667rem;
+	background-image: url(../images/cf_3.png);
+	background-size:100% 100%;
+	margin-right:0.666667rem;
+}
+.remarkInfo-i{
+	display: block;
+	float:left;
+	width:0.533333rem;
+	height:0.666667rem;
+	background-image: url(../images/cf_4.png);
+	background-size:100% 100%;
+	margin-right:0.666667rem;
+}
+/*footer*/
+.delete{
+	position: absolute;
+	bottom: 0.933333rem;
+	color: #fff;
+    width: calc(100% - 0.8rem);
+    margin:0 0.4rem;
+    height: 1.066667rem;
+    background: #3399ff;
+    border-radius: 5px;
+    font-size: 0.533333rem;
+}
+.down{
+	display:inline-block;
+	width:0.4rem;
+	height:0.2rem;
+	background-image:url(../images/login_1.png);
+	background-size:100% 100%;
+}

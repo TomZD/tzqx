@@ -1,0 +1,14 @@
+<p>
+    ${spotName}天气预报：
+</p>
+#foreach( $forecast in $forecasts)
+<p>
+    ${forecast.windDescribe}：${forecast.weatherDescribe}
+</p>
+#end
+<p>
+    预报制作 ${userName} ${pubDate}
+</p>
+<p>
+    <br/>
+</p>

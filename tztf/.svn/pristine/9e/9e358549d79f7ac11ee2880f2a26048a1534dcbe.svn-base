@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="movinginfo"/>
+    <title></title>
+    <style>
+        .m-page{
+            position: fixed;
+            top: calc(50% - 10px);
+            font-size: 32px;
+            left: calc(50% - 160px);
+        }
+    </style>
+</head>
+<body>
+    <div class="m-page">登录超时,请重新登录</div>
+</body>
+</html>

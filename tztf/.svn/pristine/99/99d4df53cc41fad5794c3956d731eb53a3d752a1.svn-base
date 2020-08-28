@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>账号管理</title>
+    <!-- <meta charset="UTF-8"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    #parse("commons/commonJs.vm")
+    #parse("commons/commonCss.vm")
+    #parse("commons/commonRes.vm")
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/global.css">
+    <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css">
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css">
+    <!-- 引用滚动条插件 -->
+    <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+    <style>
+        body {
+            background: none;
+        }
+
+        .m-table {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .m-popup {
+            min-height: 235px;
+        }
+
+        .m-popup .popup_bd {
+            overflow: auto;
+        }
+
+        .m-table table tr td {
+            padding: 10px 0;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+
+        //删除
+        function del(id) {
+            $(".m-poplayer").fadeIn(200);
+            /*添加popup内容*/
+            var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+            /*弹窗位置*/
+
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            var map = {};
+            var informations = '';
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height", "25px").css("text-align", "center").css("width", "476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top", "30px").css("width", "66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left", "45%");
+            $(".m-poplayer").find(".popup_bottom").css("bottom", "10px");
+
+            /*点击确定*/
+            $(".m-btn.m-confirm").on("click", function () {
+                parent.deleteKeyPlace(id);
+                // parent.deleteTabStation(id);
+
+            });
+            /*点击取消*/
+            $(".m-btn.m-home-cancel").on("click", function () {
+                $(".m-poplayer").fadeOut(200);
+            });
+        }
+
+        //获取新增菜单下拉框
+        function getAllMenu() {
+            $.ajax({
+                type: "POST",
+                url: '${base}/yzt/keyAccount/getAllMenu',
+                dataType: "JSON",
+                success: function (data) {
+                    //$("#town").empty();
+                    jQuery.each(data, function (i, item) {
+                        $("#town").append("<option value='" + item.id + "'>" + item.town + "</option>");
+                    });
+                },
+
+                error: function (data) {
+                    alert("错误！");
+                }
+            });
+        }
+
+
+        function getAllMenu2() {
+            $.ajax({
+                type: "POST",
+                url: '${base}/yzt/keyAccount/getAllMenu',
+                dataType: "JSON",
+                success: function (data) {
+                    //$("#town").empty();
+                    // var value = $("#town2").val();
+                    // if (value != "null") {
+                    //     $("#town2").append("<option value=''>" + "无" + "</option>");
+                    // }
+                    jQuery.each(data, function (i, item) {
+                        // if (value != item.id) {
+                        $("#town2").append("<option value='" + item.id + "'>" + item.town + "</option>");
+                        // }
+                    });
+
+                },
+
+                error: function (data) {
+                    alert("错误！");
+                }
+            });
+        }
+
+        //修改保存
+        function isUpdate() {
+            var page = document.getElementById('nowPage').innerText;
+            var size = document.getElementById('pageSize').innerText;
+            var isOK = true;
+
+            //用户名
+            var name = document.getElementById('name2').value;
+            if (name == "") {
+                isOK = false;
+                layer.msg("请输入用户名！");
+                return false;
+            }
+
+            //账号
+            var username = document.getElementById('username2').value;
+            if (username == "") {
+                isOK = false;
+                layer.msg("请输入账号！");
+                return false;
+            }
+
+            //密码
+            var password = document.getElementById('password2').value;
+            if (password == "") {
+                isOK = false;
+                layer.msg("请输入密码！");
+                return false;
+            }
+
+            if (isOK == true) {
+                document.getElementById('nameTemp').value = document.getElementById('name2').value;
+                document.getElementById('usernameTemp').value = document.getElementById('username2').value;
+                document.getElementById('passwordTemp').value = document.getElementById('password2').value;
+                document.getElementById('townTemp').value = document.getElementById('town2').value;
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "${base}/yzt/keyAccount/saveOrUpdate",
+                    data: $('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function (request) {
+                        alert("Connection error");
+                    },
+                    success: function (data) {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+
+
+        //修改
+        function edit(id) {
+            document.getElementById('id').value = id;
+            $.ajax({
+                type: "POST",
+                url: '${base}/yzt/keyAccount/editAccount',
+                data: "id=" + id,
+                dataType: "JSON",
+                success: function (data) {
+
+                    document.getElementById('name2').value = data.name ? data.name : '';
+                    document.getElementById('username2').value = data.userName ? data.userName : '';
+                    document.getElementById('password2').value = data.password ? data.password : '';
+                    // document.getElementById('town2').value = data.townId ? data.townId : '';
+                    // document.getElementById('town2').innerText = data.townName ? data.townName : '';
+
+                },
+                error: function (data) {
+                    alert("错误！");
+                }
+            });
+            $("#updateDiv").show();
+            $("#newDiv").hide();
+            getAllMenu2();
+        }
+
+
+        //新增
+        function addNew() {
+            document.getElementById('name').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            getAllMenu();
+            $("#newDiv").show();
+            $("#updateDiv").hide();
+        }
+
+
+        function alertBox(value) {
+            $(".m-poplayer").fadeIn(200);
+            _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2;
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>" + value + "</span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height", "25px").css("text-align", "center").css("width", "476px");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top", "30px").css("width", "66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left", "45%");
+            setTimeout(function () {
+                $(".m-poplayer").fadeOut(200);
+            }, 2000);
+        }
+
+        //新增保存
+        function isAdd() {
+            var isOK = true;
+            //用户名
+            var name = document.getElementById('name').value;
+            if (name == "") {
+                isOK = false;
+                layer.msg("请输入用户名！");
+                return false;
+            }
+
+            //账号
+            var username = document.getElementById('username').value;
+            if (username == "") {
+                isOK = false;
+                layer.msg("请输入账号！");
+                return false;
+            }
+
+            //密码
+            var password = document.getElementById('password').value;
+            if (password == "") {
+                isOK = false;
+                layer.msg("请输入密码！");
+                return false;
+            }
+
+            if (isOK == true) {
+                document.getElementById('nameTemp').value = document.getElementById('name').value;
+                document.getElementById('usernameTemp').value = document.getElementById('username').value;
+                document.getElementById('passwordTemp').value = document.getElementById('password').value;
+                document.getElementById('townTemp').value = document.getElementById('town').value;
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: "${base}/yzt/keyAccount/saveOrUpdate",
+                    data: $('#f').serialize(),// 你的formid
+                    async: false,
+                    error: function (request) {
+                        alert("Connection error");
+                    },
+                    success: function (data) {
+                        if (data == '该账号已存在!') {
+                            layer.msg(data);
+                        } else {
+                            layer.msg("保存成功");
+                            parent.location.reload();
+                        }
+                    }
+                });
+            }
+        }
+
+
+    </script>
+
+</head>
+<body>
+<!--弹窗开始-->
+<div class="m-poplayer">
+    <div class="popup_con"></div>
+</div>
+<!--弹窗结束-->
+<form id="f">
+    <input id="id" name="id" type="hidden"/>
+    <input id="nameTemp" name="name" type="hidden"/>
+    <input id="usernameTemp" name="userName" type="hidden"/>
+    <input id="passwordTemp" name="password" type="hidden"/>
+    <input id="townTemp" name="townId" type="hidden"/>
+</form>
+<!--弹窗结束-->
+<form id="f2">
+    <input id="id2" name="id" type="hidden"/>
+    <input id="id3" name="id" type="hidden"/>
+    <input id="id4" name="id" type="hidden"/>
+    <input id="id5" name="id" type="hidden"/>
+</form>
+
+<!--添加弹窗 -->
+<div id="newDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>账号管理添加</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">用户名</td>
+                <td><input type="text" id="name" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">账号</td>
+                <td><input type="text" id="username" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">密码</td>
+                <td><input type="text" id="password" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">乡镇</td>
+                <td>
+                    <select id="town">
+                        <option value="">无</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isAdd()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!--修改弹窗 -->
+
+<div id="updateDiv" class="m-popup">
+    <div class="popup_hd">
+        <span>自动站管理修改</span>
+    </div>
+    <div class="popup_bd">
+        <table>
+            <tr>
+                <td class="rtit">用户名</td>
+                <td><input type="text" id="name2" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">账号</td>
+                <td><input type="text" id="username2" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">密码</td>
+                <td><input type="text" id="password2" value=""></td>
+            </tr>
+            <tr>
+                <td class="rtit">乡镇</td>
+                <td>
+                    <select id="town2">
+                        <option value="">无</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <ul>
+            <li>
+                <button class="abandon">取消</button>
+            </li>
+            <li>
+                <button class="m-event-button" onclick="isUpdate()">确定</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+<div class="m-table">
+    <table>
+        <thead>
+        <td>用户名</td>
+        <td>账号</td>
+        <td>密码</td>
+        <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+
+            #set($list = $!{page.get("list")})##
+            #foreach($tabAccount in $list)##
+            <tr value='$!{tabAccount.get("id")}'>
+                <td>$!{tabAccount.get("name")}</td>
+                <td>$!{tabAccount.get("userName")}</td>
+                <td>$!{tabAccount.get("password")}</td>
+                <td>
+                    <button onclick="edit($!{tabAccount.get("id")})">修改</button>
+                    #if($!{del} == 1)
+                    <button class="details btn-delete" onclick="del($!{tabAccount.get("id")})">删除</button>
+                    #end
+                </td>
+            </tr>
+            #end##
+        </tbody>
+    </table>
+    #parse("commons/pagerTemplate.vm")
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>杭州市防灾减灾监测预报预警平台--实况监控</title>
+	<link rel="stylesheet" href="./static2/css/basic.css">
+	<link rel="stylesheet" href="./static2/css/global.css">
+	<link rel="stylesheet" href="./static2/css/fzjz_global.css">
+	<link rel="stylesheet" href="./static2/css/common/index.css" />
+	<link rel="stylesheet" type="text/css" href="static2/css/gi-gis.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz_media.css">
+	<style>
+	body{
+		overflow: hidden;
+		min-height: 450px;
+		min-width: 0;
+	}
+</style>
+</head>
+<body>
+	<div class="g-pager">
+		<div class="m-nav">
+			<ul class="fzjz-save">
+				<li class="tian" value="1">
+					<i></i>
+					<span>天气实况</span>
+				</li>
+			</ul>
+		</div>
+		 <div class="blue_nav" id="Tmap" style="display:none">
+                <ul>
+                    <li class="first"><a href="###" onclick="requstWeatherData('5min_T')"><i class="qw"></i>气温</a>
+                        <ul>
+                             <li><a href="#" onclick="requstWeatherData('5min_T')" >当前实况</a></li>
+                             
+                             <li><a href="#" onclick="requstWeatherData('d2n_TMax')">今日最高气温</a></li>
+                             <li><a href="#" onclick="requstWeatherData('d2n_TMin')">今日最低气温</a></li>
+                             <li><a href="#" onclick="requstWeatherData('24hour_TMax')">近24小时最高气温</a></li>
+                             <li><a href="#" onclick="requstWeatherData('24hour_TMin')">近24小时最低气温</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="###"><i class="js" onclick="requstWeatherData('1hour_R')"></i>降水</a>
+                        <ul >
+                             <li><a href="#" onclick="requstWeatherData('1hour_R')">1小时降水量</a></li>
+                             <li><a href="#" onclick="requstWeatherData('3hour_R')">3小时降水量</a></li>
+                             <li><a href="#" onclick="requstWeatherData('6hour_R')">6小时降水量</a></li>
+                             <li><a href="#" onclick="requstWeatherData('12hour_R')">12小时降水量</a></li>
+                             <li><a href="#" onclick="requstWeatherData('24hour_R')">24小时降水量</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="###" onclick="requstWeatherData('1hour_MaxWind')"><i class="fx"></i>风向风速</a>
+                    	<ul >
+                             <li><a href="#" onclick="requstWeatherData('1hour_MaxWind')">近1小时最大风力</a></li>
+                             <li><a href="#" onclick="requstWeatherData('1hour_ExMaxWind')">近1小时极大风力</a></li>
+                             <li><a href="#" onclick="requstWeatherData('d2n_MaxWind')">今日最大风力</a></li>
+                             <li><a href="#" onclick="requstWeatherData('d2n_ExMaxWind')">今日极大风力</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div> 
+		<div id="map" class="map m-map"></div>
+		<div class="m-tool-box">
+			<ul>
+				<li class="m-time">
+					<span>时间选择</span>
+					<div class="m-select-time">
+						<span>12月12日10时10分</span>
+						<i></i>
+					<ul>
+							<li>12月12日10时10分</li>
+							<li>12月12日10时20分</li>
+							<li>12月12日10时30分</li>
+							<li>12月12日10时40分</li>
+						</ul>
+					</div>
+				</li>
+				<li class="m-time-axis">
+					<div class="m-time-axis-box">
+						<ul class="m-axis-list">
+							<li>
+								<span>12日19时</span>
+							</li>
+							<li>
+								<span>12日20时</span>
+							</li>
+							<li class="z-on">
+								<span>12日21时</span>
+							</li>
+							<li>
+								<span>12日22时</span>
+							</li>
+							<li>
+								<span>12日23时</span>
+							</li>
+							<li>
+								<span>13日01时</span>
+							</li>
+							<li>
+								<span>13日02时</span>
+							</li>
+							<li>
+								<span>13日03时</span>
+							</li>
+							<li>
+								<span>13日04时</span>
+							</li>
+							<li>
+								<span>13日05时</span>
+							</li>
+							<li>
+								<span>13日06时</span>
+							</li>
+							<li>
+								<span>13日07时</span>
+							</li>
+							<li>
+								<span>13日08时</span>
+							</li>
+						</ul>
+					</div>	
+						<div class="m-time-axis-control">
+						<table>
+							<tr>
+								<td><img class="m-prev" src="./static2/images/prev_btn.png" title="下一个时次"></td>
+								<td><img class="m-paly" src="./static2/images/play_btn.png" title="下一个时次"></td>
+								<td><img class="m-next" src="./static2/images/next_btn.png" title="下一个时次"></td>
+							</tr>
+						</table>
+					</div>
+				</li>
+				<li class="m-legend">
+					<img src="./static2/images/温度条.png" alt="">
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!--js开始-->
+	<script type="text/javascript" src="./static2/js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="./static2/js/public.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/openLayers.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/sea.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/highcharts.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/layer/layer.js"></script>
+	<script type="text/javascript">
+		seajs.config({
+			"base": "./static2/js"
+		});
+		seajs.use('tqsk');
+		
+		
+	</script>
+	<!--js开始-->
+	<iframe id="VideoFrame" style="width:100%;height:100%;" src="">
+</body>
+</html>

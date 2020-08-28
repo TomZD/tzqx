@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+	    <title>服务用户站点维护</title>
+	    <meta charset="UTF-8">
+	    #parse("commons/commonJs.vm")
+	    #parse("commons/commonCss.vm")
+	</head>
+	 <link href="$base/static/css/makeReptab.css" rel="stylesheet"/>
+	 <script src="$base/static/js/lib/sea.js"></script>
+     <script src="$base/static/js/lib/openLayers.js"></script>  
+	 <script type="text/javascript">
+	        $(function () {
+	            jQuery('#dg').datagrid({
+	                url: 'querySationList',
+	                columns: [[
+	                      {field: 'id', checkbox: true,hidden:'true'}
+	                    , {field: 'name', title:'服务用户', width: 100}
+	                    , {field: 'lon', title:'经度', width: 50}
+	                    , {field: 'lat', title:'纬度', width: 50}
+	                    , {field: 'opp', title:'选中站点', width: 200,formatter:stationFun}
+	                    , {field:'opt',title:'操作',width:50,formatter:optionFun}
+	                ]],
+	                pagination: true,
+	                singleSelect: true,
+	                fitColumns: true,
+	                fit: true,
+	                toolbar: '#toolbar',
+	                onDblClickRow: function (rowid, rowdata) {
+	                    
+	                }
+	            });
+	        });
+	        
+	        function optionFun(value,row,index) {
+                return '<a name="del" data-type="'+row.id+'&'+row.lon+'&'+row.lat+'">查看站点</a>';
+			}
+			
+			function stationFun(value,row,index) {
+			     var text ="";
+			     $.ajax({
+	            	      url: "../suser/getStation?suid="+row.id,
+	            	      dataType: "json",
+	            	      async: false,
+	            	      success: function (station) { 
+	            	        for(var i=0;i<station.Data.length;i++){
+                                   text += station.Data[i].site+"|"+station.Data[i].siteName+"    ";
+                                }   
+	            	   // 	 return '<span>'+text+'</span>';
+	            	      }
+	               });	
+			     
+               return '<span>'+text+'</span>';
+			}
+			
+	       
+	        
+	    seajs.config({
+            "base": "$base/static/js"
+        });
+        seajs.use("mapSpot")      
+	        
+	  </script>
+	<body class="easyui-layout" style="overflow-y: hidden" scroll="no">
+		<table id="dg" data-options="toolbar:'#toolbar'"></table>
+		<div class="map_layer" style="display:none">
+		<a class='close_link'><img src="../../static/images/close.png"/></a>
+		<div class="stationData">
+		<table>
+		<thead>
+			<tr>
+			   <th colspan="3">站点关联</th>
+			</tr>
+		</thead>
+		 <tbody id="showData">
+		<!--   <tr class="tr_tit tr_bg0"><td>序号</td><td>站点值</td><td>站名</td></tr>
+		   <tr class="tr_bg1"><td>1</td><td>26666</td><td>测试1</td></tr>
+		   <tr class="tr_bg0"><td>2</td><td>26333</td><td>测试2</td></tr> -->
+		 </tbody>
+		</table>  	
+		<span class="m_legend"><img src="../../static/images/player_slider_btn2s.png">已选中<img src="../../static/images/player_slider_btn2.png">未选中</span>
+		</div>
+		<div id="map" class="map" title="地图面板" style="width:100%;height:400px"></div>
+		</div>
+	</body>
+</html>

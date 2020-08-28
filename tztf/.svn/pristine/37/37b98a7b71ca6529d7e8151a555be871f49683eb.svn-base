@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布-发布失败详细页</title>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/publishApplication.css">
+    <!--日历控件开始-->
+    <link rel="stylesheet" href="/static/js/datepicker/css/jqueryui.min.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/timepick.css">
+    <script type="text/javascript">
+       var pubNo = '$!{alarm.pubNo}';
+       var version = '$!{alarm.version}';
+       var imagePath = '$!{alarm.imagePath}';
+    </script>
+     <style>
+             body{
+                 background: url(/static/images/bg_img.png) no-repeat;
+                     background-size: 100% 100%;
+             }
+        </style>  
+    <!--日历控件结束-->
+</head>
+<body>
+    <!--时间轴开始-->
+    <div class="m-event mb10">
+        <div class="m-event-schedule">
+                <div class="m-event-schedule">
+                   <p>
+                       #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+                            <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                            <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.auditDate})</span>
+                       #end
+                       #if($!alarm.pubState == "0" || $!alarm.pubState == "7")
+                            <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                       #end
+                       #if($!alarm.pubState == "5" || $!alarm.pubState == "12")
+                             <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                            
+                             <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.releaseDate})</span>
+                             <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.completeDate})</span>
+                       #end
+                   </p>
+                </div>
+                <div class="m-event-timeAxis">
+                    <!--事件进度时间轴底部开始-->
+                    <div class="m-timeAxis-bg">
+                        <dl>
+                            <dd></dd>
+                        </dl>
+                        
+                        <dl>
+                            <dd></dd>
+                        </dl>
+                        <dl>
+                            <dd></dd>
+                        </dl>
+                    </div>
+                    <!--事件进度时间轴底部结束-->
+                    <!--事件进度时间轴进度开始-->
+                    <div class="m-timeAxis-con">
+                              #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+                               <dl>
+                                   <dd><i></i></dd>
+                               </dl>
+                               <dl>
+                                   <dd class="alert"><i></i></dd>
+                               </dl>
+                             #end
+                              #if($!alarm.pubState == "0" || $!alarm.pubState == "7")
+                               <dl>
+                                 <dd class="finish"><i></i></dd>
+                                </dl>
+                             #end
+                             #if($!alarm.pubState == "5")
+                                  <dl><dd><i></i></dd></dl>
+                                  
+                                  <dl><dd><i></i></dd></dl>
+                                  <dl><dd class="finish"><i></i></dd></dl>
+                             #end
+                             #if($!alarm.pubState == "12")
+                                  <dl><dd><i></i></dd></dl>
+                                  
+                                  <dl><dd><i></i></dd></dl>
+                                  <dl><dd><i></i></dd></dl>
+                             #end
+                    </div>
+                    <!--事件进度时间轴进度结束-->
+                </div> 
+                 <!--事件进度说明开始-->
+                 <ul>
+                <li class="m-event-explain">
+                    <p>
+                        #if($!alarm.pubState == "2")
+                            <span>发布申请</span>
+                           
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #elseif($!alarm.pubState == "9")
+                            <span>解除申请</span>
+                           
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #elseif($!alarm.pubState == "0")
+                            <span>发布申请</span>
+                            
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #elseif($!alarm.pubState == "7")
+                            <span>解除申请</span>
+                           
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #elseif($!alarm.pubState == "5")
+                            <span>发布申请</span>
+                           
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #elseif($!alarm.pubState == "12")
+                            <span>解除申请</span>
+                            
+                            <span>发布平台执行</span>
+                            <span>发布完成</span>
+                        #end
+                    </p>
+                </li>
+                </ul>
+            <!--事件进度说明开始-->
+           
+        </div>   
+    </div>                          
+    <!--时间轴结束-->
+    <!--左边开始-->
+        <div class="g-bd-left">
+            <!--标题开始-->
+           
+            <div class="g-bd-tit">
+                 <span><a href="javascript:history.go(-1)" class="m-event-button" id="comback" style="float:left;top:38px;">后退</a></span>
+                <span class="filenum">$!{alarm.pubNo}</span>
+            </div>
+           
+            <!--标题结束-->
+            <!--内容开始-->
+            <div class="g-bd-left-con">
+                <ul>
+                    <!--标题开始-->
+                    <li><span>标题</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{alarm.title}" /></li>
+                    <!--标题结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--信息类别开始-->
+                    <li><span>信息类别</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{type}" /></li>
+                    <!--信息类别结束-->
+                    <!--预警级别开始-->
+                    <li class="pl10"><span>预警级别</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{level}" /></li>
+                    <!--预警级别结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--发布时间开始-->
+                    <li><span>发布时间</span><input class="inputTimepick m-text-input" readOnly="readOnly" type="text" name="basic_example_1" value="$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})"></li>
+                    <!--发布时间结束-->
+                    <!--发布时效开始-->
+                    <li class="pl10"><span>发布时效</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{alarm.duration}小时" /></li>
+                    <!--发布时效结束-->
+                </ul>
+                <ul>
+                    <!--发布范围开始-->
+                    <li><span class="fl">发布范围</span><textarea class="m-text-textarea" readOnly="readOnly">$!{alarm.pubRangeName}</textarea></li>
+                    <!--发布范围结束-->
+                </ul>
+                <ul>
+                    <!--发布渠道开始-->
+                    <li><span class="fl">发布渠道</span><textarea class="m-text-textarea" readOnly="readOnly">$!{channel}</textarea></li>
+                    <!--发布渠道结束-->
+                </ul>
+               <!-- <ul>-->
+                    <!--标题位置开始-->
+                 <!--   <li><span>标题位置</span><span class="tl">开头</span></li>-->
+                    <!--标题位置结束-->
+              <!--  </ul>-->
+                <ul>
+                    <!--发布内容开始-->
+                    <li>
+                        <span class="fl">发布内容</span>
+                        <textarea class="m-text-textarea" id="limitWord" readOnly="readOnly">$!{alarm.content}</textarea>
+                    </li>
+                    <!--发布内容结束-->
+                </ul>                
+                <ul class="m-sets-sets">
+                    <!--操作人员开始-->
+                    <li><span>操作人员</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{alarm.publisher}" /></li>
+                    <!--审稿人员结束-->                    <!--发布时效开始-->
+                    <li class="pl10"><span>签发人员</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{alarm.issuer}" /></li>
+                    <!--签发人员结束-->
+                </ul>                
+               
+                 <ul>
+                    <!--审批单开始-->
+                    <li>
+                        <span class="fl">图片</span>
+                         <div class="m-text-textarea dpi">
+                         #if($!alarm.imagePath != "")
+                            <img src="/upload/$!{alarm.imagePath}" style ="height:99px;" />
+                            #else
+                            <h3>未上传</h3> 
+                         #end 
+                        </div>
+                    </li>
+                    <!--发布内容结束-->
+                </ul>
+                 
+                <!-- 看是否需要退回 --> 
+                #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+                <ul>
+                    <li>
+                        <span class="fl">退回原因</span>
+                        <textarea class="m-text-textarea" id="limitWord" readOnly="readOnly">$!{alarm.checkContent}</textarea>
+                    </li>
+                </ul>
+                #end
+                <!-- 看是否需要退回 --> 
+            </div>
+            <!--内容结束-->
+        </div>
+    <!--左边结束-->
+
+    <!--右边开始-->
+        <div class="g-bd-right"> 
+            <!--渠道总汇开始-->       
+            <div class="g-bd-right-modular h100">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>渠道汇总</span>
+                </div>
+                <!--标题结束-->
+                <!--表格-->
+                 <table style="width: 100%;">
+                 <colgroup>
+                        <col style="width:15%">
+                        <col style="width:55%">
+                        <col style="width:15%">
+                        <col style="width:10%">
+                        <col style="width:5%">
+                    </colgroup>
+                        <thead>
+                            <tr>
+                                <td style="text-align: center;">渠道</td>
+                                <td class="message" style="text-align: center;">信息</td>
+                                <td style="text-align: center;">状态</td>
+                                <td style="text-align: center;">进度</td>
+                            </tr>
+                        </thead>
+                    </table>
+                <div class="m-table">
+                    <table>
+                        </thead>
+                    <colgroup>
+                        <col style="width:16%">
+                        <col style="width:58%">
+                        <col style="width:16%">
+                        <col style="width:10%">
+                    </colgroup>
+                    <tbody id="detail">
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <!--渠道总汇开始-->   
+        </div>
+    <!--右边结束-->
+
+    <!--js开始-->
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <!-- <script type="text/javascript" src="/static/js/publishApplication.js"></script> -->
+    <script type="text/javascript" src="/static/js/publishSuccessfully.js"></script>
+    <!--日历开始-->    
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/useDatepick.js"></script>
+    <!--日历结束-->  
+    <!--js开始-->
+</body>
+</html>
+<script>
+$(function(){
+    window.onload = function(){ 
+        /*左侧高度*/
+        var _h = $(window).height();
+        $(".g-bd-left").height(_h);
+        /*右侧高度*/
+        $(".g-bd-right").height(_h);
+        $(".g-bd-right .h100").height(_h -$(".m-event").height() - 24);
+        /*左侧内容每个格子宽度*/
+        var ulWidth = $(".g-bd-left-cont").find("ul").width();
+        $(".g-bd-left-cont ul li").width((ulWidth - 4) / 5);
+    } 
+
+        /*右侧时间轴每一格的位置*/
+        var eventWidth= $(".m-event-schedule").width()-10;
+        $(".m-event-timeAxis").width(eventWidth);
+        $(".m-timeAxis-bg dl").width((eventWidth) / 3 );
+        $(".m-timeAxis-con dl").width((eventWidth) / 3 );
+        $(".m-event-schedule p span").width(eventWidth / 3 -3 );
+
+    if($("#comback").parents(".g-bd-tit").find("span:eq(0)").text() == "发布申请查看"){
+           $("#comback").css("margin-left","18%");
+        }else{
+          $("#comback").css("margin-left","0%");
+        }
+    $("img").css("cursor","pointer").click(function(){
+        window.open("/upload/"+imagePath);
+    });
+    var eventWidth= $(".m-event").width();
+    if($(".m-timeAxis-con").find("dd").hasClass("alert")){
+        var _index = $(".m-timeAxis-con").find("dd.alert").parent().index();
+        var conDlWidth = ($(".m-timeAxis-con").find("dd.alert").parent().width() - 29) / 2;
+        $(".m-timeAxis-con").find("dd.alert").parent().width($(this).find("dd.alert").parent().width() / 2 + 10);
+        var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+        // $(".m-timeAxis-con").width(timeAxisWidth);
+        /*红点下面的文字也为红色*/
+        $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("color","#ff4747");
+        /*判断红字是否换行，如果换行就加上一定的高度*/
+        if($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+        }
+    }else if($(".m-timeAxis-con").find("dd").hasClass("finish")){
+        var _index = $(".m-timeAxis-con").find("dd.finish").parent().index();
+        var conDlWidth = ($(".m-timeAxis-con").find("dd.finish").parent().width() - 29) / 2;
+        $(".m-timeAxis-con").find("dd.finish").parent().width($(this).find("dd.finish").parent().width() / 2 + 10);
+        var timeAxisWidth = eventWidth / 3 * (_index + 1) - conDlWidth;
+        // $(".m-timeAxis-con").width(timeAxisWidth);
+        /*判断完成的说明是否换行，如果换行就加上一定的高度*/
+        if($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22){
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position","relative");
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top","11px");
+        }
+    }
+});
+
+
+</script>

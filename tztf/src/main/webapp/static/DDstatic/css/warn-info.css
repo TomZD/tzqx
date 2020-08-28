@@ -1,0 +1,72 @@
+.warn-box{
+	position: relative;
+	width: 100%;
+	padding: 0 0.333333rem;
+	box-sizing: border-box;
+	background-color: #fff;
+	margin-top: 0.266667rem;
+}
+.warn-title{
+	height: 18%;
+}
+.warn-box i{
+	left: 0.333333rem;
+	display: inline-block;
+	height: 2.133333rem;
+	width: 2.466667rem;
+	background-image: url(../images/blue-warn.png);
+	background-size: 100% 100%;
+}
+.warn-box ul{
+	left: 3.4rem;
+}
+.warn-box ul li{
+	display: block;
+	font-size: 0.4rem;
+	color: #666666;
+	line-height: 0.6rem;
+}
+.warn-box ul li:first-child{
+	font-size: 0.453333rem;
+	font-weight: bold;
+	color: #000;
+	line-height: 0.8rem;
+}
+.warn-con,.warn-defend{
+	position: relative;
+	height: 1.066667rem;
+	width: 100%;
+	border-bottom: 1px solid #e5e5e5;
+}
+.warn-con i{
+	display: inline-block;
+	width: 0.44rem;
+	height: 0.44rem;
+	left: 0;
+	background-image: url(../images/warn-con-icon.png);
+	background-size: 100% 100%;
+}
+.warn-defend i{
+	display: inline-block;
+	width: 0.44rem;
+	height: 0.44rem;
+	left: 0;
+	background-image: url(../images/defend-icon.png);
+	background-size: 100% 100%;
+}
+.warn-con span,.warn-defend span{
+	font-size: 0.426667rem;
+	line-height: 1.066667rem;
+	margin-left: 0.6rem;
+	color: #333333;
+}
+.warn-con+span,.warn-defend+span{
+	display: block;
+	padding: 0.266667rem 0;
+	font-size: 0.4rem;
+	color: #666;
+	line-height: 0.533333rem;
+}
+.defend-box{
+	display:none;
+}

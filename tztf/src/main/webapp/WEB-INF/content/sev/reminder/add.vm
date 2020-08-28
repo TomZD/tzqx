@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <title>强天气提醒新增</title>
+	    #parse("commons/commonJs.vm")
+	    #parse("commons/commonCss.vm")
+	    <script type="text/javascript">
+	        function save() {
+	            jQuery('#fm').form('submit', {
+	                url: '${base}/sev/reminder/save',
+	                onSubmit: function () {
+	                    return jQuery(this).form('validate');
+	                },
+	                success: function (result) {
+	                    result = jQuery.parseJSON(result);
+	                    Magic.closeWin();
+	                    if (!result.success) {
+	                        window.parent.jQuery.messager.show({title: '错误', msg: result.message});
+	                    } else {
+	                        window.parent.jQuery('#dg').datagrid('reload');
+	                    }
+	                }
+	            });
+	        }
+	        
+	        function publish() {
+	            jQuery('#fm').form('submit', {
+	                url: '${base}/sev/reminder/publish',
+	                onSubmit: function () {
+	                    return jQuery(this).form('validate');
+	                },
+	                success: function (result) {
+	                    result = jQuery.parseJSON(result);
+	                    Magic.closeWin();
+	                    if (!result.success) {
+	                        window.parent.jQuery.messager.show({title: '错误', msg: result.message});
+	                    } else {
+	                        window.parent.jQuery('#dg').datagrid('reload');
+	                    }
+	                }
+	            });
+	        }
+	    </script>
+	</head>
+	<body class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'center',border:false"
+		     style="padding: 10px 60px 20px 10px;background:#fff;border:1px solid #ccc;">
+		    <form id="fm" method="post">
+		        <table width="100%" cellpadding="5">
+		        	<tr>
+		        		<td align="left">
+		                   	 服务用户(可多选)
+		                </td>
+		                <td>
+		                	<input name="suid" class="easyui-combobox" style="width:180px;" value = "$!{model.suid}" data-options="url:'${base}/sev/reminder/querySuser', method:'get', valueField:'id', textField:'name', multiple:true, panelHeight:'auto'">
+		                </td>
+					</tr>
+					<tr>
+						<td align="left">标题</td>
+						 <td>
+						 	<input name="title" class="easyui-textbox" value="$!{model.title}">
+					 	</td>
+				 	</tr>
+					<tr>
+						<td align="left">类型</td>
+						 <td>
+						 	<input name="type" class="easyui-combobox" style="width:180px;" value = "$!{model.type}" data-options="url:'${base}/sev/reminder/queryDic', method:'get', valueField:'value', textField:'content', multiple:false">
+					 	</td>
+				 	</tr>
+				 	<tr>
+				 		<td align="left">内容</td>
+		                <td>
+		                	<input name="content" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:105px" value="$!{model.content}" >
+		               	</td>
+		           	</tr>
+	  			</table>
+		    </form>
+		</div>
+		<div region="south" border="false" style="text-align: right; height: 30px;padding-top:3px;padding-right:10px">
+		    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="publish()">发布</a>
+		    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+		    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="Magic.closeWin()">取消</a>
+		</div>
+	</body>
+</html>

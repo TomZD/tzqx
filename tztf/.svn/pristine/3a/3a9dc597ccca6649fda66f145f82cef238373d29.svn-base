@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="movinginfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布-待发布</title>
+    
+    <link rel="stylesheet" href="/static/css/basic.css">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/publishApplication.css">
+      <!--日历控件开始-->
+   <link rel="stylesheet" href="/static/js/lib/My97DatePicker/skin/WdatePicker.css">
+    <!--日历控件结束-->
+    <link rel="stylesheet" href="/static/js/lib/viewer/viewer.min.css">
+     <script type="text/javascript">
+       var pubNo = '$!{alarm.pubNo}';
+       var version = '$!{alarm.version}';
+       var releaseChannel = $!{releaseChannel};
+       var imagePath = '$!{alarm.imagePath}';
+       var alarmId='$!{alarm.id}';
+    </script>
+      <style>
+		.popup_bd{
+			max-height:330px;
+			overflow-x: auto;
+		}
+        .checkbox_style input{
+            float: left;
+            width: 10px !important;
+            height: 10px !important;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+       .publishForm{
+            width: 172px;
+            height: 35px;
+            line-height: 35px;
+            color: #FFF;
+            text-align: center;
+            background: #0f8ffe;
+            border-radius: 3px;
+            margin-right: 12px;
+            display: inline-block;
+        }
+        .g-bd-left-con ul li .m-checkbox span{
+            text-align: left;
+            width:80px;
+            margin-left:12px;
+        }
+            .channelContentSel{
+               width:95%;
+                border: 1px solid rgba(190, 190, 216, 0.2);
+                background: rgba(0, 0, 0, 0.1);
+                line-height: 34px;
+                padding: 0 15px;
+                border-radius: 4px;
+            }
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 7px 15px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            margin-right:20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+        .m-select select.m-text-input,.m-select .m-text-input-text {
+            border: 1px solid rgba(190,190,216,0.2);
+            border-radius: 5px;
+            height: 32px;
+            background: #f2f4fa;
+        }
+        .m-select .m-text-input-text{
+            padding:0 15px;
+            margin-right:5px;
+        }
+        .checkboxAreaAll,.checkboxChannelAll{
+            width: 16px;
+            height: 16px;
+            float: left;
+            cursor: pointer;
+            margin-top: 10px;
+            text-align: center;
+            background-image: url(/static/images/oncheck_img.png);
+            background-repeat: no-repeat;
+        }
+        .g-bd-left-con ul{
+		    margin-bottom: 18px;
+		    font-size: 0;
+		}
+        		.g-bd-left-con ul>*{
+		    font-size: 14px;
+		}
+		.m-sets li{
+	        width: 50%;
+	        display: inline-table !important;
+	    }
+	    .m-sets li .m-select{
+	    	width:calc(100% - 74px);
+	    }
+	    .m-sets li .m-select .m-text-input{
+	    	width:100% !important;
+	    }
+	       /*输入框*/
+		.m-text-input{
+		    width: calc(100% - 75px) !important;
+		}
+		.m-sets-sets li{
+			width:50%;
+			display:inline-block;
+		}
+		.m-sets-sets li .m-select{
+		    width: calc(100% - 80px);
+		}
+		.m-sets-sets li .m-select input{
+			width:100% !important;
+			    background: #f2f4fa;
+		}
+			    .m-text-textarea{
+			    
+		        width:92% !important;
+		        border: 1px solid #415580;
+			    background: rgba(0, 0, 0, 0.1);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#19000000,endColorstr=#19000000);
+			    line-height: 34px;
+			    padding: 0 15px;
+			    border-radius: 4px;
+                behavior: url(/static/js/PIE/PIE.htc); 
+                    background: #f2f4fa;
+			}
+			.query_hd li{
+				margin-bottom:5px;
+			}
+			.g-bd-right-modular{
+				position:relative;
+			}
+			.m-button-bottom{
+				bottom: 13px;
+    			right: 12%;
+    			margin-left:auto;
+			}
+			.query_hd li.on_query{
+				border: 2px solid #4a85f2;
+			    color: #fff;
+			    background-color: rgb(33, 100, 232) !important;
+			}
+			.popup_bd ul li{
+				height:auto!important;
+			}
+			.m-poplayer-table thead td{
+            font-size: 16px;
+            color: #4463ba !important;
+	        }
+	        .m-poplayer-table tr td{
+			 	text-align: left;
+			 	line-height: 25px;
+			 	text-overflow: initial;
+	    		white-space: normal;
+			}
+    </style>
+</head>
+<body>
+   <!--弹窗开始-->
+    <div class="m-poplayer">
+        <div class="popup_con"></div>
+    </div>
+    
+    <!--弹窗结束-->
+    <!--时间轴开始-->
+    <div class="m-event mb10">
+        <ul class="m-event-schedule">
+            <li class="m-event-timeAxis">
+                <!--事件进度时间轴底部开始-->
+                <div class="m-timeAxis-bg">
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴底部结束-->
+                <!--事件进度时间轴进度开始-->
+                <div class="m-timeAxis-con">
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                     <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                     <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴进度结束-->
+            </li> 
+            <!--事件进度说明开始-->
+            <li class="m-event-explain">
+                <p><span>$!{alarm.deptName}申请发布</span>
+	                <span>发布中心审核通过</span>
+	                <span>发布平台执行</span>
+	                <span>发布完成</span>
+                </p>
+            </li>
+            <!--事件进度说明开始-->
+        </ul>   
+    </div>                          
+    <!--时间轴结束-->
+<form action="" method="post" id="form" name="form">
+    <input type="hidden" name="pubId" value='$!{alarm.id}';>
+    <input type = "hidden" id="alarmTypeName" name = "alarmTypeName" value="$!{alarm.alarmTypeName}">
+    <input type="hidden" id="imagePath" name="imagePath" value='$!{alarm.imagePath}';>
+    <input type="hidden" id="pubNo" name="pubNo" value='$!{alarm.pubNo}';>
+	<input type="hidden" id="pubRange" name="pubRange" value='$!{alarm.pubRangeName}';>
+    <input type="hidden"  name="type" value='$!{alarm.type}';>
+    <input type="hidden"  name="deptId" value='$!{alarm.deptId}';>
+    <!--内容开始-->
+    <div class="g-bd-cont">
+        <!--标题开始-->
+        <div class="g-bd-tit">
+            <span>$!{alarm.deptName}变更申请</span><span class="filenum">$!{alarm.pubNo}</span>
+        </div>
+        <!--标题结束-->
+        <!--左边开始-->
+        <div class="g-bd-left">
+            <!--内容开始-->
+            <div class="g-bd-left-con">
+                <ul>
+                    <!--标题开始-->
+                    <li><span>&nbsp;&nbsp;标&nbsp;&nbsp;&nbsp;题&nbsp;&nbsp;</span><input type="text" class="m-text-input on_auto" name="title" id="title" value="$!{alarm.title}" /></li>
+                    <!--标题结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--信息类别开始-->
+                    <li>
+                        <span>信息类别</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title" id="alarmtype">$!{type}</span></a>
+                        </div>
+                    </li>
+                    <!--信息类别结束-->
+                    <!--预警级别开始-->
+                    <li class="pl10">
+                        <span>预警级别</span>
+                        <div class="m-select">
+							<select id="typeColor" class="typeColor m-text-input" name="level">
+							
+							#*#if($level=="蓝色")
+                                <option value="黄色"  selected >黄色</option>
+                                <option value="橙色" >橙色</option>
+                                <option value="红色" >红色</option>
+                                #end
+                                #if($level=="黄色")
+                                <option value="蓝色"  selected >蓝色</option>
+                                <option value="橙色" >橙色</option>
+                                <option value="红色" >红色</option>
+                                #end
+                                
+                                #if($level=="橙色")
+                                <option value="蓝色"  selected >蓝色</option>
+                                <option value="黄色" >黄色</option>
+                                <option value="红色" >红色</option>
+                                #end
+                                
+                                #if($level=="红色")
+                                <option value="蓝色"  selected >蓝色</option>
+                                <option value="黄色" >黄色</option>
+                                <option value="橙色" >橙色</option>
+                                #end*#
+                                
+                                <option value="蓝色" #if($level=="蓝色") selected #end>蓝色</option>
+                                <option value="黄色" #if($level=="黄色") selected #end>黄色</option>
+                                <option value="橙色" #if($level=="橙色") selected #end>橙色</option>
+                                <option value="红色" #if($level=="红色") selected #end>红色</option>
+                            </select>
+                        </div>
+                    </li>
+                    <!--预警级别结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--发布时间开始-->
+                     <li>
+                    <span>发布时间</span>
+                    <input id="basic_example_1"  name="pubDate"  class="inputTimepick m-text-input Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy年MM月dd日HH时mm分',readOnly:true ,onpicking: cDayFunc})" readonly="">
+                    </li>
+                    <!--发布时间结束-->
+                    <!--发布时效开始-->
+                    <li class="pl10">
+                        <span>发布时效</span>
+                        <a class="btn btn-link m-text-input">
+                        <input type="text" style="width: calc(100% - 40px);" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="prescription" name="duration" value="" autocomplete="off" class="m-text-input-text">小时</span></a>
+                       
+                    </li>
+                    <!--发布时效结束-->
+                </ul>
+                <ul>
+                    <!--发布范围开始-->
+                    <li>
+                        <span class="fl">发布范围</span>
+                        <textarea class="m-text-textarea on_auto" disabled="disabled" id="pubRangeName">$!{alarm.pubRangeName}</textarea>
+                    </li>
+                    <!--发布范围结束-->
+                </ul>
+                <ul>
+                    <!--发布渠道开始-->
+                    <li>
+                        <span class="fl">发布渠道</span>
+                        <textarea class="m-text-textarea on_auto" name = "releaseChannelName" readOnly="readOnly" id="pubChannel">$!{channel}</textarea>
+                    </li>
+                    <!--发布渠道结束-->
+                </ul>
+                <ul>
+                    <!--发布内容开始-->
+                    <li>
+                        <span class="fl">发布内容</span>
+                        <textarea id="limitWord" class="m-text-textarea on_auto" name="content">$!{alarm.content}</textarea>
+                    </li>
+                    <!--发布内容结束-->
+                </ul> 
+                <ul class="m-sets-sets">
+                    <!--操作人员开始-->
+                    <li>
+                       <span>操作人员</span>
+                        <div class="m-select">
+                           <input type="text" value="$alarm.publisher" name="publisher" class="m-text-input-text" style="width: 273px;">
+                        </div>
+                    </li>
+                    <!--审稿人员结束-->                    
+                    <!--发布时效开始-->
+                    <li class="pl10">
+                        <span>签发人员</span>
+                         <div class="m-select">
+                                <input id="issuer" class="issuer m-text-input-text" name="issuer" value="$alarm.issuer">
+                        </div>
+                    </li>
+                    <!--签发人员结束-->
+                </ul> 
+            </div>
+            <!--内容结束-->
+        </div>
+    <!--左边结束-->
+
+    <!--右边开始-->
+        <div  class="g-bd-right form_right"> 
+            <!--渠道总汇开始-->       
+            <div class="g-bd-right-modular h100">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>发布预览</span>
+                    <!--切换开始-->
+                    <ul class="query_hd fr" id="channelAll">
+                        
+                    </ul>
+                    <!--切换结束-->
+                </div>
+                <!--标题结束-->
+                <!--内容开始-->
+                <div id="contentAll">                   
+              
+                </div>
+                <!--内容结束-->
+                <!--按钮1开始-->  
+	                <div class="m-button">
+	                    <a id="publishForm" class="publishForm" style="cursor:pointer">生成变更表单</a>
+	                    <a href="javascript:;" class="file" style="top:13px;">领导签字后上传预览
+	                            <input type="file" name="file" id="file" onChange="FileUpload()">
+	                        </a>
+	                </div>              
+                <!--按钮1结束-->
+                <ul style="width: 100%; margin-top:20px;    margin-bottom: 60px;float:left">
+                    <!--审批单开始-->
+                    <li>
+                        <div class="g-bd-tit" style="line-height: 30px; text-indent: 0.8em;">审批单</div>
+                        <div class="m-text-textarea dpi" id="imgupload" style="width:92%">
+                          #if($!alarm.imagePath != "")
+                            <img src="/upload/$!{alarm.imagePath}" data-src="/upload/$!{alarm.imagePath}" style ="height:98px;" />
+                         #else
+                            <h3>未上传</h3> 
+                         #end 
+                        </div>
+                    </li>
+                    <!--发布内容结束-->
+                </ul>
+                <!--按钮2开始-->                
+                <div class="m-button-bottom">
+                    <a href="javascript:history.go(-1)" class="m-event-buttons" id="comback" >后退</a>
+                    <button class="report">变更预警</button>
+                </div>
+                <!--按钮2结束-->
+            </div>
+            <!--渠道总汇开始-->   
+        </div>
+    <!--右边结束-->
+    </div>
+    <!--内容结束-->
+</form>   
+    <!--js开始-->
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/publishApplication.js"></script>
+     <script type="text/javascript" src="/static/js/publishingFailure.js"></script>
+     <script type="text/javascript" src="/static/js/pendingUpdateAlarm.js"></script>
+      <script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+    <!--js开始-->
+    <!--日历开始-->    
+	<script type="text/javascript" src="/static/js/lib/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/static/js/layer/layer.js"></script>
+
+    <!--日历结束-->
+    <script type="text/javascript" src="/static/js/lib/viewer/viewer.min.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+var allAlarmType = #if($!alarmType.length!=0) $!alarmType #else {} #end  ;
+
+var colorLevel = {
+        "红色": "(I级/特别重大)",
+        "橙色": "(II级/严重)",
+        "黄色": "(III级/较重)",
+        "蓝色": "(IV级/一般)",
+    };
+    
+    
+var colorNum = {
+        "红色": "4",
+        "橙色": "3",
+        "黄色": "2",
+        "蓝色": "1",
+};
+$('document').ready(function(){
+
+	var typeData = $("#alarmtype").html();
+	//预警等级下拉框
+	var typeColorData = "";
+	for(var i=0;i<allAlarmType.length;i++){
+             var info = allAlarmType[i];
+             if(info.namecn == typeData){
+                 var typeName = info.caption;
+                 var colorName = typeName.substring(typeName.length-2,typeName.length);
+                 typeColorData += "<option value="+typeName+">"+colorName+"</option>";  
+             }
+         }
+         if(typeColorData==""){
+         
+         }else{
+         $("#typeColor").empty();
+         $("#typeColor").append(typeColorData);
+         }
+         
+	var type = $('#typeColor option:selected').val();
+	
+	
+	for(var j=0;j<allAlarmType.length;j++){
+             var info = allAlarmType[j];
+             if(info.caption == type){
+                 var time = info.validity;
+                 $("#prescription").val(time);
+                 
+             }
+         }
+
+	 ach();
+	 var appContent = "$!{alarm.deptName}"+$("#basic_example_1").val()+"发布"+"$!{alarm.alarmTypeName}"+"预警："; 
+     var txt1 = $("#limitWord").val();
+     var index1 = txt1.indexOf("：");
+     var subTxt = txt1.substring(0,index1+1);
+     txt1 = txt1.replace(subTxt,appContent);
+     $("#limitWord").val(txt1);
+     $("#limitWord").trigger("keyup");
+    //生成发布表单
+    $("#publishForm").click(function(){
+    var str =$("#pubRangeName").html();
+    var pubChannel=$("#pubChannel").html();
+    var smsGroup="";
+    
+        var curLength=$("#limitWord").val().length; 
+    	var time = $("#prescription").val();
+    	var pubtime=$("#basic_example_1").val();
+    	var areaCheck = $('.checkboxArea input[name="pubRangeName"]:checked').length;
+    	if(time=="" || time=="undefined"){
+    		layer.msg("时效不能为空");
+    		return false;
+    	}else if(pubtime== "" || pubtime=="undefined"){
+    		layer.msg("请选择发布时间");
+    		return false;
+    	}else if(curLength ==0){
+    	    layer.msg("请填写内容");
+    		return false;
+    	}
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:"/sev/alarm/updateForm?status="+"变更",
+            data:$.param({'pubRangeName':str,'pubChannel':pubChannel,'smsGroup':smsGroup,'id':alarmId,'pubDate':pubtime})+'&'+$('#form').serialize(),// 你的formid
+            async: false,
+            error: function(request) {
+                alert("Connection error");
+            },
+            success: function(data) {
+                window.location.href="/sev/alarm/download?data="+data;
+            }
+        });
+    });
+	fresh();
+    
+    /*限制字数*/
+    $("#limitWord").keyup(function(){
+   
+        var curLength=$("#limitWord").val().length;    
+        if(curLength>=200){
+            var num=$("#limitWord").val().substr(0,200);
+            $(".m-text-textarea.form_text").each(function(){
+        if($(this).attr('name')=="channel_subway"||$(this).attr('name')=="channel_traffic"){
+        
+        }else{
+        $(this).val(num);
+        }
+        });
+            $("#limitWord").val(num);
+            $("#textCount").text(0);
+            //$(".m-text-textarea.form_text").val(num);
+        }
+        else{
+        var num=$("#limitWord").val();
+        $(".m-text-textarea.form_text").each(function(){
+        if($(this).attr('name')=="channel_subway"||$(this).attr('name')=="channel_traffic"){
+        
+        }else{
+        $(this).val(num);
+        }
+        });
+            $("#textCount").text(200-$("#limitWord").val().length);
+            
+            //$(".m-text-textarea.form_text").val(num);
+        }
+    });
+	
+	$("#typeColor").click(function(e){
+	if(e.timeStamp != 0) return;
+
+		var eventType = '${type}';
+	    var color = $('#typeColor option:selected').text();
+	    var type = $('#typeColor option:selected').val();
+		for(var j=0;j<allAlarmType.length;j++){
+             var info = allAlarmType[j];
+             console.log(info.caption);
+             if(info.caption == type){
+                 var time = info.validity;
+                 $("#prescription").val(time);
+                 
+             }
+         }
+
+	    $("#alarmTypeName").val(eventType+color);
+	    var Level = "";
+	    for(var key in colorLevel){
+	        if(key === color){
+	            level = colorLevel[key];
+	        }
+	    }
+	    var text = "$!{departmentName}发布的"+eventType+color+"预警"+level;
+	    $("#title").val(text);
+	    var alarmColor=eventType+color;
+	    var appContent="";
+
+	    if(alarmColor=="$!{type}$!{level}"){
+	    	appContent="$!{departmentName}"+$("#basic_example_1").val()+"继续发布"+eventType+color+"预警信号：";
+	    }else if(colorNum[color]>colorNum["$!{level}"]){
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号升级为"+eventType+color+"预警信号：";
+	    }else{
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号变更为"+eventType+color+"预警信号：";
+	    }
+	    
+	    
+	    
+        $("#limitWord").val(appContent);
+        $('.channelContentSel').val(appContent);
+        var type = $('#alarmtype').text()+$('#typeColor option:selected').val();
+        var LEDContent1 = "$!{departmentName}".split("（", 1)+type+"预警";
+        var LEDContent2 = "$!{departmentName}".split("（", 1)+"发布"+type+"预警";
+		$('.m-text-textarea.form_text').eq(0).val(LEDContent1);
+		$('.m-text-textarea.form_text').eq(1).val(LEDContent2);
+        $('#limitWord').trigger("keyup");
+		
+	    
+	});
+    
+    
+});
+
+function selectColor(color){
+	if(color=='蓝色'||color=='黄色'){
+			// 获取当前checkbox节点的兄弟节点下的所有的checkbox子节点选中
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".radioclass").prop("checked", true);
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".checkbox").addClass("on_check");
+          $("#id_nationEmergencyPlatform").find(".radioclass").removeAttr("checked");
+          $("#id_nationEmergencyPlatform").find(".checkbox").removeClass("on_check");
+		  refreshChannelBtns();
+	}else if(color=='橙色'){
+			// 获取当前checkbox节点的兄弟节点下的所有的checkbox子节点选中
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".radioclass").prop("checked", true);
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".checkbox").addClass("on_check");
+		  $("#id_nationEmergencyPlatform").find(".radioclass").removeAttr("checked");
+          $("#id_nationEmergencyPlatform").find(".checkbox").removeClass("on_check");
+          refreshChannelBtns();
+	}else{
+		// 获取当前checkbox节点的兄弟节点下的所有的checkbox子节点选中
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".radioclass").prop("checked", true);
+          $(".checkboxChannelAll").parents(".checkbox_bd").find(".checkbox_style").find(".checkbox").addClass("on_check");
+          refreshChannelBtns();
+	}
+}
+
+function fresh(){
+		var eventType = '${type}';
+	    var color = $('#typeColor option:selected').text();
+
+
+	    $("#alarmTypeName").val(eventType+color);
+	    var Level = "";
+	    for(var key in colorLevel){
+	        if(key === color){
+	            level = colorLevel[key];
+	        }
+	    }
+	    var text = "$!{departmentName}发布的"+eventType+color+"预警"+level;
+	    $("#title").val(text);
+	    var alarmColor=eventType+color;
+	    var appContent="";
+	    if(alarmColor=="$!{type}$!{level}"){
+	    	appContent="$!{departmentName}"+$("#basic_example_1").val()+"继续发布"+eventType+color+"预警信号：";
+	    }else if(colorNum[color]>colorNum["$!{level}"]){
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号升级为"+eventType+color+"预警信号：";
+	    }else{
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号变更为"+eventType+color+"预警信号：";
+	    }
+        $("#limitWord").val(appContent);
+        $('.channelContentSel').val(appContent);
+        var type = $('#alarmtype').text()+$('#typeColor option:selected').val();
+        var LEDContent1 = "$!{departmentName}".split("（", 1)+type+"预警";
+        var LEDContent2 = "$!{departmentName}".split("（", 1)+"发布"+type+"预警";
+		$('.m-text-textarea.form_text').eq(0).val(LEDContent1);
+		$('.m-text-textarea.form_text').eq(1).val(LEDContent2);
+        $('#limitWord').trigger("keyup");
+}
+
+function ach(){
+    $("#imgClick").click(function(){
+        //var imagePathT = $(this).attr("src");
+        //window.open(imagePathT);
+    });
+    $(".abandon").click(function(){
+    	history.go(-1);
+    })
+}
+function cDayFunc(dp) {
+    var date = dp.cal.getNewDateStr();
+    $("#basic_example_1").val(date);
+    var eventType = $('#alarmtype').text();
+	    var color = $('#typeColor option:selected').text();
+	    var type = $('#typeColor option:selected').val();
+	    
+		//selectColor(color);
+		
+	    $("#alarmTypeName").val(eventType+color);
+	    var Level = "";
+	    for(var key in colorLevel){
+	        if(key === color){
+	            level = colorLevel[key];
+	        }
+	    }
+	    var text = "$!{departmentName}发布的"+eventType+color+"预警"+level;
+	    $("#title").val(text);
+	    var alarmColor=eventType+color;
+	    var appContent="";
+	    if(alarmColor=="$!{type}$!{level}"){
+	    	appContent="$!{departmentName}"+$("#basic_example_1").val()+"继续发布"+eventType+color+"预警信号：";
+	    }else if(colorNum[color]>colorNum["$!{level}"]){
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号升级为"+eventType+color+"预警信号：";
+	    }else{
+	    	 appContent = "$!{departmentName}"+$("#basic_example_1").val()+"将"+"$!{type}$!{level}"+"预警信号变更为"+eventType+color+"预警信号：";
+	    }
+        $("#limitWord").val(appContent);
+        $('.channelContentSel').val(appContent);
+        
+		var LEDContent1 = "$!{departmentName}".split("（", 1)+eventType+type+"预警";
+        var LEDContent2 = "$!{departmentName}".split("（", 1)+"发布"+eventType+type+"预警";
+		$('.m-text-textarea.form_text').eq(0).val(LEDContent1);
+		$('.m-text-textarea.form_text').eq(1).val(LEDContent2);
+		$('#limitWord').trigger("keyup");
+    
+    }
+
+
+function FileUpload() {
+    $.ajaxFileUpload({
+        url : '${base}/sev/alarm/uploadPage',// 用于文件上传的服务器端请求地址
+        dataType : "json",
+        secureuri : false,// 一般设置为false
+        fileElementId : 'file',// 文件上传空间的id属性 
+        error : function(data) {
+            alert("请选择文件上传");
+        },
+        success : function(data) {
+            $("#imagePath").val(data.data);
+            $(".m-text-textarea.dpi").empty();
+            var ddiv = "<img src='/upload/"+data.data+"' data-src='/upload/"+data.data+"' id='imgClick' style ='height:99px;cursor:pointer;)'/>";
+            $(".m-text-textarea.dpi").append(ddiv);
+            ach();
+            var viewer = new Viewer(document.getElementById('imgupload'), {
+			    url: 'data-src',
+			    show: function (){
+			        viewer.update();
+			    }
+			});
+        }
+    });
+}
+
+</script>

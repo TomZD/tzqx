@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>主页</title>
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+    <meta content="no-cache" http-equiv="pragma">
+    <meta content="0" http-equiv="expires">
+    <meta content="telephone=no, address=no" name="format-detection">
+    <meta name="apple-mobile-web-app-capable" content="yes"> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" type="text/css" href="../DDstatic/css/reset.css" media="all">
+    <link rel="stylesheet" type="text/css" href="../DDstatic/css/public.css">
+    <link rel="stylesheet" type="text/css" href="../DDstatic/css/home.css">
+    <link rel="stylesheet" type="text/css" href="../DDstatic/css/swiper.min.css">
+</head>
+<body>
+     <div class="index-con">
+        <div class="con-top">
+            <i class="location vertical-middle"></i>
+            <span class="vertical-middle">西湖区</span>
+            <span class="vertical-middle username"></span>
+            <span class="vertical-middle login">登录</span>
+        </div>
+        <div class="show-weather">
+            <div>
+               <span></span>
+                <i></i> 
+            </div>
+        </div>
+        <div class="show-value">
+            <ul>
+                <li>实时降水</li>
+                <li class="rain"></li>
+            </ul>
+            <span class="horizontal-middle today-temp"></span>
+            <ul>
+                <li>风速风向</li>
+                <li class="wind"></li>
+            </ul>
+        </div>
+        <div class="show-warn swiper-container">
+            <ul class="swiper-wrapper">
+
+            </ul>
+        </div>
+        <div class="index-con-bottom">
+            <ul>
+                <li>
+                    <span class="vertical-middle">今天</span>
+                    <i class="all-middle"></i>
+                    <span class="vertical-middle tep" day="1"></span>
+                </li>
+                <li>
+                    <span class="vertical-middle">明天</span>
+                    <i class="all-middle"></i>
+                    <span class="vertical-middle tep" day="2"></span>
+                </li>
+                <li style="border-bottom:none;">
+                    <span class="vertical-middle">后天</span>
+                    <i class="all-middle"></i>
+                    <span class="vertical-middle tep" day="3"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+<script type="text/javascript" src="../DDstatic/js/lib/zepto.min.js"></script>
+<script type="text/javascript" src="../DDstatic/js/lib/flexible.js"></script>
+<script type="text/javascript" src="../DDstatic/js/public.js"></script>
+<script type="text/javascript" src="../DDstatic/js/lib/swiper.min.js"></script>
+<script type="text/javascript" src="../DDstatic/js/home.js"></script>
+</body>
+</html>

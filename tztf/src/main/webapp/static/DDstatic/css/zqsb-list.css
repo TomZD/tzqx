@@ -1,0 +1,24 @@
+body{
+	padding-top:0.266667rem;
+}
+.list{
+	width:100%;
+	background-color:#fff;
+}
+.list li{
+	height:2.4rem;
+	width:100%;
+	padding:0.1rem 0.3rem;
+	box-sizing:border-box;
+	border-bottom:1px solid #ddd;
+}
+.list li span{
+	display:inline-block;
+	line-height:1rem;
+	font-size:0.4rem;
+	margin-right:0.4rem;
+}
+.address{
+	line-height:1.1rem!important;
+	width:100%;
+}

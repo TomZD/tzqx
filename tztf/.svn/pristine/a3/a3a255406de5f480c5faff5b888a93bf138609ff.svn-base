@@ -1,0 +1,7 @@
+/**
+ * 线性渐变
+ * 只支持水平和垂直方向，滤镜在IE6、IE7中须配合width或者height属性方可生效
+ * @param  {string} @startColor            起始颜色
+ * @param  {string} @endColor              结束颜色
+ * @param  {string} @layout 			   方向。默认:h 垂直方向
+ */

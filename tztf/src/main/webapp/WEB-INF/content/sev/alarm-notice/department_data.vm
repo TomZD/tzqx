@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>预警信号通知单发送详情</title>
+        <meta charset="UTF-8">
+        #parse("commons/commonJs.vm")
+		#parse("commons/commonCss.vm")
+		 <script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+		<!--日历开始-->    
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-addon.js"></script>    
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script type="text/javascript" src="/static/js/datepicker/js/useDatepick.js"></script>
+    <!--日历控件开始-->
+    <link rel="stylesheet" href="/static/js/datepicker/css/jqueryui.min.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" href="/static/js/datepicker/css/timepick.css">
+    <!--日历控件结束-->
+    <!--日历结束-->  
+		<link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+		<style>
+		/*输入框*/
+.m-text-textarea{
+    border:1px solid rgba(190, 190, 216, 0.2);
+    background: rgba(0, 0, 0, 0.1);
+    line-height: 100px;
+    padding: 0 15px;
+    border-radius: 4px;
+    width:80%;
+}
+
+.popup_bd table tr{
+	text-align: left;
+	background-color: #fafafb;
+    -moz-box-shadow: 0px 2px 1px #FFF inset;
+    -webkit-box-shadow: 0px 2px 1px #FFF inset;
+    box-shadow: 0px 2px 1px #FFF inset;
+}
+		/*弹窗*/
+.m-popup{
+    width: 600px;
+    height: auto;
+    min-height: 235px;
+    background: #fcfcfc;
+    -webkit-box-shadow: 0px 0px 6px rgba(4, 0, 0, 0.21);
+    -moz-box-shadow: 0px 0px 6px rgba(4, 0, 0, 0.21);
+    box-shadow: 0px 0px 6px rgba(4, 0, 0, 0.21);
+    border-radius: 2px;
+    position: fixed;
+    top: 0;
+    left: 40%;
+    z-index: 99;
+    display: none;
+}
+/*头部*/
+.m-popup .popup_hd{
+    height: 35px;
+    line-height: 35px;
+    background: #363e5a;
+    
+   
+}
+.m-popup .popup_hd span{
+    color: #fff;
+    font-size: 12px;
+    text-indent: 1.5em;
+    display: inline-block;
+    font-weight: bold;
+}
+.m-popup .popup_hd .close_btn{
+    background: url(../images/popup_close.png) no-repeat;
+    background-position: 0 0;
+    display: inline-block;
+    width: 12px;
+    height:12px;
+    float: right;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.m-popup .popup_hd .close_btn:hover{
+    background-position: 0 -16px;
+}
+/*内容*/
+.m-popup .popup_bd .status_cont{
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+}
+.m-popup .popup_bd{
+    text-align: center;
+    color:#bebed8;
+    font-size: 12px;  
+}
+		</style>
+		<script type="text/javascript">
+			//修改
+            function edit(id){
+                document.getElementById('id').value = id;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/sev/alarm-notice/editAlarmNotice',
+                    data:"id="+id,
+                    dataType:"JSON",
+                    success:function(data){
+                        document.getElementById('publishDate').value = data.publishDate?data.publishDate:'';
+                        document.getElementById('publishDetail').value = data.publishDetail?data.publishDetail:'';
+                        $(".m-text-textarea.dpi").html("");
+                        $("#imagePath").val("");
+                        if(data.images!=null&&data.images!=''){
+                        	 var imagesPath = "";
+                        	 var htmlStr = "";
+                        	 var images = data.images.split(",");
+	                        if(images.length>0){
+	                        	for(var i=0;i<images.length;i++){
+	                        		var image = images[i];
+	                        		var htmlStr = htmlStr + "<img src='/upload/"+image+"' class='imgClick' style ='height:99px;cursor:pointer;)'/>";
+	                        		if(imagesPath!==""){
+	                        			imagePath = imagePath + "," + image;
+	                        		}else{
+	                        			imagePath = image;
+	                        		}
+	                        	}
+	                        	 $("#imagePath").val("imagesPath");
+	                        }
+	                        $(".m-text-textarea.dpi").html(htmlStr);
+		                     $(".imgClick").click(function(){
+					            var imagePathT = $(this).attr("src");
+					            window.open(imagePathT);
+					        });
+                        }
+                       
+                        if(data.isPublish!=1){
+                        	$("#publish0").attr("checked","true");
+                        }else{
+                        	$("#publish1").attr("checked","true");
+                        }
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+                $("#updateDiv").show();
+            }
+            
+            function viewNotice(filePath,obj){
+                var parentNode=$(obj).closest("tr");
+                var isChild=parentNode.next().hasClass("trchild");
+                if(isChild){
+                   parentNode.next().remove(); 
+                }else{
+                
+                filePath = filePath.replace("doc","pdf");
+            	var embed='<embed width="100%" height="500px" name="plugin" src="'+filePath+'" type="application/pdf" id="viewerPlaceHolder1">';
+            	var trhtml="<tr class='trchild'><td colspan='7'>"+embed+"</td></tr>";
+            	$(trhtml).insertAfter(parentNode);
+            	}
+           	
+            }
+            
+            //修改保存
+            function isUpdate(){
+                var isOk = true;
+                var publishDate = document.getElementById('publishDate').value;
+                var publishDetail = document.getElementById('publishDetail').value;
+                var isPublish = $("input[name='isPublish2']:checked").val();
+                $('#publishDate2').val(publishDate);
+                $('#publishDetail2').val(publishDetail);
+                $('#isPublish2').val(isPublish);
+                if(isOk == true){
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sev/alarm-notice/save",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                           // alert("Connection error");
+                            alertBox("Connection error");
+                        },
+                        success: function(data) {
+                            parent.location.reload();
+                        }
+                    });
+                }
+            }
+            /*日历加载*/
+    $(function(){
+    $('#publishDate').datetimepicker({//时间格式化
+        timeFormat: "HH:mm",
+        dateFormat: "yy-mm-dd",
+        showMonthAfterYear: false,
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "1990:2050",
+        setColorstyle: false,
+        maxDate: new Date().format("yyyy-MM-dd HH:mm"),
+        //maxDate: new Date($('#publishDate').val() + ":00").format("yyyy-MM-dd"),
+        Colorstyle: { "topColor": "#900", "bodyColor": "#000", "activeColor": "#900", "sliderColor": "#900", "hoverColor": "#900" }//定义外观颜色
+        
+    });
+    });
+    
+    function FileUpload() {
+    	var filepath = $("#file").val();
+    	var extStart=filepath.lastIndexOf(".");
+    	var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+    	if(ext!=".BMP"&&ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG"){
+    		$(".m-poplayer").fadeIn(200);
+            _body = '<div class="popup_bd">'
+                + '</div>'
+                + '<div class="popup_bottom">'
+//              + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                + '</div>';
+            /*弹窗位置*/
+            //发布弹窗在屏幕中间
+            var leftWidth = ($(window).width() - 486) / 2; 
+            $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+            /*添加popup_bd内容部分*/
+            $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>图片限于bmp,png,gif,jpeg,jpg格式</span></li></ul>");
+            $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center");
+            $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+            $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+            setTimeout(function () { 
+               $(".m-poplayer").fadeOut(200);
+            }, 1000);
+	    	return false;
+    	}else{
+    		$.ajaxFileUpload({
+                url : '${base}/sev/alarm-notice/upload',// 用于文件上传的服务器端请求地址
+                dataType : "json",
+                secureuri : false,// 一般设置为false
+                fileElementId : 'file',// 文件上传空间的id属性 
+                error : function(data) {
+                    alert("请选择文件上传");
+                },
+                success : function(data) {
+                    if($("#imagePath").val()!=''){
+						$("#imagePath").val($("#imagePath").val()+","+data.data);			
+					}else{
+						$("#imagePath").val(data.data);
+					}
+                    var ddiv = $(".m-text-textarea.dpi").html() + "<img src='/upload/"+data.data+"' class='imgClick' style ='height:99px;cursor:pointer;)'/>";
+                    $(".m-text-textarea.dpi").html(ddiv);
+                     $(".imgClick").click(function(){
+			            var imagePathT = $(this).attr("src");
+			            window.open(imagePathT);
+			        });
+                }
+            });
+    	}
+    	
+   }
+		</script>
+</head>
+<body class="easyui-layout" style="overflow-y: hidden" scroll="no">
+   <table id="dg" data-options="toolbar:'#toolbar'"></table>
+    <div id="toolbar">
+	</div>
+	<div class="m-table">
+            <table>
+                <thead>
+                        <td>预警标题</td>
+                        <td>接收时间</td>
+                        <td>反馈时间</td>
+                        <td>是否发布</td>
+                        <td>发布时间</td>
+                        <td>发布详情</td>
+                        <td>发布照片</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($alarmNotice in $alarmNoticeList)##
+                        <tr>
+                            <td>$!{alarmNotice.alarm.title}</td>
+                            <td>$!date.format('yyyy/MM/dd HH:mm',$!{alarmNotice.receiveDate})</td>
+                            <td>$!date.format('yyyy/MM/dd HH:mm',$!{alarmNotice.replyDate})</td>
+                            <td>#if($alarmNotice.isPublish==0) 否 #else 是 #end</td>
+                            <td>$!date.format('yyyy/MM/dd HH:mm',$!{alarmNotice.publishDate})</td>
+                            <td>$!{alarmNotice.publishDetail}</td>
+                            <td>
+                            #set($imageArr=$!{alarmNotice.images.split(",")})
+                            #foreach($image in $imageArr)
+                            	<img src='/upload/$!{image}' class='imgClick' style ='height:99px;cursor:pointer;)'/>
+                            #end
+                            #set($imageArr=[])
+                            </td>
+							<td>
+								
+								<button onclick="viewNotice('$!{alarmNotice.alarm.noticeFile}',this)">查看通知单</button>
+								<button onclick="edit($!{alarmNotice.id})">反馈</button>
+							</td>
+                        </tr>
+                    #end##
+                </tbody>
+            </table>
+        </div>
+         <div id="noticeFileDiv" style="display:none;">
+        	<ul style="width: 100%; margin-top:20px;float:left">
+                    <!--审批单开始-->
+                    <li>
+                        <div id="viewerPlaceHolder">
+				         	<embed width="100%" height="100%" name="plugin" src="" type="application/pdf" id="viewerPlaceHolder1">
+				         </div>
+
+                    </li>
+                    <!--发布内容结束-->
+                </ul>
+        </div>
+        <!--修改弹窗 -->
+        <form id="f">
+            <input id="id" name="id" type="hidden"/>
+            <input id="isPublish2" name="isPublish" type="hidden"/>
+            <input id="publishDate2" name="publishDate" type="hidden"/>
+            <input id="publishDetail2" name="publishDetail" type="hidden"/>
+            <input id="imagePath" name="images" value="" type ="hidden"/>
+        </form>
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>通知单反馈</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="row">是否发布</td>
+                            <td><input type="radio" id="publish1" name="isPublish2" value="1" style="width:20px;">是<input type="radio" id="publish0" name="isPublish2" value="0"  style="width:20px;">否</td>
+                        </tr>
+                        <tr>
+                            <td>发布时间</td>
+                            <td><input class="inputTimepick m-text-input" type="text" name="publishDate" id="publishDate" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>发布详情</td>
+                            <td><textarea class="m-text-textarea" name="publishDetail" id="publishDetail"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>发布照片</td>
+                            <td><input type="file" name="file" id="file" onChange="FileUpload()">
+                            <div class="m-text-textarea dpi" style="width:92%"></div>
+                            </td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>黄岩公共突发事件预警发布平台-区应急办-公共页面</title>
+	<link rel="stylesheet" href="${base}/static/css/basic.css">
+</head>
+<body>
+	<!--head开始-->
+	<div class="g-hd">
+		<!--logo开始-->
+		<div class="dpi"><img src="${base}/static/images/logo_img.png" /><span>杭州公共突发事件预警发布平台</span></div>
+		<!--logo结束-->
+		<!--nav开始-->
+		<ul class="m-nav fr">
+			<li class="on_nav"><a href="otherEmergency_page/warningRelease.html" target="view_frame"><i class="publishApplication_btn"></i><span>预警发布</span></a></li>
+			<li><a href="other_page/relieveApplication.html" target="view_frame"><i class="relieveApplication_btn"></i><span>解除申请</span></a></li>
+			<li><a href="otherEmergency_page/categoryManagement.html" target="view_frame"><i class="categoryManagement_btn"></i><span>类别管理</span></a></li>
+			<li><a href="other_page/personnelManagement.html" target="view_frame"><i class="management_btn"></i><span>人员管理</span></a></li>
+			<li><a href="other_page/typhoon.html" target="view_frame" ><i class="contacts_btn"></i><span>责任单位联系人</span></a></li>
+			<li class="user"><a href="javascript:void(0)"><img src="${base}/static/images/head_img.png" /><p><span class="name">杭州市气象台管理人员</span><span class="time">2017-07-27 09:57:48</span></p></a></li>
+		</ul>
+		<!--nav结束-->
+	</div>
+	<!--head结束-->
+	<!--内容开始-->
+	<div class="g-bd">
+		<iframe src="/sev/alarm/warning" name="view_frame"  width="100%" height="100%" scrolling="no" id="iframeMonitoring" border="0" frameborder="no" allowTransparency="true" ></iframe>
+	</div>
+	<!--内容结束-->
+	<!--底部开始-->
+	<div class="g-bottom">
+		<p><span>联系人：金成 电话：138111111111；技术支持：郑法雷  电话：13588357928</span></p>
+	</div>
+	<!--底部结束-->
+	<!--js开始-->
+	<script type="text/javascript" src="${base}/static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${base}/static/js/public.js"></script>
+	<!--js开始-->
+</body>
+</html>

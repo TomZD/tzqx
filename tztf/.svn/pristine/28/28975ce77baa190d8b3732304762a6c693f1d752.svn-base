@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布-待发布</title>
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/publishApplication.css">
+     <script type="text/javascript">
+       var pubNo = '$!{alam.pubNo}';
+       var id = '$!{id}';
+    </script>
+</head>
+<body>
+
+    <!--弹窗开始-->
+    <div class="m-poplayer">
+        <div class="popup_con"></div>
+    </div>
+    <!--弹窗结束-->
+    <!--时间轴开始-->
+    <div class="m-event mb10">
+        <div class="m-event-schedule">
+            <div class="m-event-timeAxis">
+                <!--事件进度时间轴底部开始-->
+                <div class="m-timeAxis-bg">
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                    <dl>
+                        <dd></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴底部结束-->
+                <!--事件进度时间轴进度开始-->
+                <div class="m-timeAxis-con">
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                </div>
+                <!--事件进度时间轴进度结束-->
+            </div> 
+            <!--事件进度说明开始-->
+            <li class="m-event-explain">
+                <p><span>区气象台申请发布</span><span>发布中心审核通过</span><span>发布平台执行</span><span>发布完成</span></p>
+            </li>
+            <!--事件进度说明开始-->
+        </div>   
+    </div>                          
+    <!--时间轴结束-->
+    <!--内容开始-->
+    <div class="g-bd-cont">
+        <!--标题开始-->
+        <div class="g-bd-tit">
+            <span>杭州气象台发布申请</span><span class="filenum">$!{alam.pubNo}</span>
+        </div>
+        <!--标题结束-->
+        <!--左边开始-->
+        <div class="g-bd-left">
+            <!--内容开始-->
+            <div class="g-bd-left-con">
+                <ul>
+                    <!--标题开始-->
+                    <li><span>标题</span><input type="text"  disabled="disabled" class="m-text-input on_auto" value="$!{alam.title}" /></li>
+                    <!--标题结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--信息类别开始-->
+                    <li>
+                        <span>信息类别</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{type}</span></a>
+                        </div>
+                    </li>
+                    <!--信息类别结束-->
+                    <!--预警级别开始-->
+                    <li class="pl10">
+                        <span>预警级别</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{level}</span></a>
+                        </div>
+                    </li>
+                    <!--预警级别结束-->
+                </ul>
+                <ul class="m-sets">
+                    <!--发布时间开始-->
+                    <li><span>发布时间</span><input type="text"  disabled="disabled" class="m-text-input on_auto" value="$!{pubTime}"></li>
+                    <!--发布时间结束-->
+                    <!--发布时效开始-->
+                    <li class="pl10">
+                        <span>发布时效</span>
+                        <div class="m-select">
+                            <a class="btn btn-link m-text-input"><span class="lable-title">$!{alam.duration}小时</span></a>
+                        </div>
+                    </li>
+                    <!--发布时效结束-->
+                </ul>
+                <ul>
+                    <!--发布范围开始-->
+                    <li>
+                        <span class="fl">发布范围</span>
+                        <textarea class="m-text-textarea on_auto" disabled="disabled">$!{alam.pubRangeName}</textarea>
+                    </li>
+                    <!--发布范围结束-->
+                </ul>
+                <ul>
+                    <!--发布渠道开始-->
+                    <li>
+                        <span class="fl">发布渠道</span>
+                        <textarea class="m-text-textarea on_auto" disabled="disabled">$!{channel}</textarea>
+                    </li>
+                    <!--发布渠道结束-->
+                </ul>
+                <ul>
+                    <!--发布内容开始-->
+                    <li>
+                        <span class="fl">发布内容</span>
+                        <textarea class="m-text-textarea on_auto" disabled="disabled">$!{alam.content}</textarea>
+                    </li>
+                    <!--发布内容结束-->
+                </ul>       
+            </div>
+            <!--内容结束-->
+        </div>
+    <!--左边结束-->
+    <!--右边开始-->
+        <div class="g-bd-right form_right"> 
+            <!--渠道总汇开始-->       
+            <div class="g-bd-right-modular h100">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>发布预览</span>
+                    <!--切换开始-->
+                    <ul class="query_hd fr" id="channelAll">
+                        
+                    </ul>
+                    <!--切换结束-->
+                </div>
+                <!--标题结束-->
+                <!--内容开始-->
+                <div id="contentAll">                   
+              
+                </div>
+                <!--内容结束-->
+                <!--按钮1开始-->                
+                <div class="m-button">
+                    <button>上传预览</button>
+                </div>
+                <!--按钮1结束-->
+
+                <!--按钮2开始-->                
+                <div class="m-button-bottom">
+                    <button class="abandon">返回</button>
+                    <button class="report">发布</button>
+                    <button class="back">回退</button>
+                </div>
+                <!--按钮2结束-->
+            </div>
+            <!--渠道总汇开始-->   
+        </div>
+    <!--右边结束-->
+    </div>
+    <!--内容结束-->
+
+    <!--js开始-->
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/publishApplication.js"></script>
+     <script type="text/javascript" src="/static/js/publishingFailure.js"></script>
+     <script type="text/javascript" src="/static/js/pendingAudit.js"></script>
+
+    <!--js开始-->
+</body>
+</html>

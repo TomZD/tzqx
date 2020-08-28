@@ -1,0 +1,190 @@
+.top-nav{
+	position: relative;
+	z-index: 1;
+	height: 1.173333rem;
+	width: 100%;
+	box-sizing: border-box;
+	display:none;
+}
+.top-nav span{
+	color: #fff;
+}
+.top-nav i{
+	left: 0.4rem;
+	height: 0.466667rem;
+	width: 0.266667rem;
+	background: url(../images/back.png);
+	background-size: 100% 100%;
+}
+.top-back{
+	left: 0.933333rem;
+	font-size: 0.426667rem;
+	line-height: 1.173333rem;
+}
+.top-title{
+	font-size: 0.48rem;
+	line-height: 1.173333rem;
+}
+.top-more{
+	font-size: 0.426667rem;
+	right: 0.4rem;
+	line-height: 1.173333rem;
+}
+/*除了首页其他页面的头部导航css变化*/
+.top-nav.blue{
+	background-color: #fff;
+	border-bottom: 1px solid #e6e6e6;
+}
+.top-nav.blue i{
+	background: url(../images/back-blue.png);
+	background-size: 100% 100%;
+}
+.top-nav.blue .top-back,.top-nav.blue .top-more{
+	color: #41a8ff;
+}
+.top-nav.blue .top-title{
+	color: #000;
+	font-weight: bold;
+}
+
+
+
+.index-content{
+	width: 100%;
+	height: calc(100% - 1.3333rem);
+	overflow:hidden;
+}
+.movetop{
+	position: relative;
+	height: calc(100% - 1.3333rem);
+}
+.showiframe{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+}
+
+
+
+
+.bottom-nav{
+	box-sizing: border-box;
+	padding: 0 0.266667rem;
+	height: 1.333333rem;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	box-shadow: 0 0 16px 2px rgba(0,0,0,0.18);
+	background-color: #fff;
+}
+.bottom-nav>li{
+	box-sizing: border-box;
+	padding-top: 0.133333rem;
+	display: inline-block;
+	height: 100%;
+	width: 20%;
+	float:left;
+}
+.bottom-nav li i{
+	display: block;
+	width: 0.693333rem;
+	height: 0.693333rem;
+	margin: 0 auto;
+}
+.bottom-nav li span{
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-size: 0.266667rem;
+	color: #a2abb2;
+}
+.bottom-nav li.on span{
+	color: #41a8ff;
+}
+.more-icon>i{
+	background-image: url(../images/more-icon.png);
+	background-size: 100% 100%;
+	height: 1rem!important;
+    width: 1rem!important;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.more-icon.cgon>i{
+	background-image: url(../images/less-icon.png);
+	background-size: 100% 100%;
+}
+.hide-back{
+	display:none;
+	position:absolute;
+	height:100vh;
+	width:100vw;
+	bottom:0;
+	left:0;
+	background-color: rgba(0,0,0,0.48);
+}
+.hide-icon{
+	display:none;
+	position:absolute;
+	bottom: 100%;
+    width: 35%;
+    left: 33%;
+}
+.hide-icon li{
+	width:50%;
+	float:left;
+}
+.hide-icon span{
+	color:#fff!important;
+}
+.upload i{
+	width:0.8rem!important;
+	background-image: url(../images/upload.png);
+	background-size: 100% 100%;
+}
+.index i{
+	background-image: url(../images/index-icon.png);
+	background-size: 100% 100%;
+}
+.index.on i{
+	background-image: url(../images/index-icon-clicked.png);
+	background-size: 100% 100%;
+}
+.addressmgr i{
+	background-image: url(../images/addressmgr-icon.png);
+	background-size: 100% 100%;
+}
+.addressmgr.on i{
+	background-image: url(../images/addressmgr-icon-clicked.png);
+	background-size: 100% 100%;
+}
+.report i{
+	background-image: url(../images/report-icon.png);
+	background-size: 100% 100%;
+}
+.report.on i{
+	background-image: url(../images/report-icon-clicked.png);
+	background-size: 100% 100%;
+}
+.info i{
+	background-image: url(../images/info-icon.png);
+	background-size: 100% 100%;
+}
+.info.on i{
+	background-image: url(../images/info-icon-clicked.png);
+	background-size: 100% 100%;
+}
+.record i{
+	background-image: url(../images/record-icon.png);
+	background-size: 100% 100%;
+}
+.record.on i{
+	background-image: url(../images/record-icon-clicked.png);
+	background-size: 100% 100%;
+}
+a{
+	height: 100%;
+    width: 100%;
+    display: block;
+}

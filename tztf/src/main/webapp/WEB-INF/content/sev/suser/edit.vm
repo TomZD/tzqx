@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <title>联系人编辑</title>
+	    #parse("commons/commonJs.vm")
+	    <!-- 配置文件 -->
+	    <script type="text/javascript">
+	        window.UEDITOR_HOME_URL = "${base}/static/ueditor1.4.3.2/";
+	    </script>
+	    <script type="text/javascript" src="${base}/static/ueditor1.4.3.2/ueditor.config.js"></script>
+	    <!-- 编辑器源码文件 -->
+	    <script type="text/javascript" src="${base}/static/ueditor1.4.3.2/ueditor.all.min.js"></script>
+	    #parse("commons/commonCss.vm")
+	    <script type="text/javascript">
+	        function save() {
+	        	jQuery('#fm').form('submit', {
+	                url: '${base}/sev/suser/save',
+	                onSubmit: function () {
+	                    return jQuery(this).form('validate');
+	                },
+	                success: function (result) {
+	                    result = jQuery.parseJSON(result);
+	                    Magic.closeWin();
+	                    if (!result.success) {
+	                        window.parent.jQuery.messager.show({title: '错误', msg: result.message});
+	                    } else {
+	                        window.parent.jQuery('#dg').datagrid('reload');
+	                    }
+	                }
+	            });
+	        }
+	    </script>
+	</head>
+	<body class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'center',border:false"
+		     style="padding: 10px 60px 20px 60px;background:#fff;border:1px solid #ccc;">
+		    <form id="fm" method="post">
+		    	<input name="id" type="hidden" value = "$!{model.id}">
+		        <table width="100%" cellpadding="5">
+		            <tr>
+		                <td align="left">联系人</td>
+		                <td> 
+		                	<input name="name" class="easyui-textbox" style="width:180px;" value = "$!{model.name}" >
+		                </td>
+		            </tr>
+		            <tr>
+						<td align="left">联系人电话</td>
+						 <td>
+						 	<input name="mobile" class="easyui-textbox" style="width:180px;" value="$!{model.mobile}">
+					 	</td>
+				 	</tr>
+		        </table>
+		    </form>
+		</div>
+		<div region="south" border="false" style="text-align: right; height: 30px;padding-top:3px;padding-right:10px">
+		    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+		    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="Magic.closeWin()">取消</a>
+		</div>
+	</body>
+</html>

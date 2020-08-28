@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布</title>
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/global.css">
+    <link rel="stylesheet" href="${base}/static/css/publishApplication.css">
+    <style>
+        .g-bd-left{
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            height: 100%;
+        }
+        .g-bd-right{
+            width: calc(50% - 2px);
+            float: right;
+            overflow-y: auto;
+            padding: 8px;
+            margin-top:  -8px;
+            height: calc(100% + 8px);
+        }
+        .g-bd-right-modular:last-child{
+            margin-bottom: 0;
+        }
+        .g-bd-right-modular{
+            width: 100%;
+        }
+    </style>	
+    <script>var base="${base}";</script>
+</head>
+  <!--左边开始-->
+  #if($type == "2")
+        <div class="g-bd-left" style="position:relative">
+            <!--标题开始-->
+            <div class="g-bd-tit">
+                <span>发布申请</span>
+            </div>
+            <!--标题结束-->
+            <!--内容开始-->
+            <div id="leftTable" class="g-bd-left-cont" style="    position: absolute;    top: 36px;    bottom: 0;    overflow: auto;width:100%">
+              <ul>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/typhoon_icon.png" /><span>台风</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/rainstorm_icon.png" /><span>暴雨</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/blizzard_icon.png" /><span>暴雪</span></a></li>                    
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/gale_icon.png" /><span>大风</span></a></li>                 
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/coldCurrent_icon.png" /><span>寒潮</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/sandStorm_icon.png" /><span>沙尘暴</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/highTemperature_icon.png" /><span>高温</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/hail_icon.png" /><span>冰雹</span></a></li>                    
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/frost_icon.png" /><span>霜冻</span></a></li>                 
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/fog_icon.png" /><span>雾</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/haze_icon.png" /><span>霾</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/drought_icon.png" /><span>干旱</span></a></li>
+                    <li><a href="fillInTheApplication.html"><img src="${base}/static/images/publishApplication/freeze_icon.png" /><span>道路结冰</span></a></li>
+                    <li><img /><span></span></li>
+                    <li><img /><span></span></li>
+                </ul>
+                
+            </div>
+            <!--内容结束-->
+        </div>
+    <!--左边结束-->
+  #end
+    <!--右边开始-->
+        <div class="g-bd-right">
+        
+        #if($!{listAuditAlarm.size()}!=0)
+            <!--1审核退回-->
+            <div class="g-bd-right-modular">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>审核退回</span>
+                </div>
+                <!--标题结束-->
+               #foreach($la in $!{listAuditAlarm})
+                        <!--内容开始-->
+                        <div class="g-bd-right-cont">
+                            <!--事件说明开始-->
+                            <div class="m-event">
+                                <!--事件名称及时间开始-->
+                                <p><span class="m-event-tit">$!la.title</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="m-event-time"> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span></p>
+                                <!--事件名称及时间开始-->
+                                <!--事件1进度开始-->
+                                <div class="m-event-schedule">
+                                    <!--详情开始-->
+                                    <a href="/sev/alarm/releaseAuditAlarm?alarmId=$!{la.id}" class="m-event-button">详情</a>
+                                    <!--详情结束-->
+                                    <ul>
+                                        <!--事件进度时间开始-->
+                                        <li class="m-event-schedule">
+                                            <p>
+                                                #if($!la.pubState == "2" || $!la.pubState == "9")
+                                                     <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.auditDate})</span>
+                                                #end
+                                            </p>
+                                        </li>
+                                        <!--事件进度时间结束-->
+                                        <!--事件进度时间轴开始-->
+                                        <li class="m-event-timeAxis">
+                                            <!--事件进度时间轴底部开始-->
+                                            <div class="m-timeAxis-bg">
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴底部结束-->
+                                            <!--事件进度时间轴进度开始-->
+                                            <div class="m-timeAxis-con">
+                                                <dl>
+                                                      <dd>
+                                                         <i></i>
+                                                      </dd>
+                                               </dl>
+                                                <dl>
+                                                     #if($!la.pubState == "2" || $!la.pubState == "9")
+                                                        <dd class="alert">
+                                                           <i></i>
+                                                        </dd>
+                                                     #end
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴进度结束-->
+                                        </li>
+                                        <!--事件进度时间轴结束-->
+        
+                                        <!--事件进度说明开始-->
+                                        <li class="m-event-explain">
+                                            <p>
+                                                #if($!la.pubState == "2")
+                                                    <span>申请发布</span>
+                                                    <span>发布中心退回：
+                                                    #set($str=  $!{la.checkContent})   
+									#if($str.length()>20)  
+									<a title="$!{la.checkContent}"> 
+									#set($str=$str.substring(0,20))  
+									$str ...  
+									</a>
+									#else  
+									$!{la.checkContent}  
+									#end 
+									</span>
+                                                    <span>发布平台执行</span>
+                                                    <span>发布完成</span>
+                                                #end
+                                                #if($!la.pubState == "9")
+                                                    <span>解除申请发布</span>
+                                                    <span>发布中心退回：
+                                                        #set($str=  $!{la.checkContent})   
+                                                          #if($str.length()>20)  
+                                                             <a title="$!{la.checkContent}"> 
+		                                                       #set($str=$str.substring(0,20))  
+		                                                       $str ...  
+	                                                          </a>
+                                                          #else  
+                                                               $!{la.checkContent}  
+                                                        #end
+                                                    </span>
+                                                    <span>发布平台执行</span>
+                                                    <span>发布完成</span>
+                                                #end
+                                            </p>
+                                        </li>
+                                        <!--事件进度说明开始-->
+                                    </ul>
+                                </div>
+                                <!--事件1进度结束-->
+                            </div>
+                            <!--事件说明开始-->
+                        </div>
+                        <!--内容开始-->
+               #end
+            </div>
+            <!--1审核退回-->
+            #end
+        
+        #if($!{listWaitAuditAlarm.size()}!=0)
+            <!--2等待审核-->
+            <div class="g-bd-right-modular">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>等待审核</span>
+                </div>
+                <!--标题结束-->
+                
+               #foreach($la in $!{listWaitAuditAlarm})
+                        <!--内容开始-->
+                        <div class="g-bd-right-cont">
+                            <!--事件说明开始-->
+                            <div class="m-event">
+                                <!--事件名称及时间开始-->
+                                <p><span class="m-event-tit">
+                                $!la.title</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="m-event-time"> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span></p>
+                                <!--事件名称及时间开始-->
+                                <!--事件1进度开始-->
+                                <div class="m-event-schedule">
+                                    <!--详情开始-->
+                                    <a href="/sev/alarm/releaseAuditAlarm?alarmId=$!{la.id}" class="m-event-button">详情</a>
+                                    <!--详情结束-->
+                                    <ul>
+                                        <!--事件进度时间开始-->
+                                        <li class="m-event-schedule">
+                                            <p>
+                                                #if($!la.pubState == "0" || $!la.pubState == "7")
+                                                     <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span>
+                                                #end
+                                            </p>
+                                        </li>
+                                        <!--事件进度时间结束-->
+                                        <!--事件进度时间轴开始-->
+                                        <li class="m-event-timeAxis">
+                                            <!--事件进度时间轴底部开始-->
+                                            <div class="m-timeAxis-bg">
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd></dd>
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴底部结束-->
+                                            <!--事件进度时间轴进度开始-->
+                                            <div class="m-timeAxis-con">
+                                                <dl>
+                                                     #if($!la.pubState == "0" || $!la.pubState == "7")
+                                                        <dd class="finish">
+                                                           <i></i>
+                                                        </dd>
+                                                     #end
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴进度结束-->
+                                        </li>
+                                        <!--事件进度时间轴结束-->
+        
+                                        <!--事件进度说明开始-->
+                                        <li class="m-event-explain">
+                                            <p>
+                                                #if($!la.pubState == "0")
+                                                    <span>申请发布</span>
+                                                #end
+                                                #if($!la.pubState == "7")
+                                                    <span>解除申请发布</span>
+                                                #end
+                                                     <span>发布中心审核</span>
+                                                    <span>发布平台执行</span>
+                                                    <span>发布完成</span>
+                                            </p>
+                                        </li>
+                                        <!--事件进度说明开始-->
+                                    </ul>
+                                </div>
+                                <!--事件1进度结束-->
+                            </div>
+                            <!--事件说明开始-->
+                        </div>
+                        <!--内容开始-->
+               #end
+            </div>
+            <!--2等待审核-->
+          #end
+          
+          #if($!{listNowAlarm.size()}!=0)  
+            <!--3正在发布开始-->
+            <div class="g-bd-right-modular">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>正在发布</span>
+                </div>
+                <!--标题结束-->
+                 #foreach($la in $!{listNowAlarm})
+                        <!--内容开始-->
+                        <div class="g-bd-right-cont">
+                            <!--事件说明开始-->
+                            <div class="m-event">
+                                <!--事件名称及时间开始-->
+                                <p><span class="m-event-tit">$!la.title</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="m-event-time"> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span></p>
+                                <!--事件名称及时间开始-->
+                                <!--事件1进度开始-->
+                                <div class="m-event-schedule">
+                                    <!--详情开始-->
+                                    <a href="/sev/alarm/releaseAuditAlarm?alarmId=$!{la.id}" class="m-event-button">详情</a>
+                                    <!--详情结束-->
+									<a href="${base}/sev/alarm/detailsUpdateAlarm?code=$!{la.id}" class="m-update-button">变更</a>
+									<a href="${base}/sev/alarm/detailsRemoveAlarm?code=$!{la.id}" class="m-relieve-button">解除</a>
+                                    <ul>
+                                        <!--事件进度时间开始-->
+                                        <li class="m-event-schedule">
+                                            <p>
+                                                     <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.auditDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.releaseDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.completeDate})</span>
+                                            </p>
+                                        </li>
+                                        <!--事件进度时间结束-->
+                                        <!--事件进度时间轴开始-->
+                                        <li class="m-event-timeAxis">
+                                            <!--事件进度时间轴底部开始-->
+                                            <div class="m-timeAxis-bg">
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                            </div>
+                                            <!--事件进度时间轴底部结束-->
+                                            <!--事件进度时间轴进度开始-->
+                                            <div class="m-timeAxis-con">
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd class="finish"><i></i></dd>
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴进度结束-->
+                                        </li>
+                                        <!--事件进度时间轴结束-->
+        
+                                        <!--事件进度说明开始-->
+                                        <li class="m-event-explain">
+                                            <p>
+                                                <span>申请发布</span>
+                                                <span>发布中心审核通过</span>
+                                                <span>发布平台执行</span>
+                                                <span>发布完成</span>
+                                            </p>
+                                        </li>
+                                        <!--事件进度说明开始-->
+                                    </ul>
+                                </div>
+                                <!--事件1进度结束-->
+                            </div>
+                            <!--事件说明开始-->
+                        </div>
+                        <!--内容开始-->
+               #end
+            </div>
+            <!--3正在发布结束-->
+         #end
+            
+        #if($!{publishOneMonthAlarm.size()}!=0)  
+            <!--4最近发布开始-->
+            <div class="g-bd-right-modular">
+                <!--标题开始-->
+                <div class="g-bd-tit">
+                    <span>最近发布</span>
+                </div>
+                <!--标题结束-->
+                 #foreach($la in $!{publishOneMonthAlarm})
+                        <!--内容开始-->
+                        <div class="g-bd-right-cont">
+                            <!--事件说明开始-->
+                            <div class="m-event">
+                                <!--事件名称及时间开始-->
+                                <p><span class="m-event-tit">$!la.title</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="m-event-time"> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span></p>
+                                <!--事件名称及时间开始-->
+                                <!--事件1进度开始-->
+                                <div class="m-event-schedule">
+                                    <!--详情开始-->
+                                    <a href="/sev/alarm/releaseAuditAlarm?alarmId=$!{la.id}" class="m-event-button">详情</a>
+                                    <!--详情结束-->
+                                    <ul>
+                                        <!--事件进度时间开始-->
+                                        <li class="m-event-schedule">
+                                            <p>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.pubDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.auditDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.releaseDate})</span>
+                                                     <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{la.completeDate})</span>
+                                            </p>
+                                        </li>
+                                        <!--事件进度时间结束-->
+                                        <!--事件进度时间轴开始-->
+                                        <li class="m-event-timeAxis">
+                                            <!--事件进度时间轴底部开始-->
+                                            <div class="m-timeAxis-bg">
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl>
+                                                        <dd></dd>
+                                                    </dl>
+                                            </div>
+                                            <!--事件进度时间轴底部结束-->
+                                            <!--事件进度时间轴进度开始-->
+                                            <div class="m-timeAxis-con">
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dd><i></i></dd>
+                                                </dl>
+                                            </div>
+                                            <!--事件进度时间轴进度结束-->
+                                        </li>
+                                        <!--事件进度时间轴结束-->
+        
+                                        <!--事件进度说明开始-->
+                                        <li class="m-event-explain">
+                                            <p>
+                                            #if($!{la.pubState}=="12")
+                                                <span>申请解除</span>
+                                                <span>发布中心审核</span>
+                                                <span>发布平台执行</span>
+                                                <span>解除完成</span>
+                                            #elseif($!{la.pubState}=="6")
+                                                <span>申请发布</span>
+                                                <span>发布中心审核</span>
+                                                <span>发布平台执行</span>
+                                                <span>发布完成</span>
+                                            #end
+                                            </p>
+                                        </li>
+                                        <!--事件进度说明开始-->
+                                    </ul>
+                                </div>
+                                <!--事件1进度结束-->
+                            </div>
+                            <!--事件说明开始-->
+                        </div>
+                        <!--内容开始-->
+               #end
+            </div>
+            <!--4最近发布结束-->
+         #end   
+            
+        </div>
+    <!--右边结束-->
+
+    <!--js开始-->
+    <script type="text/javascript" src="${base}/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="${base}/static/js/publishApplication.js"></script>
+    <script type="text/javascript" src="${base}/static/js/index/index.js"></script>
+    <!--js开始-->
+</body>
+</html>

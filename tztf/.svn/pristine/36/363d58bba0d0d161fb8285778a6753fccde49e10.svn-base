@@ -1,0 +1,164 @@
+body{
+	overflow: auto;
+}
+::-webkit-scrollbar{
+	display:none;
+}
+.location{
+	height:1.133333rem;
+	width:100%;
+	position:relative;
+	background-color:#fff;
+	padding:0 0.4rem;
+	margin-top: 0.266667rem;
+	box-sizing:border-box;
+}
+.location i{
+	left: 0.4rem;
+    display: inline-block;
+    width: 0.426667rem;
+    height: 0.426667rem;
+    background-image: url(../images/location-blue.png);
+    background-size: 100% 100%;
+}
+.location span{
+	padding-left: 0.533333rem;
+	line-height:1.133333rem;
+	font-size:0.426667rem;
+	color:#41a8ff;
+}
+.disaster-info{
+	width: 100%;
+	margin-top: 0.266667rem;
+	background-color: #fff;
+	padding: 0 0.4rem 0.266667rem 0.4rem;
+	box-sizing: border-box;
+}
+.info-title{
+	position: relative;
+	height: 1.133333rem;
+	width: 100%;
+	border-bottom: 1px solid #e6e6e6;
+}
+.info-title i{
+	left: 0;
+	display: inline-block;
+	width: 0.426667rem;
+	height: 0.426667rem;
+}
+.disaster-title i{
+	background-image: url(../images/warn-con-icon.png);
+	background-size: 100% 100%;
+}
+.refuge-title i{
+	background-image: url(../images/Resettlement.png);
+	background-size: 100% 100%;
+}
+.stuff-title i{
+	background-image: url(../images/stuff-title.png);
+	background-size: 100% 100%;
+}
+.save-title i{
+	background-image: url(../images/save-title.png);
+	background-size: 100% 100%;
+}
+.info-title span{
+	display: block;
+	padding-left: 0.533333rem;
+	line-height: 1.133333rem;
+	font-size: 0.426667rem;
+	color: #333;
+}
+.disaster-con{
+	width: 100%;
+	margin-top:0.266667rem;
+}
+.disaster-con li{
+	position: relative;
+	display: inline-block;
+	margin-right: 0.18rem;
+	height:2.0rem;
+	background-image: url(../images/disaster-bg.png);
+	background-size: 100% 100%; 
+	width: calc((100% - 0.586667rem)/3);
+}
+.disaster-con li:last-child{
+	margin-right: 0;
+}
+.disaster-con span{
+	color: #fff;
+}
+.disaster-con li span:first-child{
+	display: block;
+	margin-top: 0.266667rem;
+	width: 100%;
+	font-size: 0.373333rem;
+	text-align: center;
+}
+.disaster-con li span:last-child{
+	position: absolute;
+	bottom: 0.333333rem;
+	left: 0.2rem;
+	font-size: 0.4rem;
+}
+.movedown{
+	height: 0.466667rem;
+}
+.movedown i{
+	position: relative;
+	display: block;
+	width: 0.4rem;
+	height: 0.2rem;
+	background-image: url(../images/movedown.png);
+	background-size: 100% 100%;
+	margin: 0 auto;
+}
+.cre-con{
+	width: 100%;
+	margin-top: 0.133333rem;
+	max-height: 2.4rem;
+	overflow: hidden;
+}
+.cre-show{
+	max-height: 10rem;
+}
+.cre-con li{
+	position: relative;
+	display: inline-block;
+	height: 0.666667rem;
+	width: 50%;
+    overflow: hidden;
+}
+.cre-con li:nth-child(even){
+	float: right;
+}
+.cre-con i{
+	width: 0.4rem;
+	height: 0.4rem;
+	display: inline-block;
+	left: 0;
+	bottom:0;
+}
+.cre-rotate{
+	transform: rotate(180deg);
+}
+.cre-con span{
+	margin-left: 0.533333rem;
+	line-height: 0.666667rem;
+	width: 100%;
+	font-size: 0.32rem;
+	color: #666;
+	text-decoration: underline;
+}
+.refuge i{
+	background-image: url(../images/home-icon.png);
+	background-size: 100% 100%;
+}
+.stuff i{
+	background-image: url(../images/stuff-icon.png);
+	background-size: 100% 100%;
+}
+.transport i{
+	background-image: url(../images/save-icon.png);
+	background-size: 100% 100%;
+}

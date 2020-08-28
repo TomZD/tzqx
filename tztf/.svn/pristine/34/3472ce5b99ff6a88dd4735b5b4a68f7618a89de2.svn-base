@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>区域报警管理</title>
+        <!-- <meta charset="UTF-8"> -->
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="author" content="movinginfo"/>
+       
+        
+       
+            <script type="text/javascript" src="${base}/static/js/jquery-1.9.1.min.js"></script>
+			<script type="text/javascript" src="${base}/static/libs/easyui/jquery.min.js"></script>
+			<script type="text/javascript" src="${base}/static/libs/easyui/jquery.easyui.min.js"></script>
+			<script type="text/javascript" src="${base}/static/libs/easyui/locale/easyui-lang-zh_CN.js"></script>
+			<script type="text/javascript" src="${base}/static/js/public.js"></script>
+			
+			
+			<script type="text/javascript" src="${base}/static/js/pinyin.js"></script>  
+			<link rel="stylesheet" type="text/css" href="${base}/static/libs/easyui/themes/metro/easyui.css">
+			<link rel="stylesheet" type="text/css" href="${base}/static/libs/easyui/themes/icon.css">
+			<link rel="stylesheet" type="text/css" href="${base}/static/css/extIcon.css">
+			<link rel="stylesheet" type="text/css" href="${base}/static/css/common.css">
+			<!-- <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> -->
+			<link rel="stylesheet" type="text/css" href="${base}/static/css/global.css">
+			<link rel="stylesheet" type="text/css" href="${base}/static/css/categoryManagement.css">        <!-- START 公共资源 -->
+			<!-- 全局样式 -->
+			<link rel="stylesheet" href="${base}/static/css/global.css">
+        
+        <link rel="stylesheet" href="${base}/static/css/basic.css">
+    	<link rel="stylesheet" href="${base}/static/css/global.css">
+        <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+        
+        <script src="${base}/static1/js/lib/layer/layer.js"></script>
+        <!-- 引用滚动条插件 -->
+        <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+        <script type="text/javascript" src="${base}/static/js/json2.js"></script>
+        <style>
+        body{
+            background:none;
+        }
+        .m-table{
+            overflow-y:auto;
+            height:100%;
+        }
+        .m-popup{
+				min-height: 235px;
+		}
+		.m-popup .popup_bd{
+			overflow:auto;
+		}
+		#updateDiv,#newDiv{
+		    height: 88%;
+		    width:558px;
+		    overflow: hidden;
+		    left:31%;
+		    top:48%;
+		}
+		#updateDiv .popup_bd,#newDiv .popup_bd{
+			height:calc(100% - 65px);
+		}
+		#updateDiv ul,#newDiv ul{
+			display:flex;
+			justify-content: center;
+		}
+		#updateDiv ul li,#newDiv ul li{
+			margin-left:30px;
+		}
+		#updateDiv ul li button,#newDiv ul li button{
+			width:50px;
+			height:25px;
+			line-height:25px;
+			margin:0;
+			top:0;
+		}
+		.m-table table tr td{
+			padding:10px 0;
+		}
+        </style>
+        
+        <script type="text/javascript">
+        	var jsonLog = [{ text: '与', value: '&&' }, { text: '或', value: '||' }];
+			var jsonFac;
+			var jsonExp = [{ text: '大于等于', value: '>=' }, { text: '小于等于', value: '<=' }];
+			var jsonVal;
+			var jsonStation;
+			
+			var relative="";
+	        var elementIds="";
+	        var logic="";
+	        var thresholdValue="";
+	        var relativeTwo="";
+	        var meteorologicalIdTwo="";
+	        var logicTwo="";
+	        var thresholdValueTwo="";
+	        var relativeThree="";
+	        var meteorologicalIdThree="";
+	        var logicThree="";
+	        var thresholdValueThree="";
+	        //获取所有的气象因子
+	        getAllElement();
+	        function getAllElement() {
+	            $.ajax({
+	                    type:"POST",
+	                    url:'${base}/yzt/areaAlarm/getAllMeteorological',
+	                    dataType:"JSON",
+	                    success:function(data){
+	                    jsonFac = parseJson(data);
+	                    },
+	                    error:function(data){
+	                        alert("错误！");
+	                    }
+	                });
+            }
+            
+             //获取所有的关联站点
+            getRelStation();
+            function getRelStation() {
+	            $.ajax({
+	                    type:"POST",
+	                    url:'${base}/yzt/areaAlarm/getRelStation',
+	                    dataType:"JSON",
+	                    success:function(data){
+	                    jsonStation = parseJson(data);
+	                    },
+	                    error:function(data){
+	                        alert("错误！");
+	                    }
+	                });
+            }
+              
+          
+			
+            
+            
+            //删除
+            function del(id){
+                $(".m-poplayer").fadeIn(200);
+                /*添加popup内容*/
+                var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+                /*弹窗位置*/
+
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                var map = {};
+                var informations = '';
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+                /*点击确定*/
+                $(".m-btn.m-confirm").on("click", function () {
+                    parent.deleteAreaAlarm(id);
+                    
+                });
+                /*点击取消*/
+                $(".m-btn.m-home-cancel").on("click", function () {
+                    $(".m-poplayer").fadeOut(200);
+                });
+            }
+            //修改保存
+            function isUpdate(){
+            var page = document.getElementById('nowPage').innerText;
+            var size = document.getElementById('pageSize').innerText;
+                var isOk = true;
+                var theTown = document.getElementById('utown').value;
+                if(theTown == ""){
+                    isOK = false;
+                    layer.msg("请输入街道！");
+                    return false;
+                }
+                
+                 var last = $('.utr').length;
+             	if(last >1) {
+             	meteorologicalId="";
+             	logic=""
+             	thresholdValue="";
+             	relative="";
+             	for(var i =0;i<last;i++) {
+	             	if(i > 0) {
+	             	 relative += $(eval("uddlLog"+i)).combobox('getValue')+",";
+	             	 meteorologicalId += $(eval("uddlFac"+i)).combobox('getValue')+",";
+	             	 logic += $(eval("uddlExp"+i)).combobox('getValue')+",";
+	             	 thresholdValue += $(eval("uddlVal"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlVal"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalId += $(eval("uddlFac"+i)).combobox('getValue')+",";
+	             	 logic += $(eval("uddlExp"+i)).combobox('getValue')+",";
+	             	 thresholdValue += $(eval("uddlVal"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlVal"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalId=meteorologicalId.substring(0,meteorologicalId.length-1);//气象因子
+             	logic=logic.substring(0,logic.length-1);//>=,<=
+             	thresholdValue=thresholdValue.substring(0,thresholdValue.length-1);//阈值
+             	relative=relative.substring(0,relative.length-1);//逻辑关系
+             	}else if(last == 1) {
+             	 relative = "0";
+             	 meteorologicalId = $('#uddlFac0').combobox('getValue');
+             	 logic = $('#uddlExp0').combobox('getValue');
+             	 thresholdValue = $('#uddlVal0').val();
+             	 if(isNumeric(thresholdValue)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	
+             	if(isNull(meteorologicalId)==false || isNull(logic)==false || isNull(thresholdValue) == false) {
+	             	layer.msg("阈值条件请填写完整！");
+	                    return false;
+	             	 }
+	             	 
+	            var lastTwo = $('.utrTwo').length;
+             	if(lastTwo >1) {
+             	meteorologicalIdTwo="";
+             	logicTwo=""
+             	thresholdValueTwo="";
+             	relativeTwo="";
+             	for(var i =0;i<lastTwo;i++) {
+	             	if(i > 0) {
+	             	 relativeTwo += $(eval("uddlLogTwo"+i)).combobox('getValue')+",";
+	             	 meteorologicalIdTwo += $(eval("uddlFacTwo"+i)).combobox('getValue')+",";
+	             	 logicTwo += $(eval("uddlExpTwo"+i)).combobox('getValue')+",";
+	             	 thresholdValueTwo += $(eval("uddlValTwo"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlValTwo"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalIdTwo += $(eval("uddlFacTwo"+i)).combobox('getValue')+",";
+	             	 logicTwo += $(eval("uddlExpTwo"+i)).combobox('getValue')+",";
+	             	 thresholdValueTwo += $(eval("uddlValTwo"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlValTwo"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalIdTwo=meteorologicalIdTwo.substring(0,meteorologicalIdTwo.length-1);//气象因子
+             	logicTwo=logicTwo.substring(0,logicTwo.length-1);//>=,<=
+             	thresholdValueTwo=thresholdValueTwo.substring(0,thresholdValueTwo.length-1);//阈值
+             	relativeTwo=relativeTwo.substring(0,relativeTwo.length-1);//逻辑关系
+             	}else if(lastTwo == 1) {
+             	 relativeTwo = "0";
+             	 meteorologicalIdTwo = $('#uddlFacTwo0').combobox('getValue')==""?"0":$('#uddlFacTwo0').combobox('getValue');//如果为空则为0
+             	 logicTwo = $('#uddlExpTwo0').combobox('getValue');
+             	 thresholdValueTwo = $('#uddlValTwo0').val();
+             	 if(isNumeric(thresholdValueTwo)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	
+             	var lastThree = $('.utrThree').length;
+             	if(lastThree >1) {
+             	meteorologicalIdThree="";
+             	logicThree=""
+             	thresholdValueThree="";
+             	relativeThree="";
+             	for(var i =0;i<lastThree;i++) {
+	             	if(i > 0) {
+	             	 relativeThree += $(eval("uddlLogThree"+i)).combobox('getValue')+",";
+	             	 meteorologicalIdThree += $(eval("uddlFacThree"+i)).combobox('getValue')+",";
+	             	 logicThree += $(eval("uddlExpThree"+i)).combobox('getValue')+",";
+	             	 thresholdValueThree += $(eval("uddlValThree"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlValThree"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalIdThree += $(eval("uddlFacThree"+i)).combobox('getValue')+",";
+	             	 logicThree += $(eval("uddlExpThree"+i)).combobox('getValue')+",";
+	             	 thresholdValueThree += $(eval("uddlValThree"+i)).val()+",";
+	             	 if(isNumeric($(eval("uddlValThree"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalIdThree=meteorologicalIdThree.substring(0,meteorologicalIdThree.length-1);//气象因子
+             	logicThree=logicThree.substring(0,logicThree.length-1);//>=,<=
+             	thresholdValueThree=thresholdValueThree.substring(0,thresholdValueThree.length-1);//阈值
+             	relativeThree=relativeThree.substring(0,relativeThree.length-1);//逻辑关系
+             	}else if(lastThree == 1) {
+             	 relativeThree = "0";
+             	 meteorologicalIdThree = $('#uddlFacThree0').combobox('getValue')==""?"0":$('#uddlFacThree0').combobox('getValue');//如果为空则为0
+             	 logicThree = $('#uddlExpThree0').combobox('getValue');
+             	 thresholdValueThree = $('#uddlValThree0').val();
+             	 if(isNumeric(thresholdValueThree)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	
+                if(isOk == true){
+                    document.getElementById('relative').value = relative+"@"+relativeTwo+"@"+relativeThree;
+                    document.getElementById('meteorologicalId').value = meteorologicalId+"@"+meteorologicalIdTwo+"@"+meteorologicalIdThree;
+                    document.getElementById('logic').value = logic+"@"+logicTwo+"@"+logicThree;
+                    document.getElementById('thresholdValue').value = thresholdValue+"@"+thresholdValueTwo+"@"+thresholdValueThree;
+                    document.getElementById('town').value = document.getElementById('utown').value;
+                    document.getElementById('coords').value = document.getElementById('ucoords').value;
+                    document.getElementById('relStation').value = typeof($('#urelStation').combobox('getValues'))=="undefined"?"":$('#urelStation').combobox('getValues');
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/areaAlarm/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                         if( data == '同一阈值条件不能存在相同的气象因子!') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        //parent.location.reload();
+                        sbyPage(page,size);
+                        }
+                        }
+                    });
+                }
+            }
+           
+            
+            
+            //修改
+            function edit(id){
+                document.getElementById('id').value = id;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/yzt/areaAlarm/editAreaAlarm',
+                    data:"id="+id,
+                    dataType:"JSON",
+                    success:function(data){
+                    document.getElementById('utown').value = data.town?data.town:'';
+                    document.getElementById('ucoords').value = data.coords?data.coords:'';
+                        initForm();
+                        if(data.relStation != "") {
+                        $('#urelStation').combobox('setValue', data.relStation);
+                        if (data.relStation)
+                        $('#urelStation').combobox('setValues', data.relStation.split(','));
+                        }
+                        var utrLength =$('.utr').length;
+                        if(utrLength > 1) {
+                        for(var n=1;n<utrLength;n++) {
+                           $('.utr').eq(n).remove();//清除
+                           }
+                        }
+                        var meteIds = data.meteorologicalId.split("@");
+                        var logs =data.logic.split("@");
+                        var thValues = data.thresholdValue.split("@");
+                        var rels = data.relative.split("@");
+                        var meteorologicalIds = meteIds[0].split(",");
+                        var logics =logs[0].split(",");
+                        var thresholdValues =thValues[0].split(",");
+                        var relative = rels[0].split(",");    
+                        for(var i=0;i<meteorologicalIds.length;i++) {
+	                        if(i==0) {
+	                           $('#uddlFac0').combobox('setValue', meteorologicalIds[i]);
+	                           $('#uddlExp0').combobox('setValue', logics[i]);
+	                           $('#uddlVal0').val(thresholdValues[i]);
+	                        }else {
+	                        	var targetObj = $('<tr class="utr"><td><input class="uchkRow" style="width: 20px" type="checkbox" /></td><td><input id="uddlLog' + i + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="uddlFac' + i + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="uddlExp' + i + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="uddlVal'+i+'" style="width: 50px" value="" /></td></tr>').appendTo($('#utb'));
+	                            $.parser.parse(targetObj);//重新渲染
+	                            $(eval("uddlLog"+i)).combobox({
+						            data: jsonLog,
+						            textField: 'text',
+						            valueField: 'value',
+						            panelHeight: 'auto',
+						            required: true,
+						            onSelect: function (node) {
+						            }
+						        });
+							    $(eval("uddlFac"+i)).combobox({
+							        data: jsonFac,
+							        textField: 'text',
+							        valueField: 'id',
+							        panelHeight: '300',
+							        required: true,
+							        onSelect: function (node) {
+							        }
+							    });
+						    $(eval("uddlExp"+i)).combobox({
+						        data: jsonExp,
+						        textField: 'text',
+						        valueField: 'value',
+						        panelHeight: 'auto',
+						        required: true,
+						        onSelect: function (node) {
+						        }
+						        });
+	                           $(eval("uddlLog"+i)).combobox('setValue', relative[i-1]);
+	                           $(eval("uddlFac"+i)).combobox('setValue',meteorologicalIds[i]);
+	                           $(eval("uddlExp"+i)).combobox('setValue', logics[i]);
+	                           $(eval("uddlVal"+i)).val(thresholdValues[i]);
+	                        }
+                        }
+                        
+                        var meteorologicalIdsTwo = meteIds[1].split(",");
+                        var logicsTwo =logs[1].split(",");
+                        var thresholdValuesTwo =thValues[1].split(",");
+                        var relativeTwo = rels[1].split(",");
+                        if(meteorologicalIdsTwo !="0") {  
+                        for(var n=0;n<meteorologicalIdsTwo.length;n++) {
+	                        if(n==0) {
+	                           $('#uddlFacTwo0').combobox('setValue', meteorologicalIdsTwo[n]);
+	                           $('#uddlExpTwo0').combobox('setValue', logicsTwo[n]);
+	                           $('#uddlValTwo0').val(thresholdValuesTwo[n]);
+	                        }else {
+	                        	var targetObj = $('<tr class="utrTwo"><td><input class="uchkRow" style="width: 20px" type="checkbox" /></td><td><input id="uddlLogTwo' + i + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="uddlFacTwo' + i + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="uddlExpTwo' + i + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="uddlValTwo'+i+'" style="width: 50px" value="" /></td></tr>').appendTo($('#utbTwo'));
+	                            $.parser.parse(targetObj);//重新渲染
+	                            $(eval("uddlLogTwo"+i)).combobox({
+						            data: jsonLog,
+						            textField: 'text',
+						            valueField: 'value',
+						            panelHeight: 'auto',
+						            required: true,
+						            onSelect: function (node) {
+						            }
+						        });
+							    $(eval("uddlFacTwo"+i)).combobox({
+							        data: jsonFac,
+							        textField: 'text',
+							        valueField: 'id',
+							        panelHeight: '300',
+							        required: true,
+							        onSelect: function (node) {
+							        }
+							    });
+						    $(eval("uddlExpTwo"+i)).combobox({
+						        data: jsonExp,
+						        textField: 'text',
+						        valueField: 'value',
+						        panelHeight: 'auto',
+						        required: true,
+						        onSelect: function (node) {
+						        }
+						        });
+	                           $(eval("uddlLogTwo"+i)).combobox('setValue', relativeTwo[n-1]);
+	                           $(eval("uddlFacTwo"+i)).combobox('setValue',meteorologicalIdsTwo[n]);
+	                           $(eval("uddlExpTwo"+i)).combobox('setValue', logicsTwo[n]);
+	                           $(eval("uddlValTwo"+i)).val(thresholdValuesTwo[n]);
+	                        }
+                          }
+                        }
+                        
+                        
+                        var meteorologicalIdsThree = meteIds[2].split(",");
+                        var logicsThree =logs[2].split(",");
+                        var thresholdValuesThree =thValues[2].split(",");
+                        var relativeThree = rels[2].split(",");
+                        if(meteorologicalIdsThree !="0") {  
+                        for(var m=0;m<meteorologicalIdsThree.length;m++) {
+	                        if(m==0) {
+	                           $('#uddlFacThree0').combobox('setValue', meteorologicalIdsThree[m]);
+	                           $('#uddlExpThree0').combobox('setValue', logicsThree[m]);
+	                           $('#uddlValThree0').val(thresholdValuesThree[m]);
+	                        }else {
+	                        	var targetObj = $('<tr class="utrThree"><td><input class="uchkRow" style="width: 20px" type="checkbox" /></td><td><input id="uddlLogThree' + i + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="uddlFacThree' + i + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="uddlExpThree' + i + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="uddlValThree'+i+'" style="width: 50px" value="" /></td></tr>').appendTo($('#utbThree'));
+	                            $.parser.parse(targetObj);//重新渲染
+	                            $(eval("uddlLogThree"+i)).combobox({
+						            data: jsonLog,
+						            textField: 'text',
+						            valueField: 'value',
+						            panelHeight: 'auto',
+						            required: true,
+						            onSelect: function (node) {
+						            }
+						        });
+							    $(eval("uddlFacThree"+i)).combobox({
+							        data: jsonFac,
+							        textField: 'text',
+							        valueField: 'id',
+							        panelHeight: '300',
+							        required: true,
+							        onSelect: function (node) {
+							        }
+							    });
+						    $(eval("uddlExpThree"+i)).combobox({
+						        data: jsonExp,
+						        textField: 'text',
+						        valueField: 'value',
+						        panelHeight: 'auto',
+						        required: true,
+						        onSelect: function (node) {
+						        }
+						        });
+	                           $(eval("uddlLogThree"+i)).combobox('setValue', relativeThree[m-1]);
+	                           $(eval("uddlFacThree"+i)).combobox('setValue',meteorologicalIdsThree[m]);
+	                           $(eval("uddlExpThree"+i)).combobox('setValue', logicsThree[m]);
+	                           $(eval("uddlValThree"+i)).val(thresholdValuesThree[m]);
+	                        }
+                          }
+                        }
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+                $("#updateDiv").show();
+                $("#newDiv").hide();
+            }
+            
+            
+            
+            
+            //新增
+            function addNew(){
+                initForm();
+                var ntrLength =$('.ntr').length;
+                        if(ntrLength > 1) {
+                        for(var n=1;n<ntrLength;n++) {
+                           $('.ntr').eq(n).remove();//清除
+                           }
+                        }
+                $("#nddlVal0").val("");  
+                $("#ntown").val("");    
+                $("#newDiv").show();
+                $("#updateDiv").hide();
+            }
+			
+            
+            function alertBox(value){
+                $(".m-poplayer").fadeIn(200);
+                _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+                /*弹窗位置*/
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>"+value+"</span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                setTimeout(function () { 
+                    $(".m-poplayer").fadeOut(200);
+                }, 2000);
+            }
+            
+            
+            //新增保存
+            function isAdd(){
+                var isOK = true;
+             	 var theTown = document.getElementById('ntown').value;
+                if(theTown == ""){
+                    isOK = false;
+                    layer.msg("请输入街道！");
+                    return false;
+                }
+             	
+             	var last = $('.ntr').length;
+             	if(last >1) {
+             	meteorologicalId="";
+             	logic=""
+             	thresholdValue="";
+             	relative="";
+             	for(var i =0;i<last;i++) {
+	             	if(i > 0) {
+	             	 relative += $(eval("nddlLog"+i)).combobox('getValue')+",";
+	             	 meteorologicalId += $(eval("nddlFac"+i)).combobox('getValue')+",";
+	             	 logic += $(eval("nddlExp"+i)).combobox('getValue')+",";
+	             	 thresholdValue += $(eval("nddlVal"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlVal"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalId += $(eval("nddlFac"+i)).combobox('getValue')+",";
+	             	 logic += $(eval("nddlExp"+i)).combobox('getValue')+",";
+	             	 thresholdValue += $(eval("nddlVal"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlVal"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalId=meteorologicalId.substring(0,meteorologicalId.length-1);//气象因子
+             	logic=logic.substring(0,logic.length-1);//>=,<=
+             	thresholdValue=thresholdValue.substring(0,thresholdValue.length-1);//阈值
+             	relative=relative.substring(0,relative.length-1);//逻辑关系
+             	}else if(last == 1) {
+             	 relative = "0";
+             	 meteorologicalId = $('#nddlFac0').combobox('getValue');
+             	 logic = $('#nddlExp0').combobox('getValue');
+             	 thresholdValue = $('#nddlVal0').val();
+             	 if(isNumeric(thresholdValue)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	if(isNull(meteorologicalId)==false || isNull(logic)==false || isNull(thresholdValue) == false) {
+	             	layer.msg("阈值条件1请填写完整！");
+	                    return false;
+	             	 }
+             	
+             	var lastTwo = $('.ntrTwo').length;
+             	if(lastTwo >1) {
+             	meteorologicalIdTwo="";
+             	logicTwo=""
+             	thresholdValueTwo="";
+             	relativeTwo="";
+             	for(var i =0;i<lastTwo;i++) {
+	             	if(i > 0) {
+	             	 relativeTwo += $(eval("nddlLogTwo"+i)).combobox('getValue')+",";
+	             	 meteorologicalIdTwo += $(eval("nddlFacTwo"+i)).combobox('getValue')+",";
+	             	 logicTwo += $(eval("nddlExpTwo"+i)).combobox('getValue')+",";
+	             	 thresholdValueTwo += $(eval("nddlValTwo"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlValTwo"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalIdTwo += $(eval("nddlFacTwo"+i)).combobox('getValue')+",";
+	             	 logicTwo += $(eval("nddlExpTwo"+i)).combobox('getValue')+",";
+	             	 thresholdValueTwo += $(eval("nddlValTwo"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlValTwo"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalIdTwo=meteorologicalIdTwo.substring(0,meteorologicalIdTwo.length-1);//气象因子
+             	logicTwo=logicTwo.substring(0,logicTwo.length-1);//>=,<=
+             	thresholdValueTwo=thresholdValueTwo.substring(0,thresholdValueTwo.length-1);//阈值
+             	relativeTwo=relativeTwo.substring(0,relativeTwo.length-1);//逻辑关系
+             	}else if(lastTwo == 1) {
+             	 relativeTwo = "0";
+             	 meteorologicalIdTwo = $('#nddlFacTwo0').combobox('getValue')==""?"0":$('#nddlFacTwo0').combobox('getValue');//如果为空则为0
+             	 logicTwo = $('#nddlExpTwo0').combobox('getValue');
+             	 thresholdValueTwo = $('#nddlValTwo0').val();
+             	 if(isNumeric(thresholdValueTwo)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	
+             	var lastThree = $('.ntrThree').length;
+             	if(lastThree >1) {
+             	meteorologicalIdThree="";
+             	logicThree=""
+             	thresholdValueThree="";
+             	relativeThree="";
+             	for(var i =0;i<lastThree;i++) {
+	             	if(i > 0) {
+	             	 relativeThree += $(eval("nddlLogThree"+i)).combobox('getValue')+",";
+	             	 meteorologicalIdThree += $(eval("nddlFacThree"+i)).combobox('getValue')+",";
+	             	 logicThree += $(eval("nddlExpThree"+i)).combobox('getValue')+",";
+	             	 thresholdValueThree += $(eval("nddlValThree"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlValThree"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}else {
+	             	 meteorologicalIdThree += $(eval("nddlFacThree"+i)).combobox('getValue')+",";
+	             	 logicThree += $(eval("nddlExpThree"+i)).combobox('getValue')+",";
+	             	 thresholdValueThree += $(eval("nddlValThree"+i)).val()+",";
+	             	 if(isNumeric($(eval("nddlValThree"+i)).val())==false) {
+             	      layer.msg("请输入有效数值！");
+                      return false;
+             	     }
+	             	}
+             	}
+             	meteorologicalIdThree=meteorologicalIdThree.substring(0,meteorologicalIdThree.length-1);//气象因子
+             	logicThree=logicThree.substring(0,logicThree.length-1);//>=,<=
+             	thresholdValueThree=thresholdValueThree.substring(0,thresholdValueThree.length-1);//阈值
+             	relativeThree=relativeThree.substring(0,relativeThree.length-1);//逻辑关系
+             	}else if(lastThree == 1) {
+             	 relativeThree = "0";
+             	 meteorologicalIdThree = $('#nddlFacThree0').combobox('getValue')==""?"0":$('#nddlFacThree0').combobox('getValue');//如果为空则为0
+             	 logicThree = $('#nddlExpThree0').combobox('getValue');
+             	 thresholdValueThree = $('#nddlValThree0').val();
+             	 if(isNumeric(thresholdValueThree)==false) {
+             	 layer.msg("请输入有效数值！");
+                    return false;
+             	 }
+             	}
+             	
+                if(isOK == true){
+                    document.getElementById('id').value = '';
+                    document.getElementById('relative').value = relative+"@"+relativeTwo+"@"+relativeThree;
+                    document.getElementById('meteorologicalId').value = meteorologicalId+"@"+meteorologicalIdTwo+"@"+meteorologicalIdThree;
+                    document.getElementById('logic').value = logic+"@"+logicTwo+"@"+logicThree;
+                    document.getElementById('thresholdValue').value = thresholdValue+"@"+thresholdValueTwo+"@"+thresholdValueThree;
+                    document.getElementById('town').value = document.getElementById('ntown').value;
+                    document.getElementById('coords').value = document.getElementById('ncoords').value;
+                    document.getElementById('relStation').value = typeof($('#nrelStation').combobox('getValues'))=="undefined"?"":$('#nrelStation').combobox('getValues');
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/yzt/areaAlarm/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            alert("Connection error");
+                        },
+                        success: function(data) {
+                         if( data == '同一阈值条件不能存在相同的气象因子!') {
+                            layer.msg(data);
+                        }else {
+                        layer.msg("保存成功");
+                        parent.location.reload();
+                        }
+                        
+                        }
+                    });
+                }
+            }
+            
+            
+            //下拉框
+            function initForm() {
+		     //条件1
+		    $('#nddlExp0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#nddlFac0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		    $('#uddlExp0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#uddlFac0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		    //条件2   
+		    $('#nddlExpTwo0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#nddlFacTwo0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		    $('#uddlExpTwo0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#uddlFacTwo0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		       //条件3
+		       $('#nddlExpThree0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#nddlFacThree0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		    $('#uddlExpThree0').combobox({
+		        data: jsonExp,
+		        textField: 'text',
+		        valueField: 'value',
+		        panelHeight: 'auto',
+		       });
+		    $('#uddlFacThree0').combobox({
+		        data: jsonFac,
+		        textField: 'text',
+		        valueField: 'id',
+		        panelHeight: '300',
+		       });
+		       
+		    $('#nrelStation').combobox({
+		        data: jsonStation,
+		        multiple: true,
+		        valueField: 'id',
+		        textField: 'text',
+		        panelHeight: '300',
+             });
+             $('#urelStation').combobox({
+		        data: jsonStation,
+		        multiple: true,
+		        valueField: 'id',
+		        textField: 'text',
+		        panelHeight: '300',
+             });
+		    }
+            
+            
+           	//新增1的新增行
+             function appendAddRow() {
+			    var last = $('.ntr').length;
+			    if (last > 0) {
+			        $('#ntb').append('<tr class="ntr"><td><input class="nchkRow" style="width: 20px" type="checkbox" /></td><td><input id="nddlLog' + last + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="nddlFac' + last + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExp' + last + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlVal'+last+'" style="width: 50px" value="" /></td></tr>');
+			    } else {
+			        $('#ntb').append('<tr class="ntr"><td></td><td></td><td><input id="nddlFac0" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExp0" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlVal'+last+'" style="width: 50px" /></td></tr>');
+			    }
+			    if (last > 0) {
+			        $('#nddlLog' + last).combobox({
+			            data: last > 0 ? jsonLog : [{ text: '', value: '' }],
+			            textField: 'text',
+			            valueField: 'value',
+			            panelHeight: 'auto',
+			            required: true,
+			            onSelect: function (node) {
+			            }
+			        });
+			        $('#nddlLog' + last).combobox('setValue', '&&');
+			    }
+			    $('#nddlFac' + last).combobox({
+			        data: jsonFac,
+			        textField: 'text',
+			        valueField: 'id',
+			        panelHeight: '300',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    $('#nddlExp' + last).combobox({
+			        data: jsonExp,
+			        textField: 'text',
+			        valueField: 'value',
+			        panelHeight: 'auto',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    
+			}
+			//新增1的移除
+			function removeAddRow() {
+			    var cnt = $('.nchkRow:checked').length;
+			    if (cnt > 0) {
+			        $('.nchkRow:checked').parent().parent().remove();
+			    }
+			    else {
+			    var last=$('.ntr:last').length;
+			    if(last==1) {
+			     layer.msg("至少保留一行");
+			     return false;
+			    }
+			     $('.ntr:last').remove();
+			    }
+			}
+			//新增2的新增行
+             function appendAddRowTwo() {
+			    var last = $('.ntrTwo').length;
+			    if (last > 0) {
+			        $('#ntbTwo').append('<tr class="ntrTwo"><td><input class="nchkRowTwo" style="width: 20px" type="checkbox" /></td><td><input id="nddlLogTwo' + last + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="nddlFacTwo' + last + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExpTwo' + last + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlValTwo'+last+'" style="width: 50px" value="" /></td></tr>');
+			    } else {
+			        $('#ntbTwo').append('<tr class="ntrTwo"><td></td><td></td><td><input id="nddlFacTwo0" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExpTwo0" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlValTwo'+last+'" style="width: 50px" /></td></tr>');
+			    }
+			    if (last > 0) {
+			        $('#nddlLogTwo' + last).combobox({
+			            data: last > 0 ? jsonLog : [{ text: '', value: '' }],
+			            textField: 'text',
+			            valueField: 'value',
+			            panelHeight: 'auto',
+			            required: true,
+			            onSelect: function (node) {
+			            }
+			        });
+			        $('#nddlLogTwo' + last).combobox('setValue', '&&');
+			    }
+			    $('#nddlFacTwo' + last).combobox({
+			        data: jsonFac,
+			        textField: 'text',
+			        valueField: 'id',
+			        panelHeight: '300',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    $('#nddlExpTwo' + last).combobox({
+			        data: jsonExp,
+			        textField: 'text',
+			        valueField: 'value',
+			        panelHeight: 'auto',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    
+			}
+			//新增2的移除
+			function removeAddRowTwo() {
+			    var cnt = $('.nchkRowTwo:checked').length;
+			    if (cnt > 0) {
+			        $('.nchkRowTwo:checked').parent().parent().remove();
+			    }
+			    else {
+				     var last=$('.ntrTwo:last').length;
+				    if(last==1) {
+				     layer.msg("至少保留一行");
+				     return false;
+				    }
+			        $('.ntrTwo:last').remove();
+			    }
+			}
+			//新增3的新增行
+             function appendAddRowThree() {
+			    var last = $('.ntrThree').length;
+			    if (last > 0) {
+			        $('#ntbThree').append('<tr class="ntrThree"><td><input class="nchkRowThree" style="width: 20px" type="checkbox" /></td><td><input id="nddlLogThree' + last + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="nddlFacThree' + last + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExpThree' + last + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlValThree'+last+'" style="width: 50px" value="" /></td></tr>');
+			    } else {
+			        $('#ntbThree').append('<tr class="ntrThree"><td></td><td></td><td><input id="nddlFacThree0" style="width: 90px" class="easyui-combobox" /></td><td><input id="nddlExpThree0" style="width: 60px" class="easyui-combobox" /></td><td><input id="nddlValThree'+last+'" style="width: 50px" /></td></tr>');
+			    }
+			    if (last > 0) {
+			        $('#nddlLogThree' + last).combobox({
+			            data: last > 0 ? jsonLog : [{ text: '', value: '' }],
+			            textField: 'text',
+			            valueField: 'value',
+			            panelHeight: 'auto',
+			            required: true,
+			            onSelect: function (node) {
+			            }
+			        });
+			        $('#nddlLogThree' + last).combobox('setValue', '&&');
+			    }
+			    $('#nddlFacThree' + last).combobox({
+			        data: jsonFac,
+			        textField: 'text',
+			        valueField: 'id',
+			        panelHeight: '300',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    $('#nddlExpThree' + last).combobox({
+			        data: jsonExp,
+			        textField: 'text',
+			        valueField: 'value',
+			        panelHeight: 'auto',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    
+			}
+			//新增3的移除
+			function removeAddRowThree() {
+			    var cnt = $('.nchkRowThree:checked').length;
+			    if (cnt > 0) {
+			        $('.nchkRowThree:checked').parent().parent().remove();
+			    }
+			    else {
+				     var last=$('.ntrThree:last').length;
+				    if(last==1) {
+				     layer.msg("至少保留一行");
+				     return false;
+				    }
+			        $('.ntrThree:last').remove();
+			    }
+			}
+			//修改的新增行
+			function appendEditRow() {
+			    var last = $('.utr').length;
+			    if (last > 0) {
+			        $('#utb').append('<tr class="utr"><td><input class="uchkRow" style="width: 20px" type="checkbox" /></td><td><input id="uddlLog' + last + '" style="width: 40px" class="easyui-combobox" /></td><td><input id="uddlFac' + last + '" style="width: 90px" class="easyui-combobox" /></td><td><input id="uddlExp' + last + '" style="width: 60px" class="easyui-combobox" /></td><td><input id="uddlVal'+last+'" style="width: 50px" value="" /></td></tr>');
+			    } else {
+			        $('#utb').append('<tr class="utr"><td></td><td></td><td><input id="uddlFac0" style="width: 90px" class="easyui-combobox" /></td><td><input id="uddlExp0" style="width: 60px" class="easyui-combobox" /></td><td><input id="uddlVal'+last+'" style="width: 50px" /></td></tr>');
+			    }
+			    if (last > 0) {
+			        $('#uddlLog' + last).combobox({
+			            data: last > 0 ? jsonLog : [{ text: '', value: '' }],
+			            textField: 'text',
+			            valueField: 'value',
+			            panelHeight: 'auto',
+			            required: true,
+			            onSelect: function (node) {
+			            }
+			        });
+			        $('#uddlLog' + last).combobox('setValue', '1');
+			    }
+			    $('#uddlFac' + last).combobox({
+			        data: jsonFac,
+			        textField: 'text',
+			        valueField: 'id',
+			        panelHeight: '300',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    $('#uddlExp' + last).combobox({
+			        data: jsonExp,
+			        textField: 'text',
+			        valueField: 'value',
+			        panelHeight: 'auto',
+			        required: true,
+			        onSelect: function (node) {
+			        }
+			    });
+			    
+			}
+			//修改的移除
+			function removeEditRow() {
+			    var cnt = $('.uchkRow:checked').length;
+			    if (cnt > 0) {
+			        $('.uchkRow:checked').parent().parent().remove();
+			    }
+			    else {
+				     var last=$('.utr:last').length;
+				    if(last==1) {
+				     layer.msg("至少保留一行");
+				     return false;
+				    }
+			        $('.utr:last').remove();
+			    }
+			}
+			
+			
+			//判断是否为空
+			function isNull(str){  
+			var reg=/^\s*$/;
+			 if(!reg.test(str)){
+             return true;
+             }else{
+              return false;
+			}  
+		   }
+		   
+		   //判断是否为数字、为空
+			function isNumeric(str){  
+			var reg=/^\s*$/;
+		     if(!isNaN(str)){ 
+              //alert("是数字和数点"); 
+              return true;
+             }else if(reg.test(str)){
+             return true;
+             }else{ 
+              //alert("请输入数字或数字与小数点组合的数字！"); 
+              return false;
+			}  
+		   } 
+            
+            
+        </script>
+        
+    </head>
+    <body>
+        <!--弹窗开始-->
+        <div class="m-poplayer">
+            <div class="popup_con"></div>
+        </div>
+        <!--弹窗结束-->
+        <form id="f">
+            <input id="id" name="id" type="hidden"/>
+            <input id="town" name="town" type="hidden"/>
+            <input id="relStation" name="relStation" type="hidden"/>
+            <input id="logic" name="logic" type="hidden"/>
+            <input id="relative" name="relative" type="hidden"/>
+            <input id="thresholdValue" name="thresholdValue" type="hidden"/>
+            <input id="relStation" name="relStation" type="hidden"/>
+            <input id="meteorologicalId" name="meteorologicalId" type="hidden"/>
+            <input id="coords" name="coords" type="hidden"/>
+        </form>
+		 <!--弹窗结束-->
+        <form id="f2">
+            <input id="id2" name="id" type="hidden"/>
+            <input id="id3" name="id" type="hidden"/>
+            <input id="id4" name="id" type="hidden"/>
+            <input id="id5" name="id" type="hidden"/>
+        </form>
+        
+        <!--修改弹窗 -->
+        <div id="newDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>区域报警管理添加</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                    	<tr>
+                            <td class="rtit">街道</td>
+                            <td><input type="text" id="ntown" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">边界线</td>
+                            <td><input type="text" id="ncoords" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">关联站号</td>
+                            <td>
+                            	<input id="nrelStation" name="nrelStation" class="easyui-combobox" data-options="required:true" editable="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件1：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="ntb">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="ntr">
+	                                        <td>
+	                                            <!--<input class="chkRow" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="nddlLog0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlFac0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlExp0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlVal0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRow()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRow()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件2：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="ntbTwo">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="ntrTwo">
+	                                        <td>
+	                                            <!--<input class="chkRowTwo" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="nddlLogTwo0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlFacTwo0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlExpTwo0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlValTwo0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRowTwo()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRowTwo()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件3：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="ntbThree">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="ntrThree">
+	                                        <td>
+	                                            <!--<input class="chkRowThree" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="nddlLogThree0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlFacThree0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlExpThree0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="nddlValThree0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRowThree()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRowThree()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                
+            </div>
+            <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isAdd()">确定</button>
+                    </li>
+                </ul>
+        </div>
+        
+        
+        <!--修改弹窗 -->
+        
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>区域报警管理修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">街道</td>
+                            <td><input type="text" id="utown" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">边界线</td>
+                            <td><input type="text" id="ucoords" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">关联站号</td>
+                            <td>
+                            	<input id="urelStation" name="urelStation" class="easyui-combobox" data-options="required:true" editable="false" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件1：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="utb">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="utr">
+	                                        <td>
+	                                            <!--<input class="chkRow" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="uddlLog0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlFac0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlExp0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlVal0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRow()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRow()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件2：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="utbTwo">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="utrTwo">
+	                                        <td>
+	                                            <!--<input class="chkRowTwo" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="uddlLogTwo0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlFacTwo0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlExpTwo0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlValTwo0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRowTwo()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRowTwo()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                                                      阈值条件3：
+                            </td>
+                            <td style="vertical-align: top;">
+                                <input id="RuleExpr" name="RuleExpr" type="hidden"/>
+                                <div id="addTab">
+                                	<table id="utbThree">
+	                                    <tr>
+	                                        <th style="width: 20px"></th>
+	                                        <th style="width: 40px">逻辑</th>
+	                                        <th style="width: 90px">气象因子</th>
+	                                        <th style="width: 60px">条件</th>
+	                                        <th style="width: 50px">数值</th>
+	                                    </tr>
+	                                    <tr class="utrThree">
+	                                        <td>
+	                                            <!--<input class="chkRowThree" type="checkbox" style="width: 20px" />-->
+	                                        </td>
+	                                        <td>
+	                                            <!--<input id="uddlLogThree0" style="width: 40px;" class="easyui-combobox"  />-->
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlFacThree0" style="width: 90px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlExpThree0" style="width: 60px" class="easyui-combobox" />
+	                                        </td>
+	                                        <td>
+	                                            <input id="uddlValThree0" style="width: 50px" value="" />
+	                                        </td>
+	                                    </tr>
+	                                </table>
+                                </div>
+                                <div style="text-align: right; padding: 5px 0;">
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendAddRowThree()">添加行</a>
+                                    <a class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeAddRowThree()">移除行</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+               
+            </div>
+             <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+        </div>
+        
+        
+        </div>
+        <div class="m-table" >
+            <table>
+                <thead>
+                        <td>街道</td>
+                        <td>关联站号</td>
+                        <td>一级报警条件</td>
+                        <td>二级报警条件</td>
+                        <td>三级报警条件</td>
+                        <td>边界线</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                  #set($list = $!{page.get("list")})##
+                    #foreach($areaAlarm in $list)##
+                        <tr  value='$!{areaAlarm.get("id")}'>
+                            <td>$!{areaAlarm.get("town")}</td>
+                            <td>$!{areaAlarm.get("iiiii")}</td>
+                            <td>$!{areaAlarm.get("alertName")}</td>
+                            <td>$!{areaAlarm.get("alertNameTwo")}</td>
+                            <td>$!{areaAlarm.get("alertNameThree")}</td>
+                            <td>$!{areaAlarm.get("coords")}</td>
+							<td>
+							 <button onclick="edit($!{areaAlarm.get("id")})">修改</button>
+							 <button class="details btn-delete" onclick="del($!{areaAlarm.get("id")})">删除</button>
+							</td>
+                        </tr>
+                    #end##
+                </tbody>
+            </table>
+            #parse("commons/pagerTemplate.vm")	
+          
+            
+            
+        </div>
+    </body>

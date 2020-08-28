@@ -1,0 +1,153 @@
+.olMap {
+  z-index: 0;
+  cursor: default;
+}
+.olMapViewport {
+  text-align: left;
+  -ms-touch-action: none;
+  z-index: 0;
+}
+.olLayerDiv {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+}
+.olAlphaImg {
+  vertical-align: top;
+}
+/* 控制器 */
+.olControlNoSelect {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+}
+.olImageLoadError {
+  background-color: pink;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+/**
+ * Cursor styles
+ */
+.olCursorWait {
+  cursor: wait;
+}
+.olDragDown {
+  cursor: move;
+}
+.olDrawBox {
+  cursor: crosshair;
+}
+.olControlDragFeatureOver {
+  cursor: move;
+}
+.olControlDragFeatureActive.olControlDragFeatureOver.olDragDown {
+  cursor: -moz-grabbing;
+}
+/* Turn on GPU support where available */
+.olTileImage {
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  -ms-perspective: 1000;
+  perspective: 1000;
+  /**
+     * Animations
+     */
+}
+img.olTileImage {
+  max-width: none;
+}
+.olLayerGrid .olTileImage {
+  -webkit-transition: opacity 0.2s linear;
+  -moz-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+}
+/* when replacing tiles, do not show tile and backbuffer at the same time */
+.olTileReplacing {
+  display: none;
+}
+/* 缩放 */
+.olControlZoom {
+  bottom: 10px;
+  left: 10px;
+  *border: 1px solid #666;
+  border: 1px solid #666\9\0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  background: white;
+}
+.olControlZoom a {
+  display: block;
+  height: 30px;
+  width: 30px;
+  color: #666;
+  font-size: 35px;
+  line-height: 30px;
+  overflow: hidden;
+  font-family: arial, Helvetica, sans-serif;
+  text-decoration: none;
+  text-align: center;
+}
+.olControlZoom a a:hover {
+  color: #000;
+}
+.olControlZoomOut {
+  border-top: 1px solid #eee;
+}
+/* 弹层 */
+.olPopup {
+  overflow: visible!important;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+.olPopup .popup_tri {
+  height: 10px;
+  width: 20px;
+  margin-left: 50%;
+}
+.olPopup .popup_tri_a,
+.olPopup .popup_tri_b {
+  font: 0/0 arial;
+  width: 0px;
+  height: 0px;
+  border: 10px dashed transparent;
+  margin-left: -10px;
+  border-bottom: 0;
+  border-top-style: solid;
+  display: block;
+}
+.olPopup .popup_tri_a {
+  border-top-color: #518fb5;
+  margin-bottom: -12px;
+}
+.olPopup .popup_tri_b {
+  border-top-color: #518fb5;
+}
+.olPopupCloseBox {
+  background: url(/static/images/gigis/close.png);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  top: 3px !important;
+}
+/**
+ * Editing .
+ * (using the editing_tool_bar.png sprint image)
+ */
+.olControlMyToolbar {
+  top: 10px;
+  left: 10px;
+}
+.olControlMyToolbar div {
+  width: 24px;
+  height: 22px;
+  cursor: pointer;
+  float: left;
+  background: red;
+}

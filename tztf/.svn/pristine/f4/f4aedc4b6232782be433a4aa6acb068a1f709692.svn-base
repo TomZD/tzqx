@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>单位管理</title>
+        <!-- <meta charset="UTF-8"> -->
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="author" content="grassinfo"/>
+        #parse("commons/commonJs.vm")
+        #parse("commons/commonCss.vm")
+        #parse("commons/commonRes.vm")
+        <link rel="stylesheet" href="${base}/static/css/basic.css">
+    	<link rel="stylesheet" href="${base}/static/css/global.css">
+        <link rel="stylesheet" type="text/css" href="${base}/static/css/personnelManagemen.css"> 
+        <link rel="stylesheet"type="text/css" href="/static/layui/css/layui.css">
+        <!-- 引用滚动条插件 -->
+        <script type="text/javascript" src="${base}/static/js/lib/jquery-niceScroll.js"></script>
+        <style>
+        body{
+            background:none;
+        }
+        .m-table{
+            overflow-y:auto;
+            height:100%;
+        }
+        .m-popup{
+				height:434px;
+		}
+		.m-popup .popup_bd{
+			height:399px;
+			overflow:auto;
+		}
+        </style>
+        <script type="text/javascript">
+        
+            function getDeptType(){
+            var id=document.getElementById('id').value;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/sys/dept/getDeptType?id='+id,
+                    dataType:"JSON",
+                    success:function(data){
+                         $("#udeptType").empty();
+                         $("#udeptType").append("<option value='" + data.deptType + "'>" + data.typeName + "</option>");
+               			 $("#udeptType").change();
+               			 if(data.deptType == "3") {
+               			  $("#utownId").empty();
+               			 $("#utownId").append("<option value='" + data.townId + "'>" + data.townName + "</option>")
+               			 jQuery.each(data.areaList, function(i,item){ 
+	                        	$("#utownId").append("<option value='" + item.id + "'>" + item.town + "</option>");
+	                          });
+               			 getAllTown();
+               			 }
+               			
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+            }
+            
+            function getDeptType2(){
+            	var areaId = '$!areaId';
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/sys/dept/getDeptType2',
+                    dataType:"JSON",
+                    success:function(data){
+                        $("#ndeptType").empty();
+                        jQuery.each(data, function(i,item){ 
+                        	if(areaId!='1'){//不属于杭州
+                        		if(item.value!='2'){//不为发布中心
+                        			$("#ndeptType").append("<option value='" + item.value + "'>" + item.content + "</option>");
+                        		}
+                        	}else{
+                        		$("#ndeptType").append("<option value='" + item.value + "'>" + item.content + "</option>");
+                        	}
+                          });
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+            }
+            
+            function getAllTown() {
+	            $.ajax({
+	                    type:"POST",
+	                    url:'${base}/sys/dept/getAllTown',
+	                    dataType:"JSON",
+	                    success:function(data){
+	                        $("#ntownId").empty();
+	                        $("#ntownId").append("<option value=''></option>");
+	                        jQuery.each(data, function(i,item){ 
+	                        	$("#ntownId").append("<option value='" + item.id + "'>" + item.town + "</option>");
+	                          });
+	                    },
+	                    error:function(data){
+	                        alert("错误！");
+	                    }
+	                });
+            }
+            
+            
+            
+            
+            function toUrl(){
+ 			 window.location.href='${base}/sys/user/userQuery';
+			}
+           
+			
+			
+			
+			
+            
+            
+            //删除
+            function del(id){
+                $(".m-poplayer").fadeIn(200);
+                /*添加popup内容*/
+                var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+                /*弹窗位置*/
+
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                var map = {};
+                var informations = '';
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+                /*点击确定*/
+                $(".m-btn.m-confirm").on("click", function () {
+                    parent.deleteDepartment(id);
+                    
+                });
+                /*点击取消*/
+                $(".m-btn.m-home-cancel").on("click", function () {
+                    $(".m-poplayer").fadeOut(200);
+                });
+                
+            #*  if(confirm("确认删除？")){
+                    parent.deleteDepartment(id);
+                }
+            *#
+            }
+            //修改保存
+            function isUpdate(){
+                var isOk = true;
+                var theName = document.getElementById('uname').value;
+                if(theName == ""){
+                    isOk = false;
+                    //alert("请输入名称！");
+                      layer.msg("请输入名称！");
+                    return false;
+                }
+                if(isOk == true){
+                    document.getElementById('name').value = document.getElementById('uname').value;
+                    document.getElementById('linker').value = document.getElementById('ulinker').value;
+                    document.getElementById('phone').value = document.getElementById('uphone').value;
+                    document.getElementById('code').value = document.getElementById('ucode').value;
+                    document.getElementById('nationalUnitCode').value = document.getElementById('unationalUnitCode').value;
+                    document.getElementById('deptType').value = document.getElementById('udeptType').value;
+                    document.getElementById('areas').value = "";
+                    document.getElementById('townId').value = document.getElementById('utownId').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sys/dept/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                           // alert("Connection error");
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                        if( data == '该部门名称已存在！' ||  data == '该区域发布中心已存在！' ) {
+                            layer.msg(data);
+                        }else {
+                            parent.location.reload();
+                        }
+                        }
+                    });
+                }
+            }
+            function deluser(id){
+                $(".m-poplayer").fadeIn(200);
+                $("#id3").val(id);
+                /*添加popup内容*/
+                var _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '<a href="javascript:void(0)" class="m-btn m-confirm">确定</a>'
+                    + '<a href="javascript:void(0)" class="m-btn m-home-cancel">取消</a>'
+                    + '</div>';
+                /*弹窗位置*/
+
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "90px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                var map = {};
+                var informations = '';
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>确认删除吗？ </span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                $(".m-poplayer").find(".popup_bottom").css("bottom","10px");
+
+                /*点击确定*/
+                $(".m-btn.m-confirm").on("click", function () {
+                var delid=$("#id3").val();
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sys/user/deluser",
+                        data:{"id":delid},// 你的formid
+                        async: false,
+                        error: function(request) {
+                           
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                       
+                        	layer.msg("删除成功");
+                        	userManage($("#id4").val());
+                       
+                            
+                        }
+                    });
+                    
+                });
+                /*点击取消*/
+                $(".m-btn.m-home-cancel").on("click", function () {
+                    $(".m-poplayer").fadeOut(200);
+                });
+                
+            #*  if(confirm("确认删除？")){
+                    parent.deleteDepartment(id);
+                }
+            *#
+            }
+            
+            
+            //修改
+            function edit(id){
+                document.getElementById('id').value = id;
+                $.ajax({
+                    type:"POST",
+                    url:'${base}/sys/dept/editDepartment',
+                    data:"id="+id,
+                    dataType:"JSON",
+                    success:function(data){
+                        document.getElementById('uname').value = data.name?data.name:'';
+                        document.getElementById('ulinker').value = data.linker?data.linker:'';
+                        document.getElementById('uphone').value = data.phone?data.phone:'';
+                        document.getElementById('ucode').value = data.code?data.code:'';
+                        document.getElementById('unationalUnitCode').value = data.nationalUnitCode?data.nationalUnitCode:'';
+                        document.getElementById('deptType').value = data.deptType?data.deptType:'';
+                        document.getElementById('townId').value = data.townId?data.townId:'';
+                        getDeptType();
+                    },
+                    error:function(data){
+                        alert("错误！");
+                    }
+                });
+                $("#updateDiv").show();
+                $("#newDiv").hide();
+            }
+            
+            
+             
+            
+            
+			//修改
+            function editPassword(id){
+				$("#id2").val(id);
+				$("#npwd").val("");
+				$("#npwd2").val("");
+				$("#updatePasswordDiv").show();
+				$("#updateDiv").hide();
+                $("#newDiv").hide();
+			}
+			
+			
+			 //修改保存
+            function updatePassword(){
+                var isOk = true;
+                var npwd = $("#npwd").val();
+                var npwd2 = $("#npwd2").val();
+                if(npwd == ""){
+                    isOk = false;
+                    layer.msg("请输入新密码！");
+                    return false;
+                }
+				if(npwd2 == ""){
+                    isOk = false;
+                    layer.msg("请输入新密码确认！");
+                    return false;
+                }
+				if(npwd!=npwd2){
+					isOk = false;
+                    layer.msg("请输入新密码和新密码不一致！");
+                    return false;
+				}
+                if(isOk == true){
+                    $("#password").val(npwd);
+                    var password = $("#password").val();
+                    var id = $("#id2").val();
+                    //alert(id);
+                    
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sys/user/savePwd",
+                        data:{"id":id,"password":password},// 你的formid
+                        async: false,
+                        error: function(request) {
+                           // alert("Connection error");
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                            layer.msg("修改成功");
+                        }
+                    });
+                }
+            }
+			
+			//修改保存
+            function resetPassword(id){
+                if(confirm('确认要重置密码？')){
+					$.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sys/user/resetPwd",
+                        data:"userId="+id,
+                        async: false,
+                        error: function(request) {
+                           // alert("Connection error");
+                            layer.msg("Connection error");
+                        },
+                        success: function(data) {
+                        layer.msg("重置成功");
+                        userManage($("#id4").val());
+                           // parent.location.reload();
+                        }
+                    });
+				}
+                
+            }
+            
+            //新增
+            function addNew(){
+                document.getElementById('id').value = '';
+                document.getElementById('nname').value = '';
+                document.getElementById('nlinker').value = '';
+                document.getElementById('nphone').value = '';
+                document.getElementById('ncode').value = '';
+                document.getElementById('nnationalUnitCode').value = '';
+                document.getElementById('deptType').value = '';
+                document.getElementById('townId').value = '';
+                $("#ntownId").val("");
+                $("#newDiv").find(".popup_bd tr:last-child").hide();
+				
+                getDeptType2();
+                getAllTown();
+                
+                $("#newDiv").show();
+                $("#updateDiv").hide();
+				$("#updatePasswordDiv").hide();
+            }
+			
+            
+            function alertBox(value){
+                $(".m-poplayer").fadeIn(200);
+                _body = '<div class="popup_bd">'
+                    + '</div>'
+                    + '<div class="popup_bottom">'
+                    + '</div>';
+                /*弹窗位置*/
+                //发布弹窗在屏幕中间
+                var leftWidth = ($(window).width() - 486) / 2; 
+                $(".m-poplayer").find("div.popup_con").css("left", leftWidth).css("height", "50px").width(486).html(_body);
+                /*添加popup_bd内容部分*/
+                $(".m-poplayer").find("div.popup_bd").append("<ul><li class='publish'><span>"+value+"</span></li></ul>");
+                $(".m-poplayer").find("div.popup_bd").find("li.publish").css("border-bottom", "none").css("line-height","25px").css("text-align","center").css("width","476px");
+                $(".m-poplayer").find("div.popup_bd").find(".m-text-textarea").css("margin-top","30px").css("width","66%");
+                $(".m-poplayer").find("div.popup_bd").find("p.text").css("margin-left","45%");
+                setTimeout(function () { 
+                    $(".m-poplayer").fadeOut(200);
+                }, 2000);
+            }
+            
+            //新增保存
+            function isAdd(){
+                var isOK = true;
+                //单位名称部分
+                var theName = document.getElementById('nname').value;
+                if(theName == ""){
+                    isOK = false;
+                    layer.msg("请输入部门名称！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }else if(theName.length>20){
+                    isOK = false;
+                    layer.msg("部门名称小于20字");
+                   // alert("部门名称小于20字");
+                    return false;
+                }
+              //单位缩写
+                var theCode = document.getElementById('ncode').value;
+                var Regx = /^[A-Za-z]*$/;
+                if(theCode == ""){
+                    isOK = false;
+                    layer.msg("请输入单位名称！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }
+                //国家编号
+                var theNationalUnitCode = document.getElementById('nnationalUnitCode').value;
+                if(theNationalUnitCode == ""){
+                    isOK = false;
+                    layer.msg("请输入国家编号！");
+                    //alert("请输入部门名称！");
+                    return false;
+                }else if(theNationalUnitCode.length!=14){
+                    isOK = false;
+                    layer.msg("国家编号应为14位");
+                   // alert("国家编号应为14位");
+                    return false;
+                }else if(isNaN(theNationalUnitCode)){
+                   // alert("国家编号不是纯数字");
+                    layer.msg("国家编号不是纯数字");
+                    isOK = false;
+                    return false;
+                }
+                
+                var theTownId = document.getElementById('ntownId').value;
+                if(document.getElementById('ndeptType').value == 3){
+	                if(theTownId == ""){ 
+		            	isOK = false;
+		                layer.msg("请选择乡镇！");
+		                return false;
+	                }
+                }
+                
+                if(isOK == true){
+                	
+                    document.getElementById('id').value = '';
+                    document.getElementById('name').value = document.getElementById('nname').value;
+                    document.getElementById('username').value = pinyin.getCamelChars($("#nname").val()).toLocaleLowerCase();
+                    document.getElementById('linker').value = document.getElementById('nlinker').value;
+                    document.getElementById('phone').value = document.getElementById('nphone').value;
+                    document.getElementById('code').value = document.getElementById('ncode').value;
+                    document.getElementById('nationalUnitCode').value = document.getElementById('nnationalUnitCode').value;
+                    document.getElementById('deptType').value = document.getElementById('ndeptType').value;
+                    document.getElementById('areas').value ="";
+                    document.getElementById('townId').value = document.getElementById('ntownId').value;
+                    $.ajax({
+                        cache: true,
+                        type: "POST",
+                        url:"${base}/sys/dept/saveOrUpdate",
+                        data:$('#f').serialize(),// 你的formid
+                        async: false,
+                        error: function(request) {
+                            alert("Connection error");
+                        },
+                        success: function(data) {
+                        if(data==true){
+                        parent.location.reload();
+                        }else{
+                        layer.msg(data);
+                        }
+                        
+                            
+                        }
+                    });
+                }
+            }
+        </script>
+        
+    </head>
+    <body>
+        <!--弹窗开始-->
+        <div class="m-poplayer">
+            <div class="popup_con"></div>
+        </div>
+        <!--弹窗结束-->
+        <form id="f">
+            <input id="id" name="id" type="hidden"/>
+            <input id="name" name="name" type="hidden"/>
+            <input id="username" name="username" type="hidden"/>
+            <input id="address" name="address" type="hidden"/>
+            <input id="linker" name="linker" type="hidden"/>
+            <input id="phone" name="phone" type="hidden"/>
+            <input id="fax" name="fax" type="hidden"/>
+            <input id="code" name="code" type="hidden"/>
+            <input id="nationalUnitCode" name="nationalUnitCode" type="hidden"/>
+            <input id="deptType" name="deptType" type="hidden"/>
+            <input id="areas" name="areas" type="hidden"/>
+            <input id="townId" name="townId" type="hidden"/>
+        </form>
+		 <!--弹窗结束-->
+        <form id="f2">
+            <input id="id2" name="id" type="hidden"/>
+            <input id="id3" name="id" type="hidden"/>
+            <input id="id4" name="id" type="hidden"/>
+            <input id="id5" name="id" type="hidden"/>
+            <input id="password" name="password" type="hidden"/>
+        </form>
+        
+        <!--修改弹窗 -->
+        <div id="newDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>单位管理添加</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">单位名称</td>
+                            <td><input type="text" id="nname" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系人</td>
+                            <td><input type="text" id="nlinker" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系方式</td>
+                            <td><input type="text" id="nphone" value="" regex="^[1][3,4,5,6,7,8][0-9]{9}$" placeholder="如有多个手机号请用顿号(、)分开"></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联合发布单位名称</td>
+                            <td><input type="text" id="ncode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">国家单位编码</td>
+                            <td><input type="text" id="nnationalUnitCode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">部门类型</td>
+                            <td>
+                                <select id="ndeptType">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                           <td class="rtit">街道选择</td> 
+                           <td>
+                                <select id="ntownId">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                        <script>
+				         	$("#ndeptType").change(function(){
+				         		var value = $(this).val();
+				         		if(value != 3){
+				         			$("#newDiv").find(".popup_bd tr:last-child").hide();
+				         			$("#ntownId").val("")
+				         		}else{
+				         			$("#newDiv").find(".popup_bd tr:last-child").show();
+				         		}
+				         	});
+				         	$("#ndeptType").change();
+                        </script>
+
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isAdd()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!--修改弹窗 -->
+        
+        <div id="updateDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>单位管理修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td class="rtit">单位名称</td>
+                            <td><input type="text" id="uname" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系人</td>
+                            <td><input type="text" id="ulinker" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联系方式</td>
+                            <td><input type="text" id="uphone" value="" placeholder="如有多个手机号请用顿号(、)分开"></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">联合发布单位名称</td>
+                            <td><input type="text" id="ucode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">国家单位编码</td>
+                            <td><input type="text" id="unationalUnitCode" value=""></td>
+                        </tr>
+                        <tr>
+                            <td class="rtit">部门类型</td>
+                            <td>
+                                <select id="udeptType">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                           <td class="rtit">街道选择</td> 
+                           <td>
+                                <select id="utownId">
+                                    <option value =""></option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                     <script>
+				         	$("#udeptType").change(function(){
+				         		var value = $(this).val();
+				         		if(value != "3"){
+				         			$("#updateDiv").find(".popup_bd tr:last-child").hide();
+				         		}else{
+				         			$("#updateDiv").find(".popup_bd tr:last-child").show();
+				         		}
+				         	});
+				         	$("#udeptType").change();
+                        </script>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="isUpdate()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!--用户信息修改弹窗 -->
+        
+       
+		<!--修改弹窗 -->
+        <div id="updatePasswordDiv" class="m-popup">
+            <div class="popup_hd">
+                <span>密码修改</span>
+            </div>
+            <div class="popup_bd">
+                    <table>
+                        <tr>
+                            <td>新密码</td>
+                            <td><input type="password" id="npwd" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>新密码确认</td>
+                            <td><input type="password" id="npwd2" value=""></td>
+                        </tr>
+                    </table>
+                <ul>
+                    <li>
+                        <button class="abandon">取消</button>
+                    </li>
+                    <li>
+                        <button class="m-event-button" onclick="updatePassword()">确定</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        <div class="m-table" >
+            <table>
+                <thead>
+                        <td>单位名称</td>
+                        <td>联系人</td>
+                        <td>联系方式</td>
+                        <td>联合发布单位名称</td>
+                        <td>国家单位编码</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                
+                #if($!session.getAttribute("dp") == 2)
+                  #set($list = $!{page.get("list")})##
+                    #foreach($department in $list)##
+                        <tr>
+                            <td>$!{department.get("name")}</td>
+                            <td>$!{department.get("linker")}</td>
+                            <td>$!{department.get("phone")}</td>
+                            <td>$!{department.get("code")}</td>
+                            <td>$!{department.get("nationalUnitCode")}</td>
+                           
+							<td>
+								#if($department.id != $!{departId} && $department.areaId == $!{areaId})
+									#*<button onclick="resetPassword($!{department.get("id")})">密码重置</button>*#
+									<button onclick="edit($!{department.get("id")})">修改</button>
+									##<button onclick="userManage($department.id)">用户管理</button>
+									##<button onclick="javascript:parent.location.href='${base}/sys/user/userQuery';">用户管理</button>
+									<button class="details btn-delete" onclick="del($!{department.get("id")})">删除</button>
+								#else
+									#*<button onclick="editPassword($!{department.get("id")})">密码修改</button>*#
+									##<button onclick="userManage($department.id)">用户管理</button>
+									##<button onclick="javascript:parent.location.href='${base}/sys/user/userQuery';">用户管理</button>
+    								<button onclick="edit($!{department.get("id")})">修改</button>
+								#end
+							</td>
+                        </tr>
+                    #end##
+                </tbody>
+            </table>
+            #parse("commons/pagerTemplate.vm")
+            #end    	
+            
+            	
+            #if($!session.getAttribute("dp") != 2)
+                <tr>
+                    <td>$department.name</td>
+                    <td>$department.linker</td>
+                    <td>$department.phone</td>
+                    <td>$department.code</td>
+                    <td>$department.nationalUnitCode</td>
+					<td>
+							<button onclick="edit($department.id)">修改</button>
+							##<button onclick="userManage($department.id)">用户管理</button>
+							<button onclick="javascript:parent.location.href='${base}/sys/user/userQuery';">登录用户管理</button>	
+						 #if($!session.getAttribute("dp") != 3)
+							<button onclick="javascript:parent.location.href='${base}/sys/decision/decisionQuery';">短信组管理</button>
+##						 #else
+##							<button onclick="javascript:parent.location.href='${base}/sys/decision/decisionQuery';">短信组管理</button>
+						#end
+					</td>
+                </tr>
+                </tbody>
+            </table>
+            #end
+            
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<portable-config>
+    <config-file path="WEB-INF/classes/spring/application.properties">
+        <replace key="jdbc.url"><![CDATA[jdbc:mysql://localhost:3306/hytf?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull]]></replace>
+        <replace key="jdbc.username">root</replace>
+        <replace key="jdbc.password">xC123456</replace>
+    </config-file>
+    <config-file path="WEB-INF/classes/log4j.properties">
+        <replace key="log4j.rootCategory">ERROR, stdout</replace>
+    </config-file>
+   
+</portable-config>

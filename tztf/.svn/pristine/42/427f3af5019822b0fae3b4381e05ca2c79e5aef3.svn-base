@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>历史预警查询</title>
+		<!-- <meta charset="UTF-8"> -->
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="author" content="grassinfo"/>
+		#parse("commons/commonJs.vm")
+		#parse("commons/commonCss.vm")
+		#parse("commons/commonRes.vm")
+		
+		<!-- START 历史预警资源 -->
+	    <!-- 样式 -->
+	    <link rel="stylesheet" href="${base}/static/js/lib/My97DatePicker/skin/WdatePicker.css">
+	    <link rel="stylesheet" href="${base}/static/css/basic.css">
+	    <link rel="stylesheet" href="${base}/static/css/global.css">
+	    <link rel="stylesheet" href="${base}/static/css/historyQuery.css">
+	    <!-- JS -->
+	    <!-- 引用滚动条插件 -->
+	   <!-- <script type="text/javascript" src="${base}/static/js/lib/jquery.min.js"></script>-->
+		<script type="text/javascript" src="${base}/static/js/public.js"></script>
+		<script type="text/javascript" src="${base}/static/js/historyQuery.js"></script>
+		<script type="text/javascript" src="${base}/static/js/layer/layer.js"></script>
+		<script type="text/javascript" src="${base}/static/js/lib/My97DatePicker/WdatePicker.js"></script>
+	    <!-- END 历史预警资源 -->
+	    <style>
+	    	.m-table{
+	    		height:100% !important;
+	    	}
+	    </style>
+		
+	</head>
+	<body>
+	     <!--弹窗开始-->
+	#*<div class="m-popup">
+		<div class="popup_hd">
+			<span>发布进度详情</span>
+		</div>
+		<div class="popup_bd">
+			<div class="checkbox_bd">
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="需要发送">
+                    <i class="checkbox on_check"></i>
+                    <span>需要发送</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已递交">
+                    <i class="checkbox"></i>
+                    <span>已递交</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已发出">
+                    <i class="checkbox"></i>
+                    <span>已发出</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已确认">
+                    <i class="checkbox"></i>
+                    <span>已确认</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="已完成">
+                    <i class="checkbox"></i>
+                    <span>已完成</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="出错">
+                    <i class="checkbox"></i>
+                    <span>出错</span>
+                </div>
+                <div class="m-checkbox">
+                    <input name="range" type="checkbox" class="radioclass" value="完成">
+                    <i class="checkbox"></i>
+                    <span>完成</span>
+                </div>
+            </div>
+            <!--标题-->
+            <h3>突发突发事件信息表</h3>
+
+            <!--highchart表-->
+            <div id ="information"></div>
+			<ul>
+				<li>
+					<button class="abandon">取消</button>
+				</li>
+				<li>
+					<button class="m-event-button">确定</button>
+				</li>
+			</ul>
+		</div>
+	</div>*#
+	<!--弹窗结束-->
+
+	
+	     
+		<div class="m-table" style="overflow-y: auto;">
+			<table>
+				<thead>
+					<tr>
+						<td>标题</td>
+						<td>上报人</td>
+						<td>上报时间</td>
+						<td>灾害种类</td>
+						<td>灾害地址</td>
+						<td>灾害描述</td>
+						<td>状态</td>
+					</tr>
+				</thead>
+				<tbody>
+					#set($list = $!{page.get("list")})##
+					#set($alarm_index = $!{page.get("startRow")})##
+					#foreach($disaster in $list)##
+						<tr>
+							
+							<td>$!{disaster.get("title")}</td>
+							<td>$!{disaster.get("publisher")}</td>
+							<td>$!date.format('yyyy-MM-dd',$!{disaster.get("pubDate")})</td>
+							<td>$!{disaster.get("type")}</td>
+							<td>$!{disaster.get("pubAdd")}</td>
+							<td class="release_content">
+							#set($str=  $!{disaster.get("content")})   
+                               #if($str.length()>20)  
+                               <p title="$!{disaster.get("content")}"> 
+                                  #set($str=$str.substring(0,20))  
+                                  $str ...  
+                                   </p>
+                               #else  
+                                    <!--$!{la.checkContent}-->
+                                      $str
+                            #end
+                            </td>
+							
+							
+							<td>
+								
+								<span>$!{disaster.get("pubStateStr")}</span>
+								<button class="details" onclick="parent.window.location.href='/dd/disaster/releaseNowDisaster?disasterId=${disaster.get("id")}';">详情</button>
+							
+							</td>
+							
+						</tr>
+						#set($alarm_index = $alarm_index + 1)
+					#end##
+					
+				</tbody>
+			</table>
+			
+#parse("commons/pagerTemplate.vm")
+#*
+#parse("commons/alarmPage.vm")
+*#
+#*
+#parse("commons/alarmPage_publish.vm")##
+*#
+		</div>
+	</body>
+</html>
+<script>
+  //  window.onload = function(){ 
+    	//判断是否IE<11浏览器
+    	//var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串 
+    	//var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; 
+    	//setHeight();
+        //if(isIE){
+	     //  $(window).resize(function(event) {
+	      //  	setHeight();	
+	      //  });
+	    //}
+
+        //设置高度，初始化滚动条
+        //function setHeight(){
+        //	var obj=$(".m-table");
+             /*左侧高度*/
+        //     var _h = $(window).height();
+             /*右侧高度*/
+            // obj.height(_h);
+            // if(hasScroll(obj)) useNiceScroll(obj);
+        //}
+    //} 
+</script>

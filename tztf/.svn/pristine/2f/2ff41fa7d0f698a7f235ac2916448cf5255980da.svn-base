@@ -1,0 +1,25 @@
+.record-detail{
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	margin-top: 0.266667rem;
+}
+.record-detail li{
+	display: block;
+	padding: 0.2rem 0.4rem 0 0.4rem;
+	border-bottom: 1px solid #e5e5e5;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.record-detail li div:first-child{
+	font-size: 0.4rem;
+	line-height: 0.613333rem;
+	color: #333;
+	
+}
+.record-detail li div:last-child{
+	font-size: 0.32rem;
+	color: #9b9b9b;
+}
+

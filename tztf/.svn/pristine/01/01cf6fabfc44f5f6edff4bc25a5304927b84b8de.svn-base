@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="author" content="movinginfo"/>
+	<title>杭州市防灾减灾监测预报预警平台--实况监控</title>
+	<link rel="stylesheet" href="./static2/css/basic.css">
+	<link rel="stylesheet" href="./static2/css/global.css">
+	<link rel="stylesheet" href="./static2/css/fzjz_global.css">
+    <link rel="stylesheet" type="text/css" href="static2/css/main.css">
+    <link rel="stylesheet" type="text/css" href="static2/css/MapStyle.css">
+
+	<link rel="stylesheet" type="text/css" href="static2/css/gi-gis.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz.css">
+	<link rel="stylesheet" type="text/css" href="static2/css/fzjz_media.css">
+	<script src="static2/HK/jquery.min.js" type="text/javascript"></script>
+	<script src="static2/HK/BigInt.js" type="text/javascript"></script>
+    <script src="static2/HK/RSA_Stripped.js" type="text/javascript"></script>
+    <script src="static2/HK/Barrett.js" type="text/javascript"></script>
+	<style>
+	body{
+		overflow: hidden;
+		min-height: 0;
+		min-width: 0;
+		
+	}
+	.waterdatas{
+	  margin-left:12px;
+	}
+	.m-paly{
+        display: inline-table;
+        width: 45px;
+        height: 46px;
+        background: url(./static2/images/play_btn.png) 0 0 no-repeat;
+        background-size: 100% 100%;
+	}
+    .m-paly.stop{
+		background-image:  url("./static2/images/stop_btn.png");
+	}
+    .m-time-axis-control{
+		margin-top: 8px;
+	}
+	.m-popup{
+		display:none;
+	}
+	 .no_data{
+            display: none;
+            position: absolute;
+            z-index: 999;
+            width: 192px;
+            height: 107px;
+            left:calc(50% - 96px);
+            top: calc(50% - 53px);
+        }
+	.m-time-axis{
+		width:calc(100% - 520px);
+	}
+</style>
+</head>
+<body>
+	<div class="g-pager">
+		<div class="code color_code">
+			<div>降水：[毫米]</div>
+			<ul class="code1">
+			
+			</ul>
+		</div>
+		<div class="m-popup" style="left: 240px; display: block;">
+			<div class="popup-title">
+				<span>排名</span>
+				<div class="temp-select">
+					
+				</div>
+				<i class="popup-h"></i>
+			</div>
+			<div class="popup-detail">
+				<ul>
+					
+
+				</ul>
+				
+			</div>
+		</div>
+		<div class="m-chart">
+			<div class="chart-title">站点详情</div>
+			<i></i>
+			<div class="chart-detail">
+				<span>站名：<span id="station"></span></span>	
+				<span>数值：<span id="value"></span></span>
+			</div>
+			<div id="stationChart"></div>
+		</div>
+		<div class="m-nav">
+			<ul class="fzjz-save">
+				
+			</ul>
+		</div>
+		<div class="popup-lightning">
+			<div class="lightning-title">图例</div>
+			<ul>
+				<li>图标：
+					<img class="lightning-img" src="./static2/images/marker/plus_icon.png">
+					<img class="lightning-img" src="./static2/images/marker/minus_icon.png">
+				</li>
+				<li>闪电类型：云地闪（正闪） 云地闪（负闪）</li>
+			</ul>
+		</div>
+		<div class="maptitle"></div>
+      
+		<div id = "imgId" style="display:none;width:100%;height:100%;">
+			<i class="previmg"></i><i class="nextimg"></i>
+			<img class="img" num='1' src="http://hz.zj.weather.com.cn/hztq/data/WXYT/WXYT_CSYT/WXYT_CSYT_3D_1.JPG" style="position:absolute;z-index:2;width:calc(100%);height:100%"/>
+		</div>
+		<div id="map" class="map m-map"></div>
+		<div class='no_data'><img src='../static2/images/warning_icon/noThunder.png' /></div>
+		<!--时间位置 -->
+		
+		<div class="m-tool-box">
+			<ul>
+				<li class="m-time">
+					<span>时间选择</span>
+					<div class="m-select-time">
+						<span></span>
+						<i></i>
+						<ul>
+
+						</ul>
+					</div>
+				</li>
+				
+				<li class="m-time-axis">
+					<div class="m-time-axis-box">
+						<ul class="m-axis-list">
+							
+						</ul>
+					</div>
+					<div class="m-time-axis-control">
+						<table>
+							<tr>
+                                <td><img class="m-prev" src="./static2/images/prev_btn.png" title="下一个时次"></td>
+                                <td><i class="m-paly" title="播放/暂停"></i></td>
+                                <td><img class="m-next" src="./static2/images/next_btn.png" title="下一个时次"></td>
+							</tr>
+						</table>
+					</div>
+				</li>
+				<li class="m-legend">
+					<ul>
+						<li class="staname on">
+							<i></i>
+							<span>站名</span>
+						</li>
+						<li class="grid">
+							<i></i>
+							<span>格点</span>
+						</li>
+						<li class="contour on">
+							<i></i>
+							<span>等值线</span>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<ul id="radarColorList"></ul>
+		</div>
+       
+	</div>
+	<!--js开始-->
+	<script type="text/javascript" src="./static2/js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="./static2/js/public.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/openLayers.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/sea.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/highcharts.js"></script>
+	<script type="text/javascript" src="./static2/js/common.js"></script>
+	<script type="text/javascript" src="./static2/js/echarts/echarts.min.js"></script>
+	<script type="text/javascript" src="./static2/js/echarts/helianthus.js"></script>
+    <script type="text/javascript" src="./static2/js/echarts/roma.js"></script>
+	<script type="text/javascript" src="./static2/js/lib/layer/layer.js"></script>
+	<script type="text/javascript">
+		seajs.config({
+			"base": "./static2/js"
+		});
+		seajs.use('ldxx');		
+	</script>
+	<!--js开始-->
+##	<iframe id="VideoFrame" style="width:100%;height:100%;" src="">
+</body>
+</html>

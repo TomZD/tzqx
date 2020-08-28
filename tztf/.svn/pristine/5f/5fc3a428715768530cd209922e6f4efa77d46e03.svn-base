@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="author" content="grassinfo"/>
+    <title>黄岩公共突发事件预警发布平台-发布责任单位-预警发布-发布失败详细页</title>
+
+    <link rel="stylesheet" href="${base}/static/css/basic.css">
+    <link rel="stylesheet" href="${base}/static/css/global.css">
+    <link rel="stylesheet" href="${base}/static/css/publishApplication.css">
+    <style>
+        .g-bd-left, .g-bd-right {
+            height: calc(100% - 65px);
+            overflow: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+        }
+
+        .m-sets li {
+            width: 50%;
+            display: inline-table;
+        }
+
+        .m-select, .inputTimepick {
+            width: calc(100% - 80px);
+        }
+
+        .m-sets-sets li {
+            width: 33.3%;
+            display: inline-table;
+        }
+
+        .g-bd-right-modular {
+            box-shadow: none;
+        }
+
+        .m-sets-sets .dropdown-menu {
+            max-height: 100px;
+            overflow: auto;
+        }
+
+        .g-bd-cont {
+            position: relative;
+        }
+
+        .show_img {
+            height: 150px;
+            box-sizing: border-box;
+            margin: 20px 30px;
+            background: rgba(0, 0, 0, 0.1);
+            margin-top: 14px;
+            border: 1px solid #415580;
+            padding: 20px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: flex-start;
+            overflow: auto;
+        }
+
+        .show_img img {
+            width: calc(20% - 16px);
+            box-sizing: border-box;
+            height: 100%;
+            background: #fff;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<!--时间轴开始-->
+<div class="m-event mb10">
+    <ul class="m-event-schedule">
+        <div class="m-event-schedule">
+            <p>
+                #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+                    <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                    <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.auditDate})</span>
+                #end
+                #if($!alarm.pubState == "0" || $!alarm.pubState == "7")
+                    <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                #end
+                #if($!alarm.pubState == "5" || $!alarm.pubState == "12" || $!alarm.pubState == "6")
+                    <span> $!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})</span>
+                    <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.auditDate})</span>
+                    <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.releaseDate})</span>
+                    <span>$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.completeDate})</span>
+                #end
+            </p>
+        </div>
+        <li class="m-event-timeAxis">
+            <!--事件进度时间轴底部开始-->
+            <div class="m-timeAxis-bg">
+                <dl>
+                    <dd></dd>
+                </dl>
+                <dl>
+                    <dd></dd>
+                </dl>
+                <dl>
+                    <dd></dd>
+                </dl>
+                <dl>
+                    <dd></dd>
+                </dl>
+            </div>
+            <!--事件进度时间轴底部结束-->
+            <!--事件进度时间轴进度开始-->
+            <div class="m-timeAxis-con">
+                #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd class="alert"><i></i></dd>
+                    </dl>
+                #end
+                #if($!alarm.pubState == "0" || $!alarm.pubState == "7")
+                    <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                #end
+                #if($!alarm.pubState == "5")
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                #end
+                #if($!alarm.pubState == "6")
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd class="finish"><i></i></dd>
+                    </dl>
+                #end
+                #if($!alarm.pubState == "12")
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                    <dl>
+                        <dd><i></i></dd>
+                    </dl>
+                #end
+            </div>
+            <!--事件进度时间轴进度结束-->
+        </li>
+        <!--事件进度说明开始-->
+
+        <li class="m-event-explain">
+            <p>
+                #if($!alarm.pubState == "2")
+                    <span>发布申请</span>
+                    <span>发布中心审核退回</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "9")
+                    <span>解除申请</span>
+                    <span>发布中心审核退回</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "0")
+                    <span>发布申请</span>
+                    <span>发布中心审核</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "7")
+                    <span>解除申请</span>
+                    <span>发布中心审核</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "5")
+                    <span>发布申请</span>
+                    <span>发布中心审核通过</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "12")
+                    <span>解除申请</span>
+                    <span>发布中心审核通过</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #elseif($!alarm.pubState == "6")
+                    <span>被更新</span>
+                    <span>发布中心审核通过</span>
+                    <span>发布平台执行</span>
+                    <span>发布完成</span>
+                #end
+            </p>
+        </li>
+
+        <!--事件进度说明开始-->
+
+    </ul>
+</div>
+<!--时间轴结束-->
+<!--左边开始-->
+<div class="g-bd-left">
+    <!--标题开始-->
+
+    <div class="g-bd-tit">
+        <span><a href="javascript:history.go(-1)" class="m-event-button" id="comback"
+                 style="float:left;top:38px;">后退</a></span>
+        <span class="filenum">$!{alarm.pubNo}</span>
+    </div>
+
+    <!--标题结束-->
+    <!--内容开始-->
+    <div class="g-bd-left-con">
+        <ul>
+            <!--标题开始-->
+            <li><span>标题</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{alarm.title}"/>
+            </li>
+            <!--标题结束-->
+        </ul>
+        <ul class="m-sets">
+            <!--信息类别开始-->
+            <li><span>信息类别</span><input type="text" class="m-text-input" readOnly="readOnly" value="$!{type}"/></li>
+            <!--信息类别结束-->
+            <!--预警级别开始-->
+            <li class="pl10"><span>预警级别</span><input type="text" class="m-text-input" readOnly="readOnly"
+                                                     value="$!{level}"/></li>
+            <!--预警级别结束-->
+        </ul>
+        <ul class="m-sets">
+            <!--发布时间开始-->
+            <li><span>发布时间</span><input class="inputTimepick m-text-input" readOnly="readOnly" type="text"
+                                        name="basic_example_1"
+                                        value="$!date.format('yyyy/MM/dd HH:mm:ss ',$!{alarm.pubDate})"></li>
+            <!--发布时间结束-->
+            <!--发布时效开始-->
+            <li class="pl10"><span>发布时效</span><input type="text" class="m-text-input" readOnly="readOnly"
+                                                     value="$!{alarm.duration}小时"/></li>
+            <!--发布时效结束-->
+        </ul>
+        <ul>
+            <!--发布范围开始-->
+            <li><span class="fl">发布范围</span><textarea class="m-text-textarea"
+                                                      readOnly="readOnly">$!{alarm.pubRangeName}</textarea></li>
+            <!--发布范围结束-->
+        </ul>
+        <ul>
+            <!--发布渠道开始-->
+            <li><span class="fl">发布渠道</span><textarea class="m-text-textarea" readOnly="readOnly">$!{channel}</textarea>
+            </li>
+            <!--发布渠道结束-->
+        </ul>
+        <!-- <ul>-->
+        <!--标题位置开始-->
+        <!--   <li><span>标题位置</span><span class="tl">开头</span></li>-->
+        <!--标题位置结束-->
+        <!--  </ul>-->
+        <ul>
+            <!--发布内容开始-->
+            <li>
+                <span class="fl">发布内容</span>
+                <textarea class="m-text-textarea" id="limitWord" readOnly="readOnly">$!{alarm.content}</textarea>
+            </li>
+            <!--发布内容结束-->
+        </ul>
+        <ul class="m-sets-sets">
+            <!--操作人员开始-->
+            <li><span>操作人员</span><input type="text" class="m-text-input" readOnly="readOnly"
+                                        value="$!{alarm.publisher}"/></li>
+            <!--审稿人员结束-->                    <!--发布时效开始-->
+            <!--签发人员结束-->                   <!--发布时效开始-->
+            <li class="pl10"><span>签发人员</span><input type="text" class="m-text-input" readOnly="readOnly"
+                                                     value="$!{alarm.issuer}"/></li>
+            <!--签发人员结束-->
+        </ul>
+
+        <ul>
+            <!--审批单开始-->
+            <li>
+                <span class="fl">审批单</span>
+                <div class="m-text-textarea dpi">
+                    #if($!alarm.imagePath != "")
+                        <img src="/upload/$!{alarm.imagePath}" style="height:99px;"/>
+                    #else
+                        <h3>未上传</h3>
+                    #end
+                </div>
+            </li>
+            <!--发布内容结束-->
+        </ul>
+
+        <!-- 看是否需要退回 -->
+        #if($!alarm.pubState == "2" || $!alarm.pubState == "9")
+            <ul>
+                <li>
+                    <span class="fl">退回原因</span>
+                    <textarea class="m-text-textarea" id="limitWord"
+                              readOnly="readOnly">$!{alarm.checkContent}</textarea>
+                </li>
+            </ul>
+        #end
+        <!-- 看是否需要退回 -->
+    </div>
+    <!--内容结束-->
+</div>
+<!--左边结束-->
+
+<!--右边开始-->
+<div class="g-bd-right">
+    <!--渠道总汇开始-->
+    <div class="g-bd-right-modular h100">
+        <!--标题开始-->
+        <div class="g-bd-tit">
+            <span>渠道汇总</span>
+        </div>
+        <!--标题结束-->
+        <!--表格-->
+
+
+        <table style="width: 100%;">
+            <colgroup>
+                <col style="width:15%">
+                <col style="width:55%">
+                <col style="width:15%">
+                <col style="width:10%">
+                <col style="width:5%">
+            </colgroup>
+            <thead>
+            <tr>
+                <td style="text-align: center;">渠道</td>
+                <td class="message" style="text-align: center;">信息</td>
+                <td style="text-align: center;">状态</td>
+                <td style="text-align: center;">进度</td>
+            </tr>
+            </thead>
+        </table>
+        <div class="m-table mt10">
+            <table>
+                </thead>
+                <colgroup>
+                    <col style="width:16%">
+                    <col style="width:58%">
+                    <col style="width:16%">
+                    <col style="width:10%">
+                </colgroup>
+                <tbody id="detail">
+                </tbody>
+            </table>
+        </div>
+        #if($alarm.images)
+            <div class="show_img">
+                #set($imageArr=$alarm.images.split(","))
+                #foreach($image in $imageArr)
+                    <img src="/alarm_images/$!image">
+                #end
+            </div>
+        #end
+    </div>
+    #if($alarm.pubState == 5)
+        <div class="g-bd-right-modular h100">
+            <!--标题开始-->
+            <div class="g-bd-tit" style="text-align: center;">
+                <span style="text-align: center;">信息反馈</span>
+            </div>
+            <!--标题结束-->
+            <textarea readonly="readonly" style="margin-left: 50px;margin-top: 20px;height: 350px;"
+                      class="m-text-textarea"
+                      id="message">$!{alarm.message}</textarea>
+        </div>
+    #end
+</div>
+<!--渠道总汇开始-->
+
+
+<!--右边结束-->
+
+<!--js开始-->
+<script type="text/javascript" src="../../static/js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="../../static/js/publishApplication.js"></script>
+<script type="text/javascript" src="../../static/js/publishSuccessfully.js"></script>
+<!--js开始-->
+
+<script type="text/javascript">
+    var pubNo = '$!{alarm.pubNo}';
+    var version = '$!{alarm.version}';
+    var imagePath = '$!{alarm.imagePath}';
+    var alarmId = '$!{alarm.id}'
+</script>
+</body>
+</html>
+<script>
+    $(function () {
+        if ($("#comback").parents(".g-bd-tit").find("span:eq(0)").text() == "发布申请查看") {
+            $("#comback").css("margin-left", "18%");
+        } else {
+            $("#comback").css("margin-left", "0%");
+        }
+        $("img").css("cursor", "pointer").click(function () {
+            window.open("/upload/" + imagePath);
+        });
+        var eventWidth = $(".m-event").width();
+        if ($(".m-timeAxis-con").find("dd").hasClass("alert")) {
+            var _index = $(".m-timeAxis-con").find("dd.alert").parent().index();
+            var conDlWidth = ($(".m-timeAxis-con").find("dd.alert").parent().width() - 29) / 2;
+            $(".m-timeAxis-con").find("dd.alert").parent().width($(this).find("dd.alert").parent().width() / 2 + 10);
+            var timeAxisWidth = eventWidth / 4 * (_index + 1) - conDlWidth;
+            // $(".m-timeAxis-con").width(timeAxisWidth);
+            /*红点下面的文字也为红色*/
+            $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("color", "#ff4747");
+            /*判断红字是否换行，如果换行就加上一定的高度*/
+            if ($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22) {
+                $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position", "relative");
+                $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top", "11px");
+            }
+        } else if ($(".m-timeAxis-con").find("dd").hasClass("finish")) {
+            var _index = $(".m-timeAxis-con").find("dd.finish").parent().index();
+            var conDlWidth = ($(".m-timeAxis-con").find("dd.finish").parent().width() - 29) / 2;
+            $(".m-timeAxis-con").find("dd.finish").parent().width($(this).find("dd.finish").parent().width() / 2 + 10);
+            var timeAxisWidth = eventWidth / 4 * (_index + 1) - conDlWidth;
+            // $(".m-timeAxis-con").width(timeAxisWidth);
+            /*判断完成的说明是否换行，如果换行就加上一定的高度*/
+            if ($(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).height() > 22) {
+                $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("position", "relative");
+                $(".m-timeAxis-con").parents(".m-event-timeAxis").next(".m-event-explain").find("span").eq(_index).css("top", "11px");
+            }
+        }
+    });
+</script>

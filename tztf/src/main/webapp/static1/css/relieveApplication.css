@@ -1,0 +1,89 @@
+@charset "utf-8";
+.g-bd-con>li{
+	position: relative;
+}
+.g-bd-con li div.g-bd-tit{
+	border-bottom: 0px;
+}
+.btn-set{
+	position: absolute;
+	right: 25px;
+	top: 8px;
+}
+.btn-set button{
+	height: 35px;
+	width: 60px;
+	border-radius: 3px;
+}
+/*解除按键*/
+.btn-set .btn-relieve{
+	background-color: #fe4848;
+}
+/*详情按键*/
+.btn-set .btn-details{
+	background-color: #1090fe;
+}
+
+
+.after_treatment{
+	position: absolute;
+	height: 4px;
+	top: 2px;
+	background: #1291fc;
+}
+.circle{
+	position: relative;
+	display: inline-block;
+	margin-top: -7px;
+	margin-left: 10%;
+	margin-right: 13.5%;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: #1291fc;
+}
+.circle i{
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background: rgba(255, 0, 0, 0.26);
+	z-index: 999;
+}
+div.not_pass{
+	background: rgba(0, 0, 0, 0.26);
+}
+.g-bd-cont{
+	margin-bottom: 25px;
+    padding: 15px 20px;
+}
+.m-event-button{
+	margin-top: -10px;
+}
+.m-event-button{
+	margin-top: -10px;
+}
+.m-event-schedule .btn-btn-install>a{
+	margin-left: 25px;
+	float: left;
+}
+.m-event-schedule .btn-btn-install{
+	float: right;
+    margin-top: -24px;
+    width: auto;
+    position: static;
+}
+.m-relieve-button{
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 12px;
+    color: #FFF;
+    background: #ff4747;
+    border-radius: 3px;
+    margin-top: -9px;
+}
+.m-relieve-button:hover{
+	background: #ee3131;
+}
