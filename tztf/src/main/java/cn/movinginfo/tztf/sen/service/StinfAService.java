@@ -29,7 +29,7 @@ public class  StinfAService {
     	Example example = new Example(StinfA.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("stnm","%"+stnm+"%");
-        criteria.andEqualTo("county","黄岩");
+        criteria.andEqualTo("county","通州");
         return mapper.selectByExample(example);
     }
 }

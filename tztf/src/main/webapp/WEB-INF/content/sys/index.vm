@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="author" content="movinginfo"/>
-	<title>黄岩公共突发事件预警发布平台-发布责任单位-公共页面</title>
+	<title>通州公共突发事件预警发布平台-发布责任单位-公共页面</title>
 	<link rel="stylesheet" href="${base}/static/css/basic.css">
     <link rel="stylesheet" href="${base}/static/css/global.css">
     <link rel="stylesheet" href="${base}/static/css/publishApplication.css">
@@ -37,7 +37,7 @@
 	
 	<div class="g-hd">
 		<!--logo开始-->
-		<div class="dpi"><img src="${base}/static/images/logo_img.png" /><span>黄岩公共突发事件预警发布平台</span></div>
+		<div class="dpi"><img src="${base}/static/images/logo_img.png" /><span>通州公共突发事件预警发布平台</span></div>
 		<!--logo结束-->
 		<!--nav开始-->
 		<ul class="m-nav fr" id="menuText" style="position: absolute;top: 0;right: 0;">

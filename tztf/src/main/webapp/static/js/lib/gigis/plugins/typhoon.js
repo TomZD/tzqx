@@ -220,7 +220,7 @@ define(function(require) {
                 (distances7 ? "<li>7级风圈半径：" + distances7 + "km</li>" : "") +
                 (distances10 ? "<li>10级风圈半径：" + distances10 + "km</li>" : "") +
                 (distances12 ? "<li>12级风圈半径：" + distances12 + "km</li>" : "") +
-                (distance ? "<li>离黄岩距离：" + point.distance + "km</li>" : "") +
+                (distance ? "<li>离通州距离：" + point.distance + "km</li>" : "") +
                
                 "</ul>" +
                 "</div>";

@@ -149,7 +149,7 @@ private ReleaseChannelInstanceService releaseChannelInstanceService = SpringCont
     	
     	
     	builder.append("\t<sender>" + dept.getName().replace("气象台", "气象局") + "</sender>");
-//    	builder.append("\t<sender>黄岩区气象局</sender>");
+//    	builder.append("\t<sender>通州区气象局</sender>");
     	builder.append("\r\n");
     	
     	builder.append("\t<senderCode>" + dept.getNationalUnitCode() + "</senderCode>");
@@ -332,7 +332,7 @@ private ReleaseChannelInstanceService releaseChannelInstanceService = SpringCont
     	
     	
     	builder.append("\t\t<senderName>" + dept.getName().replace("气象台", "气象局") + "</senderName>"); //是否与sender一样
-//    	builder.append("\t\t<senderName>黄岩区气象局</senderName>");
+//    	builder.append("\t\t<senderName>通州区气象局</senderName>");
     	builder.append("\r\n");
     	
     	String headline="";
@@ -377,7 +377,7 @@ private ReleaseChannelInstanceService releaseChannelInstanceService = SpringCont
         builder.append("\t\t<area>");
         builder.append("\r\n");
         
-        String areaDesc="黄岩区,黄岩区";
+        String areaDesc="通州区,通州区";
         String geocode="331003000000,331003000000";
         String [] towns=alarm.getPubRange().split(",");
         for (int i = 0; i < towns.length; i++) {

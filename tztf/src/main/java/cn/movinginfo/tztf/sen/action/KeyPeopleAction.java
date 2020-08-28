@@ -212,7 +212,7 @@ public class KeyPeopleAction extends MagicAction<KeyPeople,KeyPeopleService> {
 		
 		keyPeople.setProvince("浙江省");
 		keyPeople.setCity("台州市");
-		keyPeople.setCounty("黄岩区");
+		keyPeople.setCounty("通州区");
 		entityService.saveOrUpdate(keyPeople);
 	}
 	

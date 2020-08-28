@@ -184,7 +184,7 @@ public class FacilityEquipmentAction extends MagicAction<FacilityEquipment,Facil
 			}
 		}
 		facilityEquipment.setCity("台州市");
-		facilityEquipment.setCounty("黄岩区");
+		facilityEquipment.setCounty("通州区");
 		entityService.saveOrUpdate(facilityEquipment);
 	}
 	

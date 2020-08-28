@@ -361,7 +361,7 @@
 				getData('/static2/data/hyq.xml', "get", '', "xml", function(
 						data) {
 					// 蒙层
-					var boundary = gis.drawBoundary("黄岩区", data, {
+					var boundary = gis.drawBoundary("通州区", data, {
 						fillOpacity : 0.68,// 透明度
 						fillColor : "#2077be",// 填充色
 						strokeColor : "red",// 边界线条颜色灰色

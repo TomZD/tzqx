@@ -206,7 +206,7 @@ public class KeyPlaceAction extends MagicAction<KeyPlace, KeyPlaceService> {
 			}
 		}
 		keyPlace.setCity("台州市");
-		keyPlace.setCounty("黄岩区");
+		keyPlace.setCounty("通州区");
 		entityService.saveOrUpdate(keyPlace);
 	}
 	

@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="author" content="movinginfo"/>
-	<title>黄岩区气象防灾减灾综合平台</title>
+	<title>通州区气象防灾减灾综合平台</title>
 	<link rel="stylesheet" href="./static2/css/basic.css">
 	<link rel="stylesheet" href="./static2/css/global.css">
 	<link rel="stylesheet" href="./static2/css/fzjz_global.css">
@@ -30,7 +30,7 @@
 			</li>
 			<li>
 				<i></i>
-				<h2>黄岩区气象防灾减灾综合平台</h2>
+				<h2>通州区气象防灾减灾综合平台</h2>
 			</li>
 			<li class="g-nav">
 				<table>

@@ -55,7 +55,7 @@ public class StinfAction {
     }
 
     /**
-     * 获取黄岩水文站的数据
+     * 获取通州水文站的数据
      *
      * @return
      */

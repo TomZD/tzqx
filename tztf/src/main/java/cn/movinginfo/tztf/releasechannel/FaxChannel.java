@@ -163,11 +163,11 @@ public class FaxChannel implements Channel {
 				String defense =alarmTypeService.get(Long.valueOf(alarmTypeId)).getDefence();
 				rls.add(FileGernerator.getReplaceData("审稿人",alarm.getIssuer()));
 				if(alarm.getAlarmTypeName().equals("alarm")){
-					fileNamePath= "黄岩区气象灾害预警信号模板.doc";
+					fileNamePath= "通州区气象灾害预警信号模板.doc";
 					image="D:\\tztfsource\\images\\warning_icon\\"+alarm.getAlarmTypeName()+".jpg";
 					rls.add(FileGernerator.getReplaceData("防御指南",defense));
 				}else{
-					fileNamePath= "黄岩区突发事件预警信号模板.doc";
+					fileNamePath= "通州区突发事件预警信号模板.doc";
 					image="";
 				}
 			

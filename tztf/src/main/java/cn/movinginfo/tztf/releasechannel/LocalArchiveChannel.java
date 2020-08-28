@@ -46,7 +46,7 @@ public class LocalArchiveChannel extends MagicAction<Alarm, AlarmService>  imple
         String year =DateUtil.format(pubTime, "yyyy");
         String month =DateUtil.format(pubTime, "M");
         String alarmTypeName = alarm.getAlarmTypeName();
-        String fileName =year + "-" +month + "-黄岩区-"+alarmTypeName + "预警.doc";
+        String fileName =year + "-" +month + "-通州区-"+alarmTypeName + "预警.doc";
         WordFileDomain domain = new WordFileDomain();
         domain.setBase64(base64);
         domain.setFileName(fileName);

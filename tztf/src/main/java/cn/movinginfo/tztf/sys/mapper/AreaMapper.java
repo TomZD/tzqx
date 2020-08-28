@@ -14,7 +14,7 @@ public interface AreaMapper extends Mapper<Area>{
 	@Select("select * from sys_area where CITY='杭州市'")
     public List<Area> getAll();
 	
-	@Select("SELECT DISTINCT COUNTRY,abb FROM sys_area where CITY='黄岩市' and COUNTRY=TOWN and valid=1")
+	@Select("SELECT DISTINCT COUNTRY,abb FROM sys_area where CITY='通州市' and COUNTRY=TOWN and valid=1")
     public List<Area> getCountryArea();
 	
 	@Select("SELECT TOWN FROM sys_area where COUNTRY=#{param1} and COUNTRY!=TOWN")

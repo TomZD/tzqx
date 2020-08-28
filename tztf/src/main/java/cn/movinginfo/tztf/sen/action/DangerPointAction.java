@@ -371,7 +371,7 @@ public class DangerPointAction extends MagicAction<DangerPoint, DangerPointServi
 		try {
 			if (dangerPoint.getId() == null) {
 				dangerPoint.setCity("台州市");
-				dangerPoint.setCounty("黄岩区");
+				dangerPoint.setCounty("通州区");
 				entityService.insertSelective(dangerPoint);
 			} else {
 				entityService.update(dangerPoint);

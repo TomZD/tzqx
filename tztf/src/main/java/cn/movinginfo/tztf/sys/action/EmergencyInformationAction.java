@@ -140,7 +140,7 @@ public class EmergencyInformationAction extends MagicAction<KeyPeople,KeyPeopleS
         	people.setTown(area.getTown());
         }
         people.setCity("台州市");
-        people.setCounty("黄岩区");
+        people.setCounty("通州区");
         Long personTypeId = people.getPersonTypeId();
         String name = people.getName();
         KeyPeople kp = entityService.getKeyPeopleByPhoneAndType(personTypeId, name);
