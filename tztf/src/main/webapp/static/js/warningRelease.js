@@ -161,7 +161,7 @@ $(function(){
 					                 "<li><span>发布时间:"+d.lists[0].pub+" 持续:"+d.lists[0].cxsj+"小时</span></li><li><span>解除时间:发布中</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+d.lists[0].id+"')\">详情</button></div>";
 					}else if(d.lists[0].pubState==6){
 					var yjText = "<div class=\"hm-tabCon\"><ul><li><span>预警类型:"+d.lists[0].jy+"</span></li><li><span>发布单位:"+d.lists[0].fbdw+"</span></li>" +
-							     "<li><span>发布时间:"+d.lists[0].pub+" 持续:"+d.lists[0].cxsj+"小时</span></li><li><span>解除时间:"+d.lists[0].cancel+"</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+d.lists[0].id+"')\">详情</button></div>";
+							     "<li><span>发布时间:"+d.lists[0].pub+" 持续:"+d.lists[0].cxsj+"小时</span></li><li><span>解除时间:"+(d.lists[0].cancel===undefined?"":d.lists[0].cancel)+"</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+d.lists[0].id+"')\">详情</button></div>";
 					}
 					for(var i=0;i<d.lists.length;i++){
 				        var dataList = d.lists[i];
@@ -180,7 +180,7 @@ $(function(){
 	                	       + "<li><span>发布时间:"+dataList.pub+" 持续:"+dataList.cxsj+"小时</span></li><li><span>解除时间:发布中</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+dataList.id+"')\">详情</button></div>";
 				        }else if(dataList.pubState==6){
 				        	yjText += "<div class=\"hm-tabCon\" style=\"display:none\"><ul><li><span>预警类型:"+dataList.jy+"</span></li><li><span>发布单位:"+dataList.fbdw+"</span></li>"
-	                	       + "<li><span>发布时间:"+dataList.pub+" 持续:"+dataList.cxsj+"小时</span></li><li><span>解除时间:"+dataList.cancel+"</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+dataList.id+"')\">详情</button></div>";
+	                	       + "<li><span>发布时间:"+dataList.pub+" 持续:"+dataList.cxsj+"小时</span></li><li><span>解除时间:"+(dataList.cancel===undefined?"":dataList.cancel)+"</span></li></ul><button class=\"m-btn btn-detail\" onclick=\"show('"+dataList.id+"')\">详情</button></div>";
 				        } 
 				     }
 					$("#detail").html(text);
