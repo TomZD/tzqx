@@ -20,6 +20,22 @@ import java.util.Map;
 public class AlarmTypeService extends BaseService<AlarmType, AlarmTypeMapper> {
 
 	/**
+	 * @Description: TODO 获取部门设置的气象预警类型名称
+	 * @Class: cn.movinginfo.tztf.sys.service.AlarmTypeService
+	 * @Title: getDistinctAlarmNameType
+	 * @param deptId
+	 * @return List<AlarmType>
+	 * @author: zhangdi
+	 * @createTime: 2020-8-30 15:39:53
+	 * @updateTime: 
+	 * @throws 
+	 */
+	public  List<AlarmType> getDistinctAlarmNameType(Long deptId) {
+		List<AlarmType> list = mapper.getDistinctAlarmNameType(deptId);
+		return list;
+	}
+	
+	/**
 	 * 根据条件查询分页
 	 * 
 	 * @param paramMap

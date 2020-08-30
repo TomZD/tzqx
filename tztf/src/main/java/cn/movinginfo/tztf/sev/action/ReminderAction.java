@@ -103,6 +103,19 @@ public class ReminderAction extends MagicAction<Reminder,ReminderService> {
 		return getNameSpace() + "detailler";
 	}
     
+    /**
+     * @Description: TODO 获取可发布的预警类别
+     * @Class: cn.movinginfo.tztf.sev.action.ReminderAction
+     * @Title: getListType
+     * @param request
+     * @param response
+     * @param model
+     * @throws Exception void
+     * @author: zhangdi
+     * @createTime: 2020-8-28 17:01:14
+     * @updateTime: 
+     * @throws 
+     */
     @RequestMapping(value = "type")
     public void getListType(HttpServletRequest request,HttpServletResponse response,Model model)
             throws Exception {
@@ -111,7 +124,12 @@ public class ReminderAction extends MagicAction<Reminder,ReminderService> {
     	JSONObject object = new JSONObject();
     	JSONObject obj = new JSONObject();
     	if(deptName.indexOf("气象")>-1){
-    		List<AlarmType> list =alarmTypeService.getDistinctAlarmType();
+    		
+    		// 开始：2020-8-30 16:08:49 # zhangdi - 气象预警可配置。
+//    		List<AlarmType> list =alarmTypeService.getDistinctAlarmType();
+    		List<AlarmType> list =alarmTypeService.getDistinctAlarmNameType(deptId);
+    		// 结束：2020-8-30 16:09:41 # zhangdi - 气象预警可配置。
+    		
     		obj.put("alarm", list);
     		obj.put("event",eventTypeService.getDeptEventType2(deptId));
     		object.put("alarm", obj);
