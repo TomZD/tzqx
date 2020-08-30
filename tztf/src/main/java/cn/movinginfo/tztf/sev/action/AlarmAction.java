@@ -321,7 +321,7 @@ public class AlarmAction extends MagicAction<Alarm, AlarmService> {
     @RequestMapping(value = "createAlarm")
     public String craeteAlarm(HttpServletRequest request, Model model, String name) throws Exception {
         if (name != null) {
-            model.addAttribute("name", "杭州市气象台发布" + name.trim());
+            model.addAttribute("name", "通州区气象台发布" + name.trim());
             model.addAttribute("typeL", name.trim());
         }
 
